@@ -65,7 +65,7 @@ const Home = () => {
         </TouchableOpacity>
         <TouchableOpacity
           className="w-[46%] h-32 bg-blue-500 justify-center items-center border rounded-lg"
-          onPress={() => handleNavigation("/inventory")}
+          onPress={() => handleNavigation("../(inventory)")}
         >
           <Text className="text-white text-lg">Inventory</Text>
         </TouchableOpacity>

@@ -32,19 +32,7 @@ const Index = () => {
   const router = useRouter();
   return (
     <ScrollView className="flex-1 p-1 bg-white">
-      <View className="flex flex-row flex-wrap justify-center gap-2 p-1">
-        <View className="flex-row items-center justify-center py-2 px-3 bg-gray-900 rounded-2xl">
-          <MaterialIcons
-            name="category"
-            size={24}
-            color="white"
-            className="mr-2"
-          />
-          <Text className="text-md font-bold text-white">
-            SELECT PRODUCT CATEGORY
-          </Text>
-        </View>
-
+      <View className="flex flex-row flex-wrap justify-center gap-2 p-1 py-5">
         <CategoryBox
           iconName="shopping-cart"
           label="Grocery"
