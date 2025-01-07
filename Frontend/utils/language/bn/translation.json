@@ -1,0 +1,15 @@
+{
+  "Welcome to React": "রিঅ্যাক্ট এবং রিঅ্যাক্ট-i18next এ আপনাকে স্বাগতম",
+  "Login": "লগ ইন",
+  "Register": "নিবন্ধন",
+  "Full Name": "পূর্ণ নাম",
+  "Mobile Number": "মোবাইল নম্বর",
+  "Email": "ইমেইল",
+  "Password": "পাসওয়ার্ড",
+  "Name is required": "নাম প্রয়োজন",
+  "Please enter a valid email": "দয়া করে একটি বৈধ ইমেইল লিখুন",
+  "Please enter a valid 10-digit mobile number": "দয়া করে একটি বৈধ ১০-সংখ্যার মোবাইল নম্বর লিখুন",
+  "Password must be at least 6 characters long": "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে",
+  "Already have an account?": "আপনার কি ইতিমধ্যে একটি অ্যাকাউন্ট আছে?",
+  "Don't have an account? Click on Register": "আপনার কি অ্যাকাউন্ট নেই? নিবন্ধনে ক্লিক করুন"
+}

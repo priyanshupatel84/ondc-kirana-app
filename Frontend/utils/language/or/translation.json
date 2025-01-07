@@ -1,0 +1,15 @@
+{
+  "Welcome to React": "ରିଆକ୍ଟ ଏବଂ ରିଆକ୍ଟ-i18next ରେ ଆପଣଙ୍କୁ ସ୍ୱାଗତ",
+  "Login": "ଲଗଇନ",
+  "Register": "ନିବନ୍ଧନ",
+  "Full Name": "ପୂର୍ଣ୍ଣ ନାମ",
+  "Mobile Number": "ମୋବାଇଲ୍ ନମ୍ବର",
+  "Email": "ଇମେଲ୍",
+  "Password": "ପାସୱାର୍ଡ",
+  "Name is required": "ନାମ ଆବଶ୍ୟକ",
+  "Please enter a valid email": "ଦୟାକରି ଏକ ବୈଧ ଇମେଲ୍ ଦିଅନ୍ତୁ",
+  "Please enter a valid 10-digit mobile number": "ଦୟାକରି ଏକ ବୈଧ ୧୦-ଅଙ୍କର ମୋବାଇଲ୍ ନମ୍ବର ଦିଅନ୍ତୁ",
+  "Password must be at least 6 characters long": "ପାସୱାର୍ଡର ଦୈର୍ଘ୍ୟ କମ୍ ତଳେ ୬ ଅକ୍ଷର ହେବା ଦରକାର",
+  "Already have an account?": "ଆପଣଙ୍କର ଆଗରୁ ଏକ ଖାତା ଅଛି କି?",
+  "Don't have an account? Click on Register": "ଆପଣଙ୍କର ଖାତା ନାହିଁ କି? ନିବନ୍ଧନରେ କ୍ଲିକ୍ କରନ୍ତୁ"
+}

@@ -1,0 +1,15 @@
+{
+  "Welcome to React": "రియాక్ట్ మరియు రియాక్ట్-i18next లో మీకు స్వాగతం",
+  "Login": "లాగిన్",
+  "Register": "నమోదు",
+  "Full Name": "పూర్తి పేరు",
+  "Mobile Number": "మొబైల్ నంబర్",
+  "Email": "ఇమెయిల్",
+  "Password": "పాస్వర్డ్",
+  "Name is required": "పేరు అవసరం",
+  "Please enter a valid email": "దయచేసి ఒక చెల్లుబాటు అయ్యే ఇమెయిల్ నమోదు చేయండి",
+  "Please enter a valid 10-digit mobile number": "దయచేసి ఒక చెల్లుబాటు అయ్యే 10-అంకెల మొబైల్ నంబర్ నమోదు చేయండి",
+  "Password must be at least 6 characters long": "పాస్వర్డ్ కనీసం 6 అక్షరాలు ఉండాలి",
+  "Already have an account?": "మీకు ఇప్పటికే ఒక ఖాతా ఉందా?",
+  "Don't have an account? Click on Register": "మీకు ఖాతా లేదు? నమోదు చేయడానికి క్లిక్ చేయండి"
+}

@@ -1,0 +1,15 @@
+{
+  "Welcome to React": "ਰਿਆਕਟ ਅਤੇ ਰਿਆਕਟ-i18next ਵਿੱਚ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ",
+  "Login": "ਲੌਗਇਨ",
+  "Register": "ਰਜਿਸਟਰ",
+  "Full Name": "ਪੂਰਾ ਨਾਮ",
+  "Mobile Number": "ਮੋਬਾਈਲ ਨੰਬਰ",
+  "Email": "ਈਮੇਲ",
+  "Password": "ਪਾਸਵਰਡ",
+  "Name is required": "ਨਾਮ ਲਾਜ਼ਮੀ ਹੈ",
+  "Please enter a valid email": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵੈਧ ਈਮੇਲ ਦਰਜ ਕਰੋ",
+  "Please enter a valid 10-digit mobile number": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵੈਧ 10-ਅੰਕਾਂ ਦਾ ਮੋਬਾਈਲ ਨੰਬਰ ਦਰਜ ਕਰੋ",
+  "Password must be at least 6 characters long": "ਪਾਸਵਰਡ ਘੱਟੋ-ਘੱਟ 6 ਅੱਖਰਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ",
+  "Already have an account?": "ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਪਹਿਲਾਂ ਹੀ ਇੱਕ ਖਾਤਾ ਹੈ?",
+  "Don't have an account? Click on Register": "ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਖਾਤਾ ਨਹੀਂ ਹੈ? ਰਜਿਸਟਰ 'ਤੇ ਕਲਿਕ ਕਰੋ"
+}

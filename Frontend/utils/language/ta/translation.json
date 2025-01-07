@@ -1,0 +1,15 @@
+{
+  "Welcome to React": "ரியாக்ட் மற்றும் ரியாக்ட்-i18next இல் உங்களை வரவேற்கிறோம்",
+  "Login": "உள்நுழைவு",
+  "Register": "பதிவு",
+  "Full Name": "முழு பெயர்",
+  "Mobile Number": "மொபைல் எண்",
+  "Email": "மின்னஞ்சல்",
+  "Password": "கடவுச்சொல்",
+  "Name is required": "பெயர் தேவை",
+  "Please enter a valid email": "தயவுசெய்து ஒரு செல்லுபடியாகும் மின்னஞ்சலை உள்ளிடவும்",
+  "Please enter a valid 10-digit mobile number": "தயவுசெய்து ஒரு செல்லுபடியாகும் 10-எண் மொபைல் எண்ணை உள்ளிடவும்",
+  "Password must be at least 6 characters long": "கடவுச்சொல் குறைந்தது 6 எழுத்துகள் நீளமாக இருக்க வேண்டும்",
+  "Already have an account?": "உங்களுக்கு ஏற்கனவே ஒரு கணக்கு உள்ளதா?",
+  "Don't have an account? Click on Register": "உங்களுக்கு கணக்கு இல்லை? பதிவு செய்ய கிளிக் செய்யவும்"
+}
