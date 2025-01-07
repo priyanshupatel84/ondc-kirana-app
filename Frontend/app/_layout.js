@@ -23,24 +23,22 @@ const Header = () => (
 
 const RootLayout = () => {
   return (
-    <View className="flex-1">
-      <Stack
-        screenOptions={{
-          headerShown: false,
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="index" />
+      <Stack.Screen
+        name="(tabs)"
+        options={{
+          headerShown: true,
+          header: () => <Header />,
         }}
-      >
-        <Stack.Screen name="index" />
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: true,
-            header: () => <Header />,
-          }}
-        />
-        <Stack.Screen name="(auth)" />
-        <PortalHost />
-      </Stack>
-    </View>
+      />
+      <Stack.Screen name="(auth)" />
+      <PortalHost />
+    </Stack>
   );
 };
 

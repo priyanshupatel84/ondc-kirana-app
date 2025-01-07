@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Pressable } from "react-native";
 import i18next from "i18next";
 import i18n from "../../utils/language/i18n";
-import FontAwesome from "@expo/vector-icons/FontAwesome"; // Import FontAwesome or any other icon library
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const LanguageSelector = () => {
   const languageOptions = [
@@ -31,7 +31,7 @@ const LanguageSelector = () => {
   };
 
   return (
-    <View className="flex items-center">
+    <View className="flex items-center h-[48px]">
       <Pressable
         className="bg-gray-100 py-1 px-2 rounded-lg w-26 mx-2 mt-2 mb-1 items-center border-black  flex-row justify-center border-[1px] border-gray-400"
         onPress={() => setDropdownVisible((prev) => !prev)}
@@ -45,10 +45,8 @@ const LanguageSelector = () => {
         <Text className="text-lg font-semibold">{selectedValue}</Text>
       </Pressable>
 
-      {/* Dropdown list */}
       {dropdownVisible && (
         <View className="z-1000 bg-white w-28 rounded-lg border border-gray-300 shadow-md">
-          {/* Map over languageOptions to render items */}
           {languageOptions.map((item) => (
             <TouchableOpacity
               key={item.value}
