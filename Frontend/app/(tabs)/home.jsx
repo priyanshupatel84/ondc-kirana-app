@@ -71,19 +71,19 @@ const Home = () => {
         </TouchableOpacity>
         <TouchableOpacity
           className="w-[46%] h-32 bg-red-500 justify-center items-center border rounded-lg"
-          onPress={() => handleNavigation("/returns")}
+          onPress={() => handleNavigation("../(return)")}
         >
           <Text className="text-white text-lg">Returns</Text>
         </TouchableOpacity>
         <TouchableOpacity
           className="w-[46%] h-32 bg-yellow-500 justify-center items-center border rounded-lg"
-          onPress={() => handleNavigation("/orders")}
+          onPress={() => handleNavigation("/(order)")}
         >
           <Text className="text-white text-lg">Orders</Text>
         </TouchableOpacity>
         <TouchableOpacity
           className="w-[46%] h-32 bg-purple-500 justify-center items-center border rounded-lg"
-          onPress={() => handleNavigation("/complaints")}
+          onPress={() => handleNavigation("/(complaints)")}
         >
           <Text className="text-white text-lg">Complaints</Text>
         </TouchableOpacity>
