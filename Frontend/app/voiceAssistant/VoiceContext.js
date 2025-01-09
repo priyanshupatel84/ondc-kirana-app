@@ -4,7 +4,6 @@ import { Audio } from "expo-av";
 import axios from "axios";
 import { useMute } from "./MuteContext";
 
-// Access the API key from app.json
 const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 
 const voiceContext = createContext();
