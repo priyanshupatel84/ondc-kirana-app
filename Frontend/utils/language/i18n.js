@@ -8,9 +8,6 @@ const resources = {
   hi: {
     translation: require("./hi/translation.json"),
   },
-  as: {
-    translation: require("./as/translation.json"), // Assamese
-  },
   bn: {
     translation: require("./bn/translation.json"), // Bengali
   },
@@ -25,9 +22,6 @@ const resources = {
   },
   mr: {
     translation: require("./mr/translation.json"), // Marathi
-  },
-  or: {
-    translation: require("./or/translation.json"), // Oriya
   },
   pa: {
     translation: require("./pa/translation.json"), // Punjabi

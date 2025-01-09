@@ -9,31 +9,27 @@
 //   );
 // };
 
-// export default Index;
-
 import { View, Text, ScrollView, Image } from "react-native";
 import React, { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "expo-router";
 import i18n from "../utils/language/i18n"; // Adjust the path as necessary
 
-const Index = () => {
+const LanguageSelection = () => {
   const router = useRouter();
   const [selectedLanguage, setSelectedLanguage] = useState(null);
 
   const languages = [
-    { label: "English", value: "en" }, // Use language codes
-    { label: "অসমীয়া", value: "as" }, // Assamese in Assamese
-    { label: "বাংলা", value: "bn" }, // Bengali in Bengali
-    { label: "ગુજરાતી", value: "gu" }, // Gujarati in Gujarati
-    { label: "हिन्दी", value: "hi" }, // Hindi in Hindi script
-    { label: "ಕನ್ನಡ", value: "kn" }, // Kannada in Kannada
-    { label: "മലയാളം", value: "ml" }, // Malayalam in Malayalam script
-    { label: "मराठी", value: "mr" }, // Marathi in Marathi script
-    { label: "ଓଡ଼ିଆ", value: "or" }, // Oriya in Oriya script
-    { label: "ਪੰਜਾਬੀ", value: "pa" }, // Punjabi in Punjabi script
-    { label: "தமிழ்", value: "ta" }, // Tamil in Tamil script
-    { label: "తెలుగు", value: "te" }, // Telugu in Telugu script
+    { label: "English", value: "en" },
+    { label: "বাংলা", value: "bn" },
+    { label: "ગુજરાતી", value: "gu" },
+    { label: "हिन्दी", value: "hi" },
+    { label: "ಕನ್ನಡ", value: "kn" },
+    { label: "മലയാളം", value: "ml" },
+    { label: "मराठी", value: "mr" },
+    { label: "ਪੰਜਾਬੀ", value: "pa" },
+    { label: "தமிழ்", value: "ta" },
+    { label: "తెలుగు", value: "te" },
   ];
 
   const changeLanguage = (lng) => {
@@ -44,6 +40,14 @@ const Index = () => {
     setSelectedLanguage(language.value);
     changeLanguage(language.value); // Change the language when selected
   };
+
+  // ---------------- speaks only one time
+  // const { speakText } = useVoice();
+
+  // useEffect(() => {
+  //   // Speak when the component mounts
+  //   speakText("Welcome to the home screen!", "en-US"); // Adjust the text and language code as necessary
+  // }, []);
 
   return (
     <View className="flex-1 items-center justify-center bg-white p-2">
@@ -87,11 +91,11 @@ const Index = () => {
           onPress={() => router.push("/(tabs)/home")}
           className="mt-4 w-[250px] bg-blue-500 active:bg-blue-400"
         >
-          <Text className="text-white font-semibold text-xl ">Next</Text>
+          <Text className="text-white font-semibold text-xl">Next</Text>
         </Button>
       )}
     </View>
   );
 };
 
-export default Index;
+export default LanguageSelection;

@@ -7,14 +7,12 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 const LanguageSelector = () => {
   const languageOptions = [
     { label: "English", value: "en" },
-    { label: "অসমীয়া", value: "as" },
     { label: "বাংলা", value: "bn" },
     { label: "ગુજરાતી", value: "gu" },
     { label: "हिन्दी", value: "hi" },
     { label: "ಕನ್ನಡ", value: "kn" },
     { label: "മലയാളം", value: "ml" },
     { label: "मराठी", value: "mr" },
-    { label: "ଓଡ଼ିଆ", value: "or" },
     { label: "ਪੰਜਾਬੀ", value: "pa" },
     { label: "தமிழ்", value: "ta" },
     { label: "తెలుగు", value: "te" },
