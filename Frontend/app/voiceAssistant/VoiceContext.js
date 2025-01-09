@@ -3,10 +3,9 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { Audio } from "expo-av";
 import axios from "axios";
 import { useMute } from "./MuteContext";
-import dotenv from "dotenv";
 
-// Load environment variables from .env file
-dotenv.config();
+// Access the API key from app.json
+const GOOGLE_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 
 const voiceContext = createContext();
 
@@ -28,7 +27,7 @@ export const VoiceProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_API_KEY_TEXT_TO_SPEECH}`, // Use the environment variable for the API key
+        `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_API_KEY}`, // Use the environment variable for the API key
         {
           input: { text },
           voice: {
