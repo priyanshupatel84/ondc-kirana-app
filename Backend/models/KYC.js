@@ -8,21 +8,37 @@ const KYCSchema = new Schema({
         ref: 'User',
         required: true
     },
+    email:{
+        type: String,
+        required: true
+    },
+    mob_no:{
+        type:Number,
+        required: true
+    },
+    fssai_no:{
+        type: String,
+        required: true
+    },
     address:{
         type: String,
         required: true
     },
-    documentType: {
+    idType: {
         type: String,
         enum: ['Aadhar', 'PAN', 'Passport', 'Driving License'],
         required: true
     },
-    documentNumber: {
+    idNumber: {
         type: String,
         required: true,
         unique: true
     },
-    documentImage: {
+    id_image_url: {
+        type: String,
+        required: true
+    },
+    gstin_certificate_url: {
         type: String,
         required: true
     },

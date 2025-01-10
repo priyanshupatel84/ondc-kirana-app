@@ -1,8 +1,8 @@
 const express = require('express');
 const userHandler = require('./routes/userHandler');
 const shopHandler = require('./routes/shopHandler');
-// const kycHandler = require('./routes/kycHandler');
-// const bankAccountHandler = require('./routes/bankAccountHandler');
+const KYCHandler = require('./routes/KYCHandler');
+const bankHandler = require('./routes/bankHandler');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -19,8 +19,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', userHandler);
 app.use('/api/shops', shopHandler);
-// app.use('/api/kyc', kycHandler);
-// app.use('/api/bank-account', bankAccountHandler);
+app.use('/api/kyc', KYCHandler);
+app.use('/api/bank-account', bankHandler);
 
 
 // Connect to MongoDB and start server
