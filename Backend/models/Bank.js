@@ -29,6 +29,10 @@ const BankAccountSchema = new Schema({
         type: String,
         required: true
     },
+    cancelled_cheque_url: { 
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -44,6 +48,6 @@ BankAccountSchema.pre('save', function(next) {
     next();
 });
 
-const BankAccount = mongoose.model('BankAccount', BankAccountSchema);
+const Bank = mongoose.model('Bank', BankAccountSchema);
 
-module.exports = BankAccount;
+module.exports = Bank;
