@@ -31,7 +31,7 @@ const LanguageSelector = () => {
   return (
     <View className="flex items-center h-[48px]">
       <Pressable
-        className="bg-gray-100 py-1 px-2 rounded-lg w-26 mx-2 mt-2 mb-1 items-center border-black  flex-row justify-center border-[1px] border-gray-400"
+        className="bg-gray-100 py-1 px-2 rounded-lg w-26 mx-2 mt-2 mb-1 items-center border-black flex-row justify-center border-[1px] border-gray-400"
         onPress={() => setDropdownVisible((prev) => !prev)}
       >
         <FontAwesome
@@ -40,11 +40,11 @@ const LanguageSelector = () => {
           color="black"
           style={{ marginRight: 5 }}
         />
-        <Text className="text-lg font-semibold">{selectedValue}</Text>
+        <Text className="text-lg ">{selectedValue}</Text>
       </Pressable>
 
       {dropdownVisible && (
-        <View className="z-1000 bg-white w-28 rounded-lg border border-gray-300 shadow-md">
+        <View className="z-49 bg-white w-28 rounded-lg border border-gray-300 shadow-md border-1">
           {languageOptions.map((item) => (
             <TouchableOpacity
               key={item.value}

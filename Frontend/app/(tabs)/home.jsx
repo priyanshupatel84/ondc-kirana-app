@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router"; // Importing router for navigation
-import { H3 } from "~/components/ui/typography"; //
+import { useRouter } from "expo-router";
+import { H3 } from "~/components/ui/typography";
 
 const Home = () => {
   const router = useRouter();
@@ -22,13 +22,13 @@ const Home = () => {
         </View>
         <TouchableOpacity
           className="w-[46%] h-16 bg-green-500 justify-center items-center border rounded-lg"
-          onPress={() => handleNavigation("/kycVerification")}
+          onPress={() => handleNavigation("../kyc/kycWrapper")}
         >
           <Text className="text-white text-lg">KYC Verification</Text>
         </TouchableOpacity>
         <TouchableOpacity
           className="w-[46%] h-16 bg-blue-500 justify-center items-center border rounded-lg"
-          onPress={() => handleNavigation("/addBank")}
+          onPress={() => handleNavigation("../kyc/bankWrapper")}
         >
           <Text className="text-white text-lg">Add Bank</Text>
         </TouchableOpacity>
