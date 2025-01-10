@@ -1,6 +1,6 @@
 const express = require('express');
 const userHandler = require('./routes/userHandler');
-// const shopHandler = require('./routes/shopHandler');
+const shopHandler = require('./routes/shopHandler');
 // const kycHandler = require('./routes/kycHandler');
 // const bankAccountHandler = require('./routes/bankAccountHandler');
 const mongoose = require('mongoose');
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', userHandler);
-// app.use('/api/shop', shopHandler);
+app.use('/api/shops', shopHandler);
 // app.use('/api/kyc', kycHandler);
 // app.use('/api/bank-account', bankAccountHandler);
 

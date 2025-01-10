@@ -1,3 +1,5 @@
+const supportedProducts = ['Fruits', 'Vegetables', 'Dairy', 'Bakery', 'Meat', 'Seafood', 'Beverages', 'Snacks'];
+
 const mongoose = require('mongoose');
 
 const ShopSchema = new mongoose.Schema({
@@ -17,14 +19,22 @@ const ShopSchema = new mongoose.Schema({
         trim: true
     },
     phone: {
+        type: Number,
+        required: true,
+        trim: true
+    },
+    support_email: {
         type: String,
         required: true,
         trim: true
     },
-    email: {
-        type: String,
-        required: true,
-        trim: true
+    supported_products: {
+        type: [String],
+        enum: supportedProducts,
+        default:'Not Provided'
+    },
+    shop_logo_url: { 
+        type: String, 
     },
     createdAt: {
         type: Date,
