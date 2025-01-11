@@ -88,7 +88,7 @@ const LanguageSelection = () => {
         <Button
           size="lg"
           variant="destructive"
-          onPress={() => router.push("/(tabs)/home")}
+          onPress={() => router.push("/(docVerification)")}
           className="mt-4 w-[250px] bg-blue-500 active:bg-blue-400"
         >
           <Text className="text-white font-semibold text-xl">Next</Text>
