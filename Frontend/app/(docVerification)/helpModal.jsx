@@ -8,9 +8,9 @@ const helpModal = ({ visible, onClose }) => {
   return (
     <View className="absolute inset-0 justify-end items-center bg-black opacity-90">
       <View className="w-full p-4 bg-white rounded-t-lg shadow-lg bg-gray-200 border opacity-100">
-        <View className="flex flex-row justify-between items-center px-2">
+        <View className="flex flex-row justify-between items-center ">
           <Text className="text-2xl font-bold">Help</Text>
-          <TouchableOpacity className=" py-2" onPress={onClose}>
+          <TouchableOpacity className=" py-2 p-2" onPress={onClose}>
             <FontAwesome name="close" size={24} color="black" />
           </TouchableOpacity>
         </View>

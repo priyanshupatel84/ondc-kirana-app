@@ -7,53 +7,37 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
-import { Button } from "~/components/ui/button";
 import { FontAwesome } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import DocumentItem from "./documentItem";
+import { Button } from "~/components/ui/button";
 import HelpModal from "./helpModal";
-import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import { prompts } from "./prompt";
 import { callGoogleVisionAsync, analyzeTextWithGemini } from "./apiCall";
-import UseVerifiedDocumentsData from "./UseVerifiedDocumentsData";
-
-const requiredDocuments = [
-  "Cancelled Bank Cheque",
-  "PAN Card",
-  "ID Card",
-  "GSTIN Certificate",
-  "Address Proof",
-];
+import { useRouter } from "expo-router";
+import { convertToBase64 } from "../../utils/imageConversion";
+import { pickImage } from "../../utils/imagePicker";
+import DocumentItem from "./documentItem";
+import UseDocumentData from "./UseDocumentData";
 
 const Index = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [verificationStatus, setVerificationStatus] = useState({});
-  const [images, setImages] = useState({}); // Store images for each document
   const [modalVisible, setModalVisible] = useState(false);
-  const [verifiedDocuments, setVerifiedDocuments] = useState([]);
+  const [verificationStatus, setVerificationStatus] = useState({});
+  const [images, setImages] = useState({});
   const router = useRouter();
 
-  const verifiedData = UseVerifiedDocumentsData(
-    JSON.stringify(verifiedDocuments)
-  );
+  const { updateDocumentData } = UseDocumentData(); //custom hook
 
   const handleDocumentPress = async (title) => {
     setLoading(true);
     setError("");
 
     try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ["images"],
-        allowsEditing: false,
-        quality: 1,
-      });
+      const urllocal = await pickImage();
 
-      if (!result.canceled) {
-        const uri = result.assets[0].uri;
-        setImages((prev) => ({ ...prev, [title]: uri })); // Set image for the specific document type
-        const base64Image = await convertToBase64(uri);
+      if (urllocal) {
+        setImages((prev) => ({ ...prev, [title]: urllocal }));
+        const base64Image = await convertToBase64(urllocal);
         const extractedText = await callGoogleVisionAsync(base64Image);
         const prompt = prompts[title];
         const updatedPrompt = JSON.stringify(prompt + extractedText);
@@ -66,25 +50,7 @@ const Index = () => {
             setVerificationStatus((prev) => ({ ...prev, [title]: false }));
           } else {
             setVerificationStatus((prev) => ({ ...prev, [title]: true }));
-
-            // Check if the document already exists in the verifiedDocuments array
-            setVerifiedDocuments((prev) => {
-              const existingDocIndex = prev.findIndex(
-                (doc) => doc.documentType === title
-              );
-              if (existingDocIndex !== -1) {
-                // Update the existing document
-                const updatedDocuments = [...prev];
-                updatedDocuments[existingDocIndex] = {
-                  documentType: title,
-                  info: response,
-                };
-                return updatedDocuments;
-              } else {
-                // Add a new document
-                return [...prev, { documentType: title, info: response }];
-              }
-            });
+            updateDocumentData(title, response);
           }
         } else {
           setError("No prompt found for this document type");
@@ -97,23 +63,21 @@ const Index = () => {
     }
   };
 
-  const convertToBase64 = async (uri) => {
-    try {
-      return await FileSystem.readAsStringAsync(uri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-    } catch (error) {
-      throw new Error("Failed to convert image to Base64");
-    }
-  };
+  const requiredDocuments = [
+    "Cancelled Bank Cheque",
+    "PAN Card",
+    "ID Card",
+    "GSTIN Certificate",
+    "Address Proof",
+  ];
 
-  const canProceed =
-    !loading &&
-    requiredDocuments.every((doc) => verificationStatus[doc] === true);
+  const allDocumentsVerified = requiredDocuments.every(
+    (doc) => verificationStatus[doc] === true
+  );
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="flex flex-col justify-center items-center p-2 bg-white">
+      <View className="flex flex-col justify-center ">
         <Text className="text-2xl my-5 font-semibold text-center">
           Document Verification
         </Text>
@@ -144,16 +108,17 @@ const Index = () => {
           </View>
         )}
         {error && (
-          <Text className="border-[2px] border-red-600 font-semibold text-red-700 text-lg px-3 py-2 my-5 rounded-lg">
+          <Text className="border-[2px] border-red-600 font-semibold text-red-700 text-lg px-3 py-1 my-5 rounded-lg text-center w-3/4 mx-auto">
             {error}
           </Text>
         )}
       </View>
-      {canProceed && (
+
+      {!loading && allDocumentsVerified && (
         <Button
           size="lg"
           variant="destructive"
-          onPress={() => router.push("../(tabs)/home")}
+          onPress={() => router.push("./newRoute")}
           className="mx-auto my-20 w-5/6 bg-blue-500 active:bg-blue-400"
         >
           <Text className="text-white font-semibold text-xl">Next</Text>
