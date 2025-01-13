@@ -1,51 +1,80 @@
-import { View, Text, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "expo-router";
-import { useTranslation } from "react-i18next"; // Import useTranslation
+import { useTranslation } from "react-i18next";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
+  const { user, isDocsVerified, login, loading } = useAuth();
   const router = useRouter();
-  const { t } = useTranslation(); // Initialize translation hook
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const { t } = useTranslation();
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formErrors, setFormErrors] = useState({});
+  const [loadingState, setLoadingState] = useState(false);
 
-  const onChangeEmail = (text) => {
-    setEmail(text);
-    setEmailError(""); // Reset error message on change
-  };
-
-  const onChangePassword = (text) => {
-    setPassword(text);
-    setPasswordError(""); // Reset error message on change
-  };
-
-  const validateForm = () => {
-    let isValid = true;
-    if (!email.includes("@")) {
-      setEmailError(t("Please enter a valid email")); // Use translation
-      isValid = false;
+  useEffect(() => {
+    if (loading) return;
+    if (user) {
+      if (isDocsVerified) {
+        router.replace("../(tabs)/home");
+      } else {
+        router.replace("../(docVerification)");
+      }
     }
-    if (password.length < 6) {
-      setPasswordError(t("Password must be at least 6 characters long")); // Use translation
-      isValid = false;
-    }
-    return isValid;
+  }, [user, isDocsVerified, loading, router]);
+
+  const handleInputChange = (field) => (value) => {
+    const trimmedValue = value.trim();
+    setFormData({ ...formData, [field]: trimmedValue });
+    setFormErrors({ ...formErrors, [`${field}Error`]: "", loginError: "" });
   };
 
-  const onSubmit = () => {
-    if (validateForm()) {
-      console.log("Login successful");
-      router.push("/kyc/kycWrapper");
+  const onSubmit = async () => {
+    setLoadingState(true);
+    try {
+      const response = await axios.post(
+        "http://192.168.29.237:3000/api/users/login",
+        formData
+      );
+      if (response.status === 200) {
+        await AsyncStorage.setItem("token", response.data.token);
+        await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
+        await login(response.data.user);
+        if (response.data.user.isDocsVerified) {
+          router.push("/(tabs)/profile");
+        } else {
+          router.push("/(docVerification)");
+        }
+      }
+    } catch (error) {
+      if (error.response?.data?.errors) {
+        setFormErrors(error.response.data.errors);
+      } else {
+        setFormErrors({
+          loginError: t("An unexpected error occurred. Please try again."),
+        });
+      }
+    } finally {
+      setLoadingState(false);
     }
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-white p-4 w-full">
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className="flex-1 items-center justify-center bg-white p-4 w-full"
+    >
       <View>
         <Image
           source={require("../../assets/images/ONDC-logo.png")}
@@ -58,32 +87,37 @@ const Login = () => {
           {t("Email")}
         </Label>
         <Input
-          className="w-full p-2 "
+          className="w-full p-2"
           placeholder="Email"
-          value={email}
-          onChangeText={onChangeEmail}
+          value={formData.email}
+          onChangeText={handleInputChange("email")}
           aria-labelledby="email"
           aria-errormessage="emailError"
         />
-        {emailError ? <Text className="text-red-500">{emailError}</Text> : null}
+        {formErrors.emailError && (
+          <Text className="text-red-500">{formErrors.emailError}</Text>
+        )}
       </View>
       <View className="mb-4 w-full px-4">
         <Label nativeID="password" className="mb-2 text-lg font-semibold">
           {t("Password")}
         </Label>
         <Input
-          className="w-full p-2 "
+          className="w-full p-2"
           placeholder="Password"
-          value={password}
-          onChangeText={onChangePassword}
+          value={formData.password}
+          onChangeText={handleInputChange("password")}
           aria-labelledby="password"
           aria-errormessage="passwordError"
           secureTextEntry
         />
-        {passwordError ? (
-          <Text className="text-red-500">{passwordError}</Text>
-        ) : null}
+        {formErrors.passwordError && (
+          <Text className="text-red-500">{formErrors.passwordError}</Text>
+        )}
       </View>
+      {formErrors.loginError && (
+        <Text className="text-red-500">{formErrors.loginError}</Text>
+      )}
       <View className="mb-4 w-full px-4">
         <Button
           size="lg"
@@ -105,7 +139,7 @@ const Login = () => {
           <Text className="font-semibold text-xl">{t("Register")}</Text>
         </Button>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

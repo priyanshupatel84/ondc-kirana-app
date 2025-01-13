@@ -1,16 +1,44 @@
-// app/(tabs)/Profile.jsx
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { AuthContext } from "../context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { useRouter } from "expo-router";
 
 const Profile = () => {
-  const user = {
-    name: "User Singh",
-    email: "user.singh@example.com",
-    mobile: "+1234567890",
-    photoUrl: require("../../assets/images/seller-photo.png"),
-    totalRevenue: "Rs. 0.00",
-    totalOrders: 0,
+  const router = useRouter();
+  const { user, setUser } = useContext(AuthContext); // Access AuthContext
+
+  const handleLogout = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      if (token) {
+        // Send request to backend to log out the user
+        await axios.post(
+          "http://192.168.29.237:3000/api/users/logout",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Clear local storage
+      await AsyncStorage.removeItem("user");
+      await AsyncStorage.removeItem("token");
+
+      // Reset local state (if applicable)
+      setUser(null);
+
+      console.log("User logged out successfully.");
+      router.replace("../index");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (
@@ -25,7 +53,10 @@ const Profile = () => {
           />
           <Text className="text-xl font-bold">Profile</Text>
         </View>
-        <TouchableOpacity className="bg-red-500 rounded-lg p-2 flex-row items-center ">
+        <TouchableOpacity
+          className="bg-red-500 rounded-lg p-2 flex-row items-center"
+          onPress={handleLogout}
+        >
           <MaterialIcons
             name="logout"
             size={20}
@@ -38,7 +69,15 @@ const Profile = () => {
 
       <View className="flex-row justify-around item-center gap-2 p-1 rounded">
         <View className="relative bg-gray-100 rounded-2xl p-1">
-          <Image source={user.photoUrl} className="w-36 h-36 rounded-full" />
+          <Image
+            source={
+              user?.photo_url
+                ? { uri: user.photo_url }
+                : require("../../assets/images/seller-photo.png")
+            }
+            className="w-36 h-36 rounded-full"
+          />
+
           <TouchableOpacity className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1">
             <MaterialIcons name="edit" size={24} color="white" />
           </TouchableOpacity>
@@ -46,11 +85,11 @@ const Profile = () => {
         <View className="flex-1 flex-col justify-center gap-1">
           <View className="flex-1 flex-col justify-center bg-gray-100 rounded-2xl">
             <Text className="text-lg font-semibold text-center">Revenue:</Text>
-            <Text className="text-3xl text-center">{user.totalRevenue}</Text>
+            <Text className="text-3xl text-center">{user?.totalRevenue}</Text>
           </View>
           <View className="flex-1 flex-col justify-center bg-gray-100 rounded-2xl">
             <Text className="text-lg font-semibold text-center">Orders:</Text>
-            <Text className="text-3xl text-center">{user.totalOrders}</Text>
+            <Text className="text-3xl text-center">{user?.totalOrders}</Text>
           </View>
         </View>
       </View>
@@ -59,7 +98,7 @@ const Profile = () => {
         <View className="mb-3 flex-row justify-between items-center">
           <View className="flex-1">
             <Text className="text-lg font-semibold">Name:</Text>
-            <Text className="text-lg">{user.name}</Text>
+            <Text className="text-lg">{user?.name}</Text>
           </View>
           <View className="flex-row items-center gap-2">
             <TouchableOpacity className="py-1 px-2 bg-blue-500 rounded-lg">
@@ -74,7 +113,7 @@ const Profile = () => {
         <View className="mb-3 flex-row justify-between items-center">
           <View className="flex-1">
             <Text className="text-lg font-semibold">Mobile:</Text>
-            <Text className="text-lg">{user.mobile}</Text>
+            <Text className="text-lg">{user?.mobile}</Text>
           </View>
           <View className="flex-row items-center gap-2">
             <TouchableOpacity className="py-1 px-2 bg-blue-500 rounded-lg">
@@ -88,7 +127,7 @@ const Profile = () => {
 
         <View className="mb-2">
           <Text className="text-lg font-semibold">Email:</Text>
-          <Text className="text-lg">{user.email}</Text>
+          <Text className="text-lg">{user?.email}</Text>
         </View>
         <TouchableOpacity className="bg-blue-500 p-2 rounded-lg mb-2 flex-row w-1/2">
           <MaterialIcons name="lock" size={20} color="white" className="" />

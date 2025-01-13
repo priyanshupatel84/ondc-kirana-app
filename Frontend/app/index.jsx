@@ -10,7 +10,7 @@
 // };
 
 import { View, Text, ScrollView, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "expo-router";
 import i18n from "../utils/language/i18n"; // Adjust the path as necessary
@@ -88,7 +88,7 @@ const LanguageSelection = () => {
         <Button
           size="lg"
           variant="destructive"
-          onPress={() => router.push("/(docVerification)")}
+          onPress={() => router.push("./(auth)/login")} // Adjust the path as necessary
           className="mt-4 w-[250px] bg-blue-500 active:bg-blue-400"
         >
           <Text className="text-white font-semibold text-xl">Next</Text>

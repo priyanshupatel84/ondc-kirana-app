@@ -1,7 +1,9 @@
+// documentItem.js
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
+// Constants for status messages and colors
 const STATUS_COLORS = {
   verified: "bg-green-300",
   notVerified: "bg-red-300",
@@ -14,6 +16,7 @@ const STATUS_MESSAGES = {
   pending: "Pending",
 };
 
+// DocumentItem Component
 const DocumentItem = ({ icon, title, onPress, status, imageUri }) => {
   const getStatusColor = () => {
     if (status === true) return STATUS_COLORS.verified;

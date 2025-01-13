@@ -4,12 +4,12 @@ import LanguageSelector from "./languageSelector";
 
 const Header = () => (
   <View
-    className={`h-[48px] px-1 flex-row justify-between border-b border-gray-300 bg-white pr-11`}
+    className={`h-[51px] p-[1px] px-1 flex-row justify-between border-b border-gray-300 bg-white`}
   >
     <View>
       <Image
         source={require("../../assets/images/ONDC-pure-logo.png")}
-        style={{ width: 180, height: 40 }}
+        style={{ width: 190, height: 42 }}
       />
     </View>
     <LanguageSelector />

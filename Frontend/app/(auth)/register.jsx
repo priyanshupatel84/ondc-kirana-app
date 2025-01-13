@@ -1,75 +1,135 @@
 import { View, Text, Image } from "react-native";
 import React, { useState } from "react";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "expo-router";
-import { useTranslation } from "react-i18next"; // Import useTranslation
+import { useTranslation } from "react-i18next";
+import axios from "axios";
+import messages from "./texts";
+import InputField from "./inputField";
 
 const Register = () => {
+  const { t } = useTranslation();
+  const msg = messages(t); // Get translated messages
   const router = useRouter();
-  const { t } = useTranslation(); // Initialize translation hook
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [password, setPassword] = useState("");
 
-  const [nameError, setNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [mobileError, setMobileError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    password: "",
+  });
 
-  const onChangeName = (text) => {
-    setName(text);
-    setNameError("");
-  };
+  const [formErrors, setFormErrors] = useState({
+    nameError: "",
+    emailError: "",
+    mobileError: "",
+    passwordError: "",
+    registerError: "",
+    successMessage: "",
+  });
 
-  const onChangeEmail = (text) => {
-    setEmail(text);
-    setEmailError("");
-  };
-  const onChangeMobile = (text) => {
-    setMobile(text);
-    setMobileError("");
-  };
+  const isEnglishInput = (text) =>
+    /^[A-Za-z0-9\s@#%^&*()_+=[\]{}|\\;:'",.<>/?~`!$-]*$/.test(text);
 
-  const onChangePassword = (text) => {
-    setPassword(text);
-    setPasswordError("");
+  const handleInputChange = (field) => (text) => {
+    const trimmedValue = text.trim();
+    setFormData((prevData) => ({
+      ...prevData,
+      [field]: trimmedValue,
+    }));
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      [`${field}Error`]: "",
+      registerError: "",
+    }));
   };
 
   const validateForm = () => {
     let isValid = true;
+    const errors = {};
 
-    // Name validation
-    if (name.trim() === "") {
-      setNameError(t("Name is required"));
+    if (formData.name.trim() === "") {
+      errors.nameError = msg.inputValidationErrors.nameRequired;
+      isValid = false;
+    } else if (!isEnglishInput(formData.name)) {
+      errors.nameError = msg.fieldErrors.nameNotInEnglish;
       isValid = false;
     }
 
-    // Email validation
-    if (!email.includes("@")) {
-      setEmailError(t("Please enter a valid email"));
-    }
-
-    // Mobile validation (basic validation for 10-digit number)
-    if (mobile.trim().length !== 10 || isNaN(mobile)) {
-      setMobileError(t("Please enter a valid 10-digit mobile number"));
+    if (formData.email.trim() === "" || !formData.email.includes("@")) {
+      errors.emailError = msg.inputValidationErrors.invalidEmail;
+      isValid = false;
+    } else if (!isEnglishInput(formData.email)) {
+      errors.emailError = msg.fieldErrors.emailNotInEnglish;
       isValid = false;
     }
 
-    // Password validation
-    if (password.length < 6) {
-      setPasswordError(t("Password must be at least 6 characters long"));
+    if (formData.mobile.trim().length !== 10 || isNaN(formData.mobile)) {
+      errors.mobileError = msg.inputValidationErrors.invalidMobile;
+      isValid = false;
+    } else if (!isEnglishInput(formData.mobile)) {
+      errors.mobileError = msg.fieldErrors.mobileNotInEnglish;
       isValid = false;
     }
 
+    if (formData.password.length < 8) {
+      errors.passwordError = msg.inputValidationErrors.weakPassword;
+      isValid = false;
+    } else if (!isEnglishInput(formData.password)) {
+      errors.passwordError = msg.fieldErrors.passwordNotInEnglish;
+      isValid = false;
+    }
+
+    setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
     return isValid;
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (validateForm()) {
-      router.push("auth/login");
+      try {
+        const response = await axios.post(
+          "http://192.168.29.237:3000/api/users/register",
+          {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            mob_no: formData.mobile,
+          }
+        );
+
+        if (response.status === 201) {
+          setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            successMessage: msg.successMessages.registrationSuccess,
+          }));
+          setTimeout(() => {
+            router.push("/login");
+          }, 1000);
+        }
+      } catch (error) {
+        if (error.response?.data?.errors) {
+          const errorData = error.response.data.errors;
+
+          setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            nameError: errorData.nameError || "",
+            mobileError: errorData.mobileError || "",
+            emailError: errorData.emailError || "",
+            passwordError: errorData.passwordError || "",
+            registerError: errorData.photoError || "",
+          }));
+        } else if (error.response?.status === 500) {
+          setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            registerError: msg.inputValidationErrors.internalServerError,
+          }));
+        } else {
+          setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            registerError: msg.inputValidationErrors.unexpectedError,
+          }));
+        }
+      }
     }
   };
 
@@ -81,73 +141,53 @@ const Register = () => {
           style={{ width: 300, height: 100 }}
         />
       </View>
-      <Text className="text-3xl my-5 font-semibold">{t("Register")}</Text>
+      <Text className="text-3xl my-5 font-semibold">
+        {msg.formLabels.register}
+      </Text>
 
-      <View className="mb-4 w-full px-4">
-        <Label nativeID="name" className="mb-2 text-lg font-semibold">
-          {t("Full Name")}
-        </Label>
-        <Input
-          className="w-full p-2"
-          placeholder="Full Name"
-          value={name}
-          onChangeText={onChangeName}
-          aria-labelledby="name"
-          aria-errormessage="nameError"
-        />
-        {nameError ? <Text className="text-red-500">{nameError}</Text> : null}
-      </View>
+      <InputField
+        label={msg.formLabels.name}
+        value={formData.name}
+        onChange={handleInputChange("name")}
+        error={formErrors.nameError}
+        placeholder={msg.formPlaceholder.name}
+      />
 
-      <View className="mb-4 w-full px-4">
-        <Label nativeID="mobile" className="mb-2 text-lg font-semibold">
-          {t("Mobile Number")}
-        </Label>
-        <Input
-          className="w-full p-2"
-          placeholder="Mobile Number"
-          value={mobile}
-          onChangeText={onChangeMobile}
-          aria-labelledby="mobile"
-          aria-errormessage="mobileError"
-          keyboardType="numeric"
-        />
-        {mobileError ? (
-          <Text className="text-red-500">{mobileError}</Text>
-        ) : null}
-      </View>
+      <InputField
+        label={msg.formLabels.mobile}
+        value={formData.mobile}
+        onChange={handleInputChange("mobile")}
+        error={formErrors.mobileError}
+        placeholder={msg.formPlaceholder.mobile}
+        keyboardType="numeric"
+      />
 
-      <View className="mb-4 w-full px-4">
-        <Label nativeID="email" className="mb-2 text-lg font-semibold">
-          {t("Email")}
-        </Label>
-        <Input
-          className="w-full p-2"
-          placeholder="Email"
-          value={email}
-          onChangeText={onChangeEmail}
-          aria-labelledby="email"
-          aria-errormessage="emailError"
-        />
-        {emailError ? <Text className="text-red-500">{emailError}</Text> : null}
-      </View>
+      <InputField
+        label={msg.formLabels.email}
+        value={formData.email}
+        onChange={handleInputChange("email")}
+        error={formErrors.emailError}
+        placeholder={msg.formPlaceholder.email}
+      />
 
-      <View className="mb-4 w-full px-4">
-        <Label nativeID="password" className="mb-2 text-lg font-semibold">
-          {t("Password")}
-        </Label>
-        <Input
-          className="w-full p-2"
-          placeholder="Password"
-          value={password}
-          onChangeText={onChangePassword}
-          aria-labelledby="password"
-          aria-errormessage="passwordError"
-          secureTextEntry
-        />
-        {passwordError ? (
-          <Text className="text-red-500">{passwordError}</Text>
-        ) : null}
-      </View>
+      <InputField
+        label={msg.formLabels.password}
+        value={formData.password}
+        onChange={handleInputChange("password")}
+        error={formErrors.passwordError}
+        placeholder={msg.formPlaceholder.password}
+        secureTextEntry
+      />
+
+      {formErrors.registerError && (
+        <Text className="text-red-500">{formErrors.registerError}</Text>
+      )}
+
+      {formErrors.successMessage && (
+        <Text className="text-green-600 text-lg">
+          {formErrors.successMessage}
+        </Text>
+      )}
 
       <View className="mb-4 w-full px-4">
         <Button
@@ -157,17 +197,20 @@ const Register = () => {
           className="mt-4 bg-blue-500 active:bg-blue-400"
         >
           <Text className="text-white font-semibold text-xl">
-            {t("Register")}
+            {msg.formLabels.register}
           </Text>
         </Button>
+
         <View className="justify-center flex-row m-1 items-center">
-          <Text>{t("Already have an account?")}</Text>
+          <Text>{msg.formLabels.alreadyHaveAccount}</Text>
           <Button
             size="sm"
             className="active:bg-gray-200 p-1 m-1"
             onPress={() => router.push("/login")}
           >
-            <Text className="text-blue-500 font-semibold">{t("Login")}</Text>
+            <Text className="text-blue-500 font-semibold">
+              {msg.formLabels.login}
+            </Text>
           </Button>
         </View>
       </View>

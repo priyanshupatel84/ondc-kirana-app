@@ -9,14 +9,17 @@ import {
 import React, { useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "~/components/ui/button";
-import HelpModal from "./helpModal";
-import { prompts } from "./prompt";
-import { callGoogleVisionAsync, analyzeTextWithGemini } from "./apiCall";
+import HelpModal from "./helperFunction/helpModal";
+import { prompts } from "./helperFunction/prompt";
+import {
+  callGoogleVisionAsync,
+  analyzeTextWithGemini,
+} from "./helperFunction/apiCall";
 import { useRouter } from "expo-router";
 import { convertToBase64 } from "../../utils/imageConversion";
 import { pickImage } from "../../utils/imagePicker";
-import DocumentItem from "./documentItem";
-import UseDocumentData from "./UseDocumentData";
+import DocumentItem from "./helperFunction/documentItem";
+import UseDocumentData from "./helperFunction/UseDocumentData";
 
 const Index = () => {
   const [loading, setLoading] = useState(false);
@@ -78,7 +81,7 @@ const Index = () => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex flex-col justify-center ">
-        <Text className="text-2xl my-5 font-semibold text-center">
+        <Text className="text-[23px] my-5 font-semibold text-center">
           Document Verification
         </Text>
         <ScrollView>
@@ -118,7 +121,10 @@ const Index = () => {
         <Button
           size="lg"
           variant="destructive"
-          onPress={() => router.push("./newRoute")}
+          onPress={() => {
+            //console.log(images);
+            router.push("./verifiedData/bankDetails");
+          }}
           className="mx-auto my-20 w-5/6 bg-blue-500 active:bg-blue-400"
         >
           <Text className="text-white font-semibold text-xl">Next</Text>

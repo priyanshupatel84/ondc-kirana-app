@@ -11,6 +11,18 @@ const DocVerificationLayout = () => {
           header: () => <Header />,
         }}
       />
+      <Stack.Screen
+        name="verifiedData/bankDetails"
+        options={{
+          header: () => <Header />,
+        }}
+      />
+      <Stack.Screen
+        name="verifiedData/kycDetails"
+        options={{
+          header: () => <Header />,
+        }}
+      />
     </Stack>
   );
 };
