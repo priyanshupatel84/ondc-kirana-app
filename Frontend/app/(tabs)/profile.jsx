@@ -35,7 +35,7 @@ const Profile = () => {
       setUser(null);
 
       console.log("User logged out successfully.");
-      router.replace("../index");
+      router.replace("../(auth)/login");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -113,7 +113,7 @@ const Profile = () => {
         <View className="mb-3 flex-row justify-between items-center">
           <View className="flex-1">
             <Text className="text-lg font-semibold">Mobile:</Text>
-            <Text className="text-lg">{user?.mobile}</Text>
+            <Text className="text-lg">{user?.mob_no}</Text>
           </View>
           <View className="flex-row items-center gap-2">
             <TouchableOpacity className="py-1 px-2 bg-blue-500 rounded-lg">

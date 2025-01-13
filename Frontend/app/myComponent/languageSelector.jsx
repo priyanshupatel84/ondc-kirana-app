@@ -47,7 +47,7 @@ const LanguageSelector = () => {
           color="black"
           style={{ marginRight: 5 }}
         />
-        <Text className="text-lg ">{selectedValue}</Text>{" "}
+        <Text className="text-lg ">{selectedValue}</Text>
       </Pressable>
 
       {dropdownVisible && (

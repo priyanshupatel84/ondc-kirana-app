@@ -35,8 +35,7 @@ const Login = () => {
   }, [user, isDocsVerified, loading, router]);
 
   const handleInputChange = (field) => (value) => {
-    const trimmedValue = value.trim();
-    setFormData({ ...formData, [field]: trimmedValue });
+    setFormData({ ...formData, [field]: value });
     setFormErrors({ ...formErrors, [`${field}Error`]: "", loginError: "" });
   };
 

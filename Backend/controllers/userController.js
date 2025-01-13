@@ -41,11 +41,22 @@ exports.registerUser = async (req, res) => {
       photo_url,
     });
 
+    // Check for validation errors
     if (Object.keys(validationErrors).length > 0) {
       return res.status(400).json({ errors: validationErrors });
     }
+    const existingUser = await User.findOne({ email: email });
 
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ error: "User already exists with this email." });
+    }
+
+    // Hash the password before saving it
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
     const user = await User.create({
       name,
       email,

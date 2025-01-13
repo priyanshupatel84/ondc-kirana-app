@@ -32,10 +32,9 @@ const Register = () => {
     /^[A-Za-z0-9\s@#%^&*()_+=[\]{}|\\;:'",.<>/?~`!$-]*$/.test(text);
 
   const handleInputChange = (field) => (text) => {
-    const trimmedValue = text.trim();
     setFormData((prevData) => ({
       ...prevData,
-      [field]: trimmedValue,
+      [field]: text,
     }));
     setFormErrors((prevErrors) => ({
       ...prevErrors,
@@ -103,11 +102,20 @@ const Register = () => {
             successMessage: msg.successMessages.registrationSuccess,
           }));
           setTimeout(() => {
-            router.push("/login");
+            router.replace("/login");
           }, 1000);
         }
       } catch (error) {
-        if (error.response?.data?.errors) {
+        if (
+          error.response?.data?.error === "User already exists with this email."
+        ) {
+          setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            registerError: msg.errorMessages.userAlreadyExists,
+          }));
+        }
+        // Handle other validation errors from the backend
+        else if (error.response?.data?.errors) {
           const errorData = error.response.data.errors;
 
           setFormErrors((prevErrors) => ({
@@ -118,12 +126,16 @@ const Register = () => {
             passwordError: errorData.passwordError || "",
             registerError: errorData.photoError || "",
           }));
-        } else if (error.response?.status === 500) {
+        }
+        // Handle internal server error
+        else if (error.response?.status === 500) {
           setFormErrors((prevErrors) => ({
             ...prevErrors,
             registerError: msg.inputValidationErrors.internalServerError,
           }));
-        } else {
+        }
+        // Handle unexpected errors
+        else {
           setFormErrors((prevErrors) => ({
             ...prevErrors,
             registerError: msg.inputValidationErrors.unexpectedError,

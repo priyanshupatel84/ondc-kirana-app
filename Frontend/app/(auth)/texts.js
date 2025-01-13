@@ -42,6 +42,11 @@ const messages = (t) => ({
     login: "Login",
     register: "Register",
   },
+
+  // Add the "user already exists" message
+  errorMessages: {
+    userAlreadyExists: t("User already exists with this email."),
+  },
 });
 
 export default messages;
