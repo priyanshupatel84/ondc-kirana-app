@@ -1,8 +1,7 @@
 // MuteContext.js
 import React, { createContext, useContext, useState } from "react";
 import { View, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo Vector Icons
-
+import { Ionicons } from "@expo/vector-icons";
 const MuteContext = createContext();
 
 export const MuteProvider = ({ children }) => {

@@ -117,7 +117,7 @@ const Index = () => {
         )}
       </View>
 
-      {!loading && allDocumentsVerified && (
+      {!loading && !error && allDocumentsVerified && (
         <Button
           size="lg"
           variant="destructive"
