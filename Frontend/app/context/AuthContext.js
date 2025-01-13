@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
           // );
           // const { docsVerified } = await response.json();
           // setIsDocsVerified(docsVerified);
-          setIsDocsVerified(true);
+          setIsDocsVerified(false);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);

@@ -46,6 +46,22 @@ const RootLayout = () => {
             <Stack.Screen name="(docVerification)" />
           )}
         </Stack>
+        {/* <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: true,
+              header: () => <Header />,
+            }}
+          />
+
+          <Stack.Screen name="(docVerification)" /> 
+        </Stack>*/}
         <PortalHost />
       </VoiceProvider>
     </MuteProvider>

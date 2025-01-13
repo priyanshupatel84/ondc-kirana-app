@@ -7,6 +7,8 @@ import axios from "axios";
 import messages from "./texts";
 import InputField from "./inputField";
 
+const DEVICE_IP_ADDRESS = process.env.EXPO_PUPLIC_DEVICE_IP_ADDRESS;
+
 const Register = () => {
   const { t } = useTranslation();
   const msg = messages(t); // Get translated messages
@@ -87,7 +89,7 @@ const Register = () => {
     if (validateForm()) {
       try {
         const response = await axios.post(
-          "http://192.168.29.237:3000/api/users/register",
+          `http://192.168.29.237:3000/api/users/register`,
           {
             name: formData.name,
             email: formData.email,

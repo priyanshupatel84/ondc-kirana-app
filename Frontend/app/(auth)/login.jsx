@@ -43,7 +43,7 @@ const Login = () => {
     setLoadingState(true);
     try {
       const response = await axios.post(
-        "http://192.168.29.237:3000/api/users/login",
+        `http://192.168.29.237:3000/api/users/login`,
         formData
       );
       if (response.status === 200) {

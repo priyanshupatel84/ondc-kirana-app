@@ -94,7 +94,7 @@ const KYCForm = () => {
 
     if (isFormValid) {
       console.log("KYC Details Submitted", formData);
-      router.push("/kyc/bankWrapper"); // Navigate to the next route
+      router.replace("../../(shopDetails)"); // Navigate to the next route
     }
   };
 
