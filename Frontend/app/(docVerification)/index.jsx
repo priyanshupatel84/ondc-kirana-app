@@ -20,6 +20,7 @@ import { convertToBase64 } from "../../utils/imageConversion";
 import { pickImage } from "../../utils/imagePicker";
 import DocumentItem from "./helperFunction/documentItem";
 import UseDocumentData from "./helperFunction/UseDocumentData";
+import { Progress } from "~/components/ui/progress";
 
 const Index = () => {
   const [loading, setLoading] = useState(false);
@@ -53,7 +54,8 @@ const Index = () => {
             setVerificationStatus((prev) => ({ ...prev, [title]: false }));
           } else {
             setVerificationStatus((prev) => ({ ...prev, [title]: true }));
-            updateDocumentData(title, response);
+            //updateDocumentData(title, response);
+            updateDocumentData(title, response, base64Image); // Pass base64 image
           }
         } else {
           setError("No prompt found for this document type");
@@ -80,6 +82,7 @@ const Index = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      <Progress value={1} className="web:w-[60%]" />
       <View className="flex flex-col justify-center ">
         <Text className="text-[23px] my-5 font-semibold text-center">
           Document Verification
@@ -122,7 +125,7 @@ const Index = () => {
           size="lg"
           variant="destructive"
           onPress={() => {
-            //console.log(images);
+            console.log(images);
             router.push("./verifiedData/bankDetails");
           }}
           className="mx-auto my-20 w-5/6 bg-blue-500 active:bg-blue-400"

@@ -1,28 +1,12 @@
 import React from "react";
 import { Stack } from "expo-router";
-import Header from "../myComponent/header";
 
 const DocVerificationLayout = () => {
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{
-          header: () => <Header />,
-        }}
-      />
-      <Stack.Screen
-        name="verifiedData/bankDetails"
-        options={{
-          header: () => <Header />,
-        }}
-      />
-      <Stack.Screen
-        name="verifiedData/kycDetails"
-        options={{
-          header: () => <Header />,
-        }}
-      />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="verifiedData/bankDetails" />
+      <Stack.Screen name="verifiedData/kycDetails" />
     </Stack>
   );
 };

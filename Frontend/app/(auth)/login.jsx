@@ -16,7 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const { user, isDocsVerified, login, loading } = useAuth();
+  const { user, login, loading } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -26,13 +26,10 @@ const Login = () => {
   useEffect(() => {
     if (loading) return;
     if (user) {
-      if (isDocsVerified) {
-        router.replace("../(tabs)/home");
-      } else {
-        router.replace("../(docVerification)");
-      }
+      //if (user.isDocsVerified) {
+      router.replace("../(docVerification)");
     }
-  }, [user, isDocsVerified, loading, router]);
+  }, [user, loading, router]);
 
   const handleInputChange = (field) => (value) => {
     setFormData({ ...formData, [field]: value });
@@ -47,14 +44,12 @@ const Login = () => {
         formData
       );
       if (response.status === 200) {
+        console.log(response.data);
         await AsyncStorage.setItem("token", response.data.token);
         await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
-        await login(response.data.user);
-        if (response.data.user.isDocsVerified) {
-          router.push("/(tabs)/profile");
-        } else {
-          router.push("/(docVerification)");
-        }
+        await login(response.data.user, response.data.token);
+
+        router.push("/(docVerification)");
       }
     } catch (error) {
       if (error.response?.data?.errors) {

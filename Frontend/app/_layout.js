@@ -11,7 +11,7 @@ import UseVoiceRouteAssistant from "./voiceAssistant/UseVoiceRouteAssistant";
 import { AuthContext } from "./context/AuthContext";
 
 const RootLayout = () => {
-  const { user, isDocsVerified, loading } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   //console.log("RootLayout -> user", user);
   if (loading) {
     return (
@@ -34,17 +34,29 @@ const RootLayout = () => {
         >
           {!user ? (
             <Stack.Screen name="index" />
-          ) : isDocsVerified ? (
+          ) : (
             <Stack.Screen
-              name="(tabs)"
+              name="(docVerification)"
               options={{
                 headerShown: true,
                 header: () => <Header />,
               }}
             />
-          ) : (
-            <Stack.Screen name="(docVerification)" />
           )}
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: true,
+              header: () => <Header />,
+            }}
+          />
+          <Stack.Screen
+            name="(shopDetails)"
+            options={{
+              headerShown: true,
+              header: () => <Header />,
+            }}
+          />
         </Stack>
         {/* <Stack
           screenOptions={{

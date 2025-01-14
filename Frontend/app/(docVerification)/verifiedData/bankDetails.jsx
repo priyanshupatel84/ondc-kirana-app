@@ -11,28 +11,28 @@ import React, { useState, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { validateBankDetails } from "./validation";
 import { useRouter } from "expo-router";
-import { getVerifiedData } from "../helperFunction/UseDocumentData"; // Import the custom hook
+import { getVerifiedData } from "../helperFunction/UseDocumentData";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Checkbox } from "~/components/ui/checkbox";
+import { Progress } from "~/components/ui/progress";
 
 const BankDetails = () => {
   const router = useRouter();
   const documentData = getVerifiedData();
 
-  // State variables for bank details and checkbox
   const [formData, setFormData] = useState({
     accountHolderName: "",
     accountNumber: "",
     ifscCode: "",
     bankName: "",
     branchName: "",
+    image: "",
   });
   const [errors, setErrors] = useState({});
   const [checked, setChecked] = useState(false); // Checkbox state
   const [checkboxError, setCheckboxError] = useState(""); // Checkbox error message
 
-  // Effect to populate state from documentData
   useEffect(() => {
     if (documentData) {
       documentData.forEach((doc) => {
@@ -40,7 +40,8 @@ const BankDetails = () => {
         const data = doc[docType];
 
         if (docType === "CancelledBankCheque") {
-          const [isValid, name, accountNum, ifsc, bank, branch] = data;
+          const [isValid, name, accountNum, ifsc, bank, branch, base64Image] =
+            data;
           if (isValid) {
             setFormData({
               accountHolderName: name,
@@ -48,6 +49,7 @@ const BankDetails = () => {
               ifscCode: ifsc,
               bankName: bank,
               branchName: branch,
+              image: base64Image,
             });
           }
         }
@@ -60,7 +62,7 @@ const BankDetails = () => {
   };
 
   const handleSubmit = () => {
-    // Validate Bank Details
+    console.log("formData", formData);
     const { isValid, errors: formErrors } = validateBankDetails(formData);
 
     // Combine errors
@@ -71,16 +73,15 @@ const BankDetails = () => {
       setCheckboxError("Please, Select the checkbox to proceed");
       return; // Prevent submission if checkbox is not checked
     } else {
-      setCheckboxError(""); // Clear error if checked
+      setCheckboxError("");
     }
     console.log("isValid", isValid);
     if (isValid) {
       console.log("Bank Details Submitted", formData);
-      router.push("./kycDetails"); // Navigate to the next route
+      router.push("./kycDetails");
     }
   };
 
-  // Define the input fields
   const inputFields = [
     {
       label: "Account Holder Name",
@@ -111,6 +112,7 @@ const BankDetails = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={50} // Adjust this value as needed
       >
+        <Progress value={21} className="web:w-[60%]" />
         <View className="items-center justify-center p-2 w-full py-5 ">
           <Text className="text-3xl my-3 font-semibold text-center">
             Bank Details

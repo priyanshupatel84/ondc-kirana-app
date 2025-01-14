@@ -7,16 +7,19 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "expo-router";
 import { validateKYCForm } from "./validation";
 import { Checkbox } from "~/components/ui/checkbox"; // Import the Checkbox component
+import { Progress } from "~/components/ui/progress";
+import { getVerifiedData } from "../helperFunction/UseDocumentData"; // Import the custom hook
 
 const KYCForm = () => {
   const router = useRouter();
+  const documentData = getVerifiedData();
   const [formData, setFormData] = useState({
     storeName: "",
     registeredAddress: "",
@@ -25,10 +28,46 @@ const KYCForm = () => {
     pan: "",
     gstin: "",
     fssaiNumber: "",
+    gstinCertificateImage: "",
+    panCardImage: "",
+    addressProofImage: "",
+    IdCardImage: "",
   });
   const [checked, setChecked] = useState(false); // Checkbox state
   const [checkboxError, setCheckboxError] = useState(""); // Checkbox error message
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (documentData) {
+      documentData.forEach((doc) => {
+        const docType = Object.keys(doc)[0];
+        const data = doc[docType];
+
+        if (docType === "GSTINCertificate") {
+          const [isValid, ShopName, address, gstinNum, base64Image] = data;
+          if (isValid) {
+            setFormData((prevData) => ({
+              ...prevData,
+              storeName: ShopName || prevData.storeName,
+              registeredAddress: address || prevData.registeredAddress,
+              gstin: gstinNum || prevData.gstin,
+              gstinCertificateImage:
+                base64Image || prevData.gstinCertificateImage,
+            }));
+          }
+        } else if (docType === "PANCard") {
+          const [isValid, panNumber, panHolderName, base64Image] = data;
+          if (isValid) {
+            setFormData((prevData) => ({
+              ...prevData,
+              pan: panNumber || prevData.pan,
+              panCardImage: base64Image || prevData.panCardImage,
+            }));
+          }
+        }
+      });
+    }
+  }, [documentData]);
 
   const inputFields = [
     {
@@ -54,7 +93,7 @@ const KYCForm = () => {
     },
     {
       label: "PAN",
-      key: "pan",
+      key: "pan", // This should match the key in formData
       placeholder: "Enter Provider PAN",
     },
     {
@@ -105,6 +144,7 @@ const KYCForm = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={40} // Adjust this value as needed
       >
+        <Progress value={41} className="web:w-[60%]" />
         <View className="flex-1 p-4">
           <Text className="text-3xl my-3 font-semibold text-center">
             KYC Details

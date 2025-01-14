@@ -4,11 +4,17 @@ import Header from "../myComponent/header";
 
 const ShopLayout = () => {
   return (
-    <Stack>
+    <Stack options={{ headerShown: false }}>
       <Stack.Screen
         name="index"
         options={{
-          header: () => <Header />,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="configureStore"
+        options={{
+          headerShown: false,
         }}
       />
     </Stack>
