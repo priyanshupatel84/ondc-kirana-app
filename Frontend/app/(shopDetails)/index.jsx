@@ -84,6 +84,7 @@ const StoreForm = () => {
 
         const response = await axios.post(
           `http://192.168.29.237:3000/api/shops/register`,
+          dataToSend,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -98,7 +99,7 @@ const StoreForm = () => {
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          console.error("Token expired or invalid. Logging out.");
+          console.log("Token expired or invalid. Logging out.");
           await logout();
         } else {
           console.error("Error registering shop:", error);

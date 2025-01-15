@@ -15,24 +15,19 @@ const UseDocumentData = () => {
       const newData = [...prevData];
       switch (title) {
         case "Cancelled Bank Cheque":
-          newData[0].CancelledBankCheque = [...response];
-          newData[0].CancelledBankCheque[6] = base64Image;
+          newData[0].CancelledBankCheque = [...response, base64Image];
           break;
         case "PAN Card":
-          newData[1].PANCard = [...response];
-          newData[1].PANCard[3] = base64Image;
+          newData[1].PANCard = [...response, base64Image];
           break;
         case "ID Card":
-          newData[2].IDCard = [...response];
-          newData[2].IDCard[1] = base64Image;
+          newData[2].IDCard = [...response, base64Image];
           break;
         case "GSTIN Certificate":
-          newData[3].GSTINCertificate = [...response];
-          newData[3].GSTINCertificate[4] = base64Image;
+          newData[3].GSTINCertificate = [...response, base64Image];
           break;
         case "Address Proof":
-          newData[4].AddressProof = [...response];
-          newData[4].AddressProof[1] = base64Image;
+          newData[4].AddressProof = [...response, base64Image];
           break;
         default:
           break;

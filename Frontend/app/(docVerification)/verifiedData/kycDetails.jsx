@@ -44,7 +44,7 @@ const KYCForm = () => {
         const data = doc[docType];
 
         if (docType === "GSTINCertificate") {
-          const [isValid, ShopName, address, gstinNum, base64Image] = data;
+          const [isValid, gstinNum, address, ShopName, base64Image] = data;
           if (isValid) {
             setFormData((prevData) => ({
               ...prevData,

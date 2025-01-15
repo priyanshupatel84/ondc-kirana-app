@@ -45,9 +45,8 @@ const Login = () => {
       );
       if (response.status === 200) {
         console.log(response.data);
-        await AsyncStorage.setItem("token", response.data.token);
-        await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
         await login(response.data.user, response.data.token);
+        console.log("logged in user ", response.data);
 
         router.push("/(docVerification)");
       }
