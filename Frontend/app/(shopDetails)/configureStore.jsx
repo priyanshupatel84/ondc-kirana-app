@@ -241,6 +241,8 @@ import { useTranslation } from "react-i18next";
 import { Progress } from "~/components/ui/progress";
 import { useAuth } from "../context/AuthContext";
 
+const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
+
 const ConfigureStore = () => {
   const { t } = useTranslation();
   const msg = messages(t);
@@ -323,15 +325,11 @@ const ConfigureStore = () => {
         defaultReturnableSetting: formData.defaultReturnableSetting,
       };
 
-      await axios.patch(
-        `http://192.168.29.237:3000/api/shops/${shopId}`,
-        submissionData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.patch(`${API_URL}/api/shops/${shopId}`, submissionData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setSaveSuccess(true);
       setTimeout(() => {

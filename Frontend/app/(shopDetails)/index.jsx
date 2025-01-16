@@ -183,6 +183,8 @@ import { useAuth } from "../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uploadToCloudinary from "../../utils/uploadedImages";
 
+const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
+
 const StoreForm = () => {
   const { token, setShopId, logout, setUser, user, kyc } = useAuth();
   const { t } = useTranslation();
@@ -255,7 +257,7 @@ const StoreForm = () => {
       }
 
       const response = await axios.post(
-        `http://192.168.29.237:3000/api/shops/register`,
+        `${API_URL}/api/shops/register`,
         submitData,
         {
           headers: {

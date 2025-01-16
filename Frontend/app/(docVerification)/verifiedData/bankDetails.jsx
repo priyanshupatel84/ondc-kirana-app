@@ -21,6 +21,8 @@ import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import { FontAwesome } from "@expo/vector-icons";
 
+const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
+
 const BankDetails = () => {
   const { token, logout } = useAuth();
   const router = useRouter();
@@ -92,7 +94,7 @@ const BankDetails = () => {
     if (isValid) {
       try {
         const response = await axios.post(
-          "http://192.168.29.237:3000/api/bank-account/add",
+          `${API_URL}/api/bank-account/add`,
           {
             ...formData,
           },

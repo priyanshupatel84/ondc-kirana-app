@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
+const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
+
 const Login = () => {
   const { user, login, loading } = useAuth();
   const router = useRouter();
@@ -42,10 +44,7 @@ const Login = () => {
   const onSubmit = async () => {
     setLoadingState(true);
     try {
-      const response = await axios.post(
-        `http://192.168.29.237:3000/api/users/login`,
-        formData
-      );
+      const response = await axios.post(`${API_URL}/api/users/login`, formData);
 
       if (response.status === 200) {
         await login(response.data.user, response.data.token);

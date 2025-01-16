@@ -21,6 +21,8 @@ import { useAuth } from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
+
 const KYCForm = () => {
   const { token, setUser, user, logout, setKyc } = useAuth();
   const router = useRouter();
@@ -175,7 +177,7 @@ const KYCForm = () => {
         };
 
         const response = await axios.post(
-          "http://192.168.29.237:3000/api/kyc/submit",
+          `${API_URL}/api/kyc/submit`,
           submitData,
           {
             headers: {

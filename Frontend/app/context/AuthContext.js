@@ -5,6 +5,8 @@ import axios from "axios";
 
 export const AuthContext = createContext();
 
+const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -65,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     try {
       if (token) {
         await axios.post(
-          "http://192.168.29.237:3000/api/users/logout",
+          `${API_URL}/api/users/logout`,
           {},
           {
             headers: {
