@@ -5,33 +5,41 @@ const UseDocumentData = () => {
   const [documentData, setDocumentData] = useState([
     { CancelledBankCheque: [] },
     { PANCard: [] },
-    { IDCard: [] },
+    { AADHAARCard: [] },
     { GSTINCertificate: [] },
     { AddressProof: [] },
   ]);
 
-  const updateDocumentData = (title, response, base64Image) => {
+  const updateDocumentData = (title, response, cloudinaryUrl = undefined) => {
     setDocumentData((prevData) => {
       const newData = [...prevData];
+
+      // Remove any undefined values from response
+      const cleanResponse = response.filter((item) => item !== undefined);
+
+      // Add cloudinaryUrl if it exists
+      const finalResponse = cloudinaryUrl
+        ? [...cleanResponse, cloudinaryUrl]
+        : cleanResponse;
+
       switch (title) {
         case "Cancelled Bank Cheque":
-          newData[0].CancelledBankCheque = [...response, base64Image];
+          newData[0].CancelledBankCheque = finalResponse;
           break;
         case "PAN Card":
-          newData[1].PANCard = [...response, base64Image];
+          newData[1].PANCard = finalResponse;
           break;
-        case "ID Card":
-          newData[2].IDCard = [...response, base64Image];
+        case "AADHAAR Card":
+          newData[2].AADHAARCard = finalResponse;
           break;
         case "GSTIN Certificate":
-          newData[3].GSTINCertificate = [...response, base64Image];
+          newData[3].GSTINCertificate = finalResponse;
           break;
         case "Address Proof":
-          newData[4].AddressProof = [...response, base64Image];
-          break;
-        default:
+          newData[4].AddressProof = finalResponse;
           break;
       }
+
       return newData;
     });
   };

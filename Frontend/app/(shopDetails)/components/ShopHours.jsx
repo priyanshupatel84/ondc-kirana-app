@@ -18,7 +18,7 @@ const ShopHours = ({
       <View className="w-[48%]">
         <Label className="mb-1">{msg.formLabels.openingTime}</Label>
         <Input
-          className="border border-gray-400 p-3 rounded-xl"
+          className=" p-2 rounded-xl"
           type="time"
           value={openingTime}
           onChangeText={onChangeOpening}
@@ -28,7 +28,7 @@ const ShopHours = ({
       <View className="w-[48%]">
         <Label className="mb-1">{msg.formLabels.closingTime}</Label>
         <Input
-          className="border border-gray-400 p-3 rounded-xl"
+          className="p-2 rounded-xl"
           type="time"
           value={closingTime}
           onChangeText={onChangeClosing}

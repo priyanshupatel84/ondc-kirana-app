@@ -5,37 +5,53 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Keyboard,
+  BackHandler,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Button } from "~/components/ui/button";
 import { useRouter } from "expo-router";
 import { validateKYCForm } from "./validation";
-import { Checkbox } from "~/components/ui/checkbox"; // Import the Checkbox component
+import { Checkbox } from "~/components/ui/checkbox";
 import { Progress } from "~/components/ui/progress";
-import { getVerifiedData } from "../helperFunction/UseDocumentData"; // Import the custom hook
+import { getVerifiedData } from "../helperFunction/UseDocumentData";
+import { useAuth } from "../../context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const KYCForm = () => {
+  const { token, setUser, user, logout, setKyc } = useAuth();
   const router = useRouter();
   const documentData = getVerifiedData();
   const [formData, setFormData] = useState({
     storeName: "",
-    registeredAddress: "",
-    email: "",
-    mobile: "",
-    pan: "",
+    address: "",
+    email: user?.email || "",
+    mobile: user?.mob_no || "",
+    panNumber: "",
     gstin: "",
     fssaiNumber: "",
-    gstinCertificateImage: "",
-    panCardImage: "",
-    addressProofImage: "",
-    IdCardImage: "",
+    panCard: "",
+    aadhaarCard: "",
+    gstinCertificate: "",
+    addressProof: "",
   });
-  const [checked, setChecked] = useState(false); // Checkbox state
-  const [checkboxError, setCheckboxError] = useState(""); // Checkbox error message
+  const [checked, setChecked] = useState(false);
+  const [checkboxError, setCheckboxError] = useState("");
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     if (documentData) {
@@ -44,24 +60,39 @@ const KYCForm = () => {
         const data = doc[docType];
 
         if (docType === "GSTINCertificate") {
-          const [isValid, gstinNum, address, ShopName, base64Image] = data;
+          const [isValid, gstinNum, address, ShopName, imageURL] = data;
           if (isValid) {
             setFormData((prevData) => ({
               ...prevData,
               storeName: ShopName || prevData.storeName,
-              registeredAddress: address || prevData.registeredAddress,
+              address: address || prevData.address,
               gstin: gstinNum || prevData.gstin,
-              gstinCertificateImage:
-                base64Image || prevData.gstinCertificateImage,
+              gstinCertificate: imageURL || prevData.gstinCertificate,
             }));
           }
         } else if (docType === "PANCard") {
-          const [isValid, panNumber, panHolderName, base64Image] = data;
+          const [isValid, panNumber, panHolderName, imageURL] = data;
           if (isValid) {
             setFormData((prevData) => ({
               ...prevData,
-              pan: panNumber || prevData.pan,
-              panCardImage: base64Image || prevData.panCardImage,
+              panNumber: panNumber || prevData.panNumber,
+              panCard: imageURL || prevData.panCard,
+            }));
+          }
+        } else if (docType === "AADHAARCard") {
+          const [isValid, aadhaarNumber, aadhaarHolderName, imageURL] = data;
+          if (isValid) {
+            setFormData((prevData) => ({
+              ...prevData,
+              aadhaarCard: imageURL || prevData.aadhaarCard,
+            }));
+          }
+        } else if (docType === "AddressProof") {
+          const [isValid, imageURL] = data;
+          if (isValid) {
+            setFormData((prevData) => ({
+              ...prevData,
+              addressProof: imageURL || prevData.addressProof,
             }));
           }
         }
@@ -77,8 +108,12 @@ const KYCForm = () => {
     },
     {
       label: "Registered Address",
-      key: "registeredAddress",
+      key: "address",
       placeholder: "Enter Provider Registered Address",
+      multiline: true,
+      numberOfLines: 4,
+      textAlignVertical: "top",
+      style: { height: 80, textAlignVertical: "top", paddingTop: 8 },
     },
     {
       label: "Email",
@@ -90,11 +125,13 @@ const KYCForm = () => {
       key: "mobile",
       placeholder: "Enter Provider Mobile Number",
       keyboardType: "numeric",
+      maxLength: 10,
     },
     {
       label: "PAN",
-      key: "pan", // This should match the key in formData
+      key: "panNumber",
       placeholder: "Enter Provider PAN",
+      maxLength: 10,
     },
     {
       label: "GSTIN",
@@ -105,35 +142,70 @@ const KYCForm = () => {
       label: "FSSAI Number",
       key: "fssaiNumber",
       placeholder: "Enter Provider FSSAI Number",
+      keyboardType: "numeric",
     },
   ];
-
   const handleChange = (key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-
-    // Clear the error for the specific field being edited
+    let updatedValue = value;
+    if (key === "mobile" || key === "fssaiNumber") {
+      updatedValue = value.replace(/[^0-9]/g, "");
+    }
+    setFormData((prev) => ({ ...prev, [key]: updatedValue }));
     setErrors((prev) => ({ ...prev, [key]: undefined }));
   };
 
-  const handleSubmit = () => {
-    // Validate KYC Form
-    const { isValid: isFormValid, errors: formErrors } =
-      validateKYCForm(formData);
-
-    // Combine errors
+  const handleSubmit = async () => {
+    console.log("Form data:", formData);
+    const { isValid, errors: formErrors } = validateKYCForm(formData);
     setErrors(formErrors);
 
-    // Check if checkbox is checked
     if (!checked) {
       setCheckboxError("Please select the checkbox to proceed.");
-      return; // Prevent submission if checkbox is not checked
+      return;
     } else {
-      setCheckboxError(""); // Clear error if checked
+      setCheckboxError("");
     }
 
-    if (isFormValid) {
-      console.log("KYC Details Submitted", formData);
-      router.replace("../../(shopDetails)"); // Navigate to the next route
+    if (isValid) {
+      try {
+        const submitData = {
+          ...formData,
+          mobile: formData.mobile ? Number(formData.mobile) : "",
+          fssaiNumber: formData.fssaiNumber ? Number(formData.fssaiNumber) : "",
+        };
+
+        const response = await axios.post(
+          "http://192.168.29.237:3000/api/kyc/submit",
+          submitData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.status === 201) {
+          const updatedUser = response.data.user;
+          await AsyncStorage.setItem("user", JSON.stringify(updatedUser));
+          setUser(updatedUser);
+          setKyc(response.data.kyc);
+          router.replace("../../(shopDetails)");
+        }
+      } catch (error) {
+        console.error("Error submitting KYC:", error);
+
+        if (error.response?.status === 401) {
+          await logout();
+          return;
+        }
+
+        setErrors({
+          submit:
+            error.response?.data?.error ||
+            "Failed to submit KYC details. Please try again.",
+        });
+      }
     }
   };
 
@@ -142,32 +214,69 @@ const KYCForm = () => {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={40} // Adjust this value as needed
+        keyboardVerticalOffset={40}
+        className="bg-white"
       >
         <Progress value={41} className="web:w-[60%]" />
-        <View className="flex-1 p-4">
-          <Text className="text-3xl my-3 font-semibold text-center">
+        <View className="px-4 py-4 border-b border-gray-200">
+          <Text className="text-2xl font-semibold text-gray-800">
             KYC Details
           </Text>
-          <ScrollView className="flex-1 px-3 " persistentScrollbar={true}>
-            {inputFields.map(({ label, key, placeholder }) => (
-              <View className="mb-3" key={key}>
-                <Label nativeID={key} className="mb-1 text-lg font-semibold">
-                  {label}
-                </Label>
-                <Input
-                  className="p-2 border border-gray-300 rounded"
-                  placeholder={placeholder}
-                  value={formData[key]}
-                  onChangeText={(value) => handleChange(key, value)}
-                  aria-labelledby={key}
-                  aria-errormessage={`${key}Error`}
-                />
-                {errors[key] ? (
-                  <Text className="text-red-500">{errors[key]}</Text>
-                ) : null}
-              </View>
-            ))}
+          <Text className="text-sm text-gray-500 mt-1">
+            Please provide your KYC information
+          </Text>
+        </View>
+        <View className="flex-1 px-2 pb-0">
+          <ScrollView
+            className="flex-1 px-4"
+            persistentScrollbar={true}
+            showsVerticalScrollIndicator={true}
+          >
+            {inputFields.map(
+              ({
+                label,
+                key,
+                placeholder,
+                keyboardType,
+                multiline,
+                numberOfLines,
+                style,
+                textAlignVertical,
+                maxLength,
+              }) => (
+                <View className="mb-2" key={key}>
+                  <Label nativeID={key} className="mb-1 text-lg font-semibold">
+                    {label}
+                  </Label>
+                  <Input
+                    className="p-2 rounded"
+                    placeholder={placeholder}
+                    value={formData[key]?.toString() || ""}
+                    onChangeText={(value) => handleChange(key, value)}
+                    keyboardType={keyboardType}
+                    multiline={multiline}
+                    numberOfLines={numberOfLines}
+                    style={{
+                      ...style,
+                      height: multiline ? 80 : 45,
+                      textAlignVertical: multiline ? "top" : "center",
+                    }}
+                    maxLength={maxLength}
+                    textAlignVertical={textAlignVertical}
+                    aria-labelledby={key}
+                    aria-errormessage={`${key}Error`}
+                  />
+                  {errors[key] && (
+                    <Text className="text-red-500 mt-1">{errors[key]}</Text>
+                  )}
+                </View>
+              )
+            )}
+
+            {errors.submit && (
+              <Text className="text-red-500 mb-2">{errors.submit}</Text>
+            )}
+
             <View className="m-1 flex items-center flex-row">
               <Checkbox
                 checked={checked}
@@ -178,19 +287,22 @@ const KYCForm = () => {
                 I verify and confirm that all details are correct.
               </Text>
             </View>
-            {checkboxError ? (
-              <Text className="text-red-500">{checkboxError}</Text>
-            ) : null}
-            <Button
-              size="lg"
-              variant="destructive"
+            {checkboxError && (
+              <Text className="text-red-500 mb-2">{checkboxError}</Text>
+            )}
+
+            <TouchableOpacity
               onPress={handleSubmit}
-              className={`mt-4 mb-2 mx-auto w-full ${
+              activeOpacity={0.7}
+              disabled={!checked}
+              className={`mt-4 mb-8 h-14 rounded-lg ${
                 !checked ? "bg-blue-500 opacity-50" : "bg-blue-500"
-              } active:bg-blue-400`}
+              } justify-center`}
             >
-              <Text className="text-white font-semibold text-xl">Submit</Text>
-            </Button>
+              <Text className="text-white font-semibold text-xl text-center">
+                Submit
+              </Text>
+            </TouchableOpacity>
           </ScrollView>
         </View>
       </KeyboardAvoidingView>

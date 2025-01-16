@@ -9,7 +9,7 @@ export const pickImage = async () => {
   });
 
   if (!result.canceled) {
-    return result.assets[0].uri; // Return the URI of the selected image
+    return result.assets[0].uri;
   }
-  return null; // Return null if the user cancels
+  return null;
 };

@@ -25,7 +25,7 @@ const UserSchema = new Schema({
   photo_url: {
     type: String,
   },
-  isDocVerified: {
+  isDocumentVerified: {
     type: Boolean,
     default: false,
   },

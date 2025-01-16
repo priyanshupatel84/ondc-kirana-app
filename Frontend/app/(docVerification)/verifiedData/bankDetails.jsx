@@ -5,10 +5,11 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Keyboard,
+  BackHandler,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Button } from "~/components/ui/button";
 import { validateBankDetails } from "./validation";
 import { useRouter } from "expo-router";
 import { getVerifiedData } from "../helperFunction/UseDocumentData";
@@ -16,8 +17,12 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Progress } from "~/components/ui/progress";
+import { useAuth } from "../../context/AuthContext";
+import axios from "axios";
+import { FontAwesome } from "@expo/vector-icons";
 
 const BankDetails = () => {
+  const { token, logout } = useAuth();
   const router = useRouter();
   const documentData = getVerifiedData();
 
@@ -27,11 +32,22 @@ const BankDetails = () => {
     ifscCode: "",
     bankName: "",
     branchName: "",
-    image: "",
+    cancelledChequeImage: "",
   });
   const [errors, setErrors] = useState({});
-  const [checked, setChecked] = useState(false); // Checkbox state
-  const [checkboxError, setCheckboxError] = useState(""); // Checkbox error message
+  const [checked, setChecked] = useState(false);
+  const [checkboxError, setCheckboxError] = useState("");
+
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     if (documentData) {
@@ -40,7 +56,7 @@ const BankDetails = () => {
         const data = doc[docType];
 
         if (docType === "CancelledBankCheque") {
-          const [isValid, name, accountNum, ifsc, bank, branch, base64Image] =
+          const [isValid, name, accountNum, ifsc, bank, branch, imageurl] =
             data;
           if (isValid) {
             setFormData({
@@ -49,7 +65,7 @@ const BankDetails = () => {
               ifscCode: ifsc,
               bankName: bank,
               branchName: branch,
-              image: base64Image,
+              cancelledChequeImage: imageurl,
             });
           }
         }
@@ -61,24 +77,46 @@ const BankDetails = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = () => {
-    console.log("formData", formData);
+  const handleSubmit = async () => {
     const { isValid, errors: formErrors } = validateBankDetails(formData);
 
-    // Combine errors
     setErrors(formErrors);
 
-    // Check if checkbox is checked
     if (!checked) {
       setCheckboxError("Please, Select the checkbox to proceed");
-      return; // Prevent submission if checkbox is not checked
+      return;
     } else {
       setCheckboxError("");
     }
-    console.log("isValid", isValid);
+
     if (isValid) {
-      console.log("Bank Details Submitted", formData);
-      router.push("./kycDetails");
+      try {
+        const response = await axios.post(
+          "http://192.168.29.237:3000/api/bank-account/add",
+          {
+            ...formData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 201) {
+          router.replace("./kycDetails");
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          await logout();
+        } else {
+          console.error("Error submitting bank details:", error);
+          setErrors({
+            submit:
+              error.response?.data.error ||
+              "Failed to submit bank details. Please try again.",
+          });
+        }
+      }
     }
   };
 
@@ -110,14 +148,26 @@ const BankDetails = () => {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={50} // Adjust this value as needed
+        keyboardVerticalOffset={90}
+        className="bg-white"
       >
         <Progress value={21} className="web:w-[60%]" />
-        <View className="items-center justify-center p-2 w-full py-5 ">
-          <Text className="text-3xl my-3 font-semibold text-center">
+        <View className="px-4 py-5 border-b border-gray-200">
+          <Text className="text-2xl font-semibold text-gray-800">
             Bank Details
           </Text>
-          <ScrollView className="p-3" persistentScrollbar={true}>
+          <Text className="text-sm text-gray-500 mt-1">
+            Please provide your bank account information
+          </Text>
+        </View>
+
+        <ScrollView
+          className="flex-1 px-6 bg-white"
+          persistentScrollbar={true}
+          showsVerticalScrollIndicator={true}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        >
+          <View className="py-3">
             {inputFields.map(
               ({
                 label,
@@ -128,55 +178,76 @@ const BankDetails = () => {
                 numberOfLines,
               }) => (
                 <View className="mb-3" key={key}>
-                  <Label nativeID={key} className="mb-1 text-lg font-semibold">
+                  <Label
+                    nativeID={key}
+                    className="text-base font-medium text-gray-700 mb-1"
+                  >
                     {label}
                   </Label>
                   <Input
-                    className="p-2"
+                    className={"bg-gray-50 rounded-lg"}
                     placeholder={placeholder}
                     value={formData[key]}
                     onChangeText={(value) => handleChange(key, value)}
-                    aria-labelledby={key}
-                    aria-errormessage={`${key}Error`}
                     keyboardType={keyboardType}
                     multiline={multiline}
                     numberOfLines={numberOfLines}
                     style={{
-                      height: multiline ? 90 : 40,
-                      textAlignVertical: multiline ? "top" : "center", // Align text to the top for multiline
+                      height: multiline ? 100 : 45,
+                      textAlignVertical: multiline ? "top" : "center",
+                      paddingHorizontal: 12,
                     }}
                   />
-                  {errors[key] ? (
-                    <Text className="text-red-500">{errors[key]}</Text>
-                  ) : null}
+                  {errors[key] && (
+                    <View className="flex-row items-center mt-1">
+                      <FontAwesome
+                        name="exclamation-circle"
+                        size={14}
+                        color="#EF4444"
+                      />
+                      <Text className="text-red-500 text-sm ml-1">
+                        {errors[key]}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               )
             )}
-            <View className="m-1 flex items-center flex-row">
-              <Checkbox
-                checked={checked}
-                onCheckedChange={setChecked}
-                className={`${checked ? "bg-blue-500" : "bg-white"} p-1`}
-              />
-              <Text className="ml-2">
-                I verify and confirm that all details are correct.
-              </Text>
+
+            <View className="my-3">
+              <View className="flex-row items-center">
+                <Checkbox
+                  checked={checked}
+                  onCheckedChange={setChecked}
+                  className={`${
+                    checked ? "bg-blue-500" : "bg-white"
+                  } border-2 border-blue-500`}
+                />
+                <Text className="ml-2 text-base text-gray-700 flex-1">
+                  I verify that all bank details are correct
+                </Text>
+              </View>
+              {checkboxError && (
+                <Text className="text-red-500 text-sm mt-2">
+                  {checkboxError}
+                </Text>
+              )}
             </View>
-            {checkboxError ? (
-              <Text className="text-red-500">{checkboxError}</Text>
-            ) : null}
-            <Button
-              size="lg"
-              variant="destructive"
+
+            <TouchableOpacity
               onPress={handleSubmit}
-              className={`mt-4 mb-4 mx-auto w-full ${
-                !checked ? "bg-blue-500 opacity-50" : "bg-blue-500"
-              } active:bg-blue-400`}
+              activeOpacity={0.7}
+              className={`h-14 rounded-lg ${
+                !checked ? "bg-blue-300" : "bg-blue-500"
+              } justify-center my-3`}
+              disabled={!checked}
             >
-              <Text className="text-white font-semibold text-xl">Submit</Text>
-            </Button>
-          </ScrollView>
-        </View>
+              <Text className="text-white font-semibold text-lg text-center">
+                Submit Details
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );

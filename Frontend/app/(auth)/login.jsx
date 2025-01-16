@@ -12,7 +12,6 @@ import { Button } from "~/components/ui/button";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
@@ -24,13 +23,17 @@ const Login = () => {
   const [loadingState, setLoadingState] = useState(false);
 
   useEffect(() => {
-    if (loading) return;
-    if (user) {
-      //if (user.isDocsVerified) {
-      router.replace("../(docVerification)");
+    if (!loading && user) {
+      console.log(user);
+      if (!user.isDocumentVerified) {
+        router.replace("/(docVerification)");
+      } else if (!user.isShopSetuped) {
+        router.replace("/(shopDetails)");
+      } else {
+        router.replace("/(tabs)/home");
+      }
     }
-  }, [user, loading, router]);
-
+  }, [user, loading]);
   const handleInputChange = (field) => (value) => {
     setFormData({ ...formData, [field]: value });
     setFormErrors({ ...formErrors, [`${field}Error`]: "", loginError: "" });
@@ -43,12 +46,9 @@ const Login = () => {
         `http://192.168.29.237:3000/api/users/login`,
         formData
       );
-      if (response.status === 200) {
-        console.log(response.data);
-        await login(response.data.user, response.data.token);
-        console.log("logged in user ", response.data);
 
-        router.push("/(docVerification)");
+      if (response.status === 200) {
+        await login(response.data.user, response.data.token);
       }
     } catch (error) {
       if (error.response?.data?.errors) {

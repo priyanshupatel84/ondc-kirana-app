@@ -9,15 +9,35 @@
 //   );
 // };
 
-import { View, Text, ScrollView, Image } from "react-native";
-import React, { useState, useEffect } from "react";
+import { View, Text, ScrollView, Image, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "expo-router";
-import i18n from "../utils/language/i18n"; // Adjust the path as necessary
+import i18n from "../utils/language/i18n";
+import { useAuth } from "./context/AuthContext";
+import { Redirect } from "expo-router";
 
 const LanguageSelection = () => {
   const router = useRouter();
+  const { user, loading } = useAuth();
   const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-white">
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text className="mt-4 text-lg text-gray-800">Loading...</Text>
+      </View>
+    );
+  }
+  if (user) {
+    if (!user.isDocumentVerified) {
+      return <Redirect href="/(docVerification)" />;
+    } else if (!user.isShopSetuped) {
+      return <Redirect href="/(shopDetails)" />;
+    }
+    return <Redirect href="/(tabs)/home" />;
+  }
 
   const languages = [
     { label: "English", value: "en" },
@@ -88,7 +108,7 @@ const LanguageSelection = () => {
         <Button
           size="lg"
           variant="destructive"
-          onPress={() => router.push("./(auth)/login")} // Adjust the route as necessary
+          onPress={() => router.push("./(auth)/login")}
           className="mt-4 w-[250px] bg-blue-500 active:bg-blue-400"
         >
           <Text className="text-white font-semibold text-xl">Next</Text>

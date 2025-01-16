@@ -63,6 +63,9 @@ exports.registerUser = async (req, res) => {
       password: hashedPassword,
       mob_no,
       photo_url,
+      isBankDetailsVerified: false,
+      isKycDetailsVerified: false,
+      isShopSetuped: false,
     });
 
     res.status(201).json({ message: "User registered successfully!", user });

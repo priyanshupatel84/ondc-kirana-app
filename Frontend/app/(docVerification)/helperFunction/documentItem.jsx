@@ -5,8 +5,8 @@ import { FontAwesome } from "@expo/vector-icons";
 
 // Constants for status messages and colors
 const STATUS_COLORS = {
-  verified: "bg-green-300",
-  notVerified: "bg-red-300",
+  verified: "bg-green-200",
+  notVerified: "bg-red-200",
   pending: "bg-yellow-100",
 };
 

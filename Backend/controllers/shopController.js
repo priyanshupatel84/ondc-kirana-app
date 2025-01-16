@@ -1,5 +1,6 @@
 const validator = require("validator");
 const Shop = require("../models/Shop");
+const User = require("../models/User");
 // Helper function to validate shop data
 const validateShopData = (data) => {
   const errors = [];
@@ -97,9 +98,20 @@ exports.registerShop = async (req, res) => {
       defaultReturnableSetting,
     });
 
-    return res
-      .status(201)
-      .json({ message: "Shop registered successfully!", shop });
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { isShopSetuped: true },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User  not found" });
+    }
+
+    return res.status(201).json({
+      message: "Shop registered successfully!",
+      shop,
+      user: updatedUser,
+    });
   } catch (error) {
     console.error("Error registering shop:", error.message);
     return res.status(500).json({ message: "Internal server error" });

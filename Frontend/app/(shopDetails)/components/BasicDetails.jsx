@@ -24,7 +24,7 @@ const BasicDetails = ({ formData, errors, handleChange, msg }) => (
             {msg.formLabels[key]}
           </Label>
           <Input
-            className="border-2 p-2 rounded-lg"
+            className="p-2 rounded"
             placeholder={msg.formPlaceholder[key]}
             value={formData[key]}
             onChangeText={(value) => handleChange(key, value)}
