@@ -15,7 +15,6 @@ const BankAccountSchema = new Schema({
   accountNumber: {
     type: String,
     required: true,
-    unique: true,
   },
   bankName: {
     type: String,
