@@ -250,7 +250,7 @@ const ConfigureStore = () => {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    isLiveShop: false,
+    isLiveShop: true,
     openingTime: null,
     closingTime: null,
     productCategories: [],
@@ -362,11 +362,13 @@ const ConfigureStore = () => {
 
       <ScrollView className="flex-1">
         <View className="p-4 space-y-6">
-          <ShopStatus
-            isLiveShop={formData.isLiveShop}
-            onChange={(value) => handleChange("isLiveShop", value)}
-            msg={msg}
-          />
+          <View className="mb-4">
+            <ShopStatus
+              isLiveShop={formData.isLiveShop}
+              onChange={(value) => handleChange("isLiveShop", value)}
+              msg={msg}
+            />
+          </View>
           <ShopHours
             openingTime={formData.openingTime}
             closingTime={formData.closingTime}

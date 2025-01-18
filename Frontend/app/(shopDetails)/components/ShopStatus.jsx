@@ -4,7 +4,7 @@ import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
 
 const ShopStatus = ({ isLiveShop, onChange, msg }) => (
-  <View className="mb-4 border border-gray-400 p-3 rounded-xl">
+  <View className=" border border-gray-400 p-3 rounded-xl">
     <View className="flex-row justify-between items-center">
       <Label className="text-lg font-semibold">
         {msg.formLabels.liveShopStatus}

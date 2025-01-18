@@ -13,3 +13,16 @@ export const pickImage = async () => {
   }
   return null;
 };
+
+export const pickImageWithEdit = async () => {
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ["images"],
+    allowsEditing: true,
+    quality: 1,
+  });
+
+  if (!result.canceled) {
+    return result.assets[0].uri;
+  }
+  return null;
+};

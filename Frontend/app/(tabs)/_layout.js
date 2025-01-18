@@ -1,46 +1,138 @@
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+
+const CustomTabButton = ({ label, icon, isFocused, onPress }) => {
+  return (
+    <TouchableOpacity
+      style={styles.tabButton}
+      activeOpacity={0.5}
+      onPress={onPress}
+    >
+      <View style={styles.iconContainer}>
+        {icon}
+        <Text
+          style={[
+            styles.tabLabel,
+            { color: isFocused ? colors.darkBlue : colors.gray },
+          ]}
+        >
+          {label}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const CustomTabBar = ({ state, descriptors, navigation }) => {
+  return (
+    <View style={styles.tabBar}>
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: "tabPress",
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        const getIcon = (routeName, color, size) => {
+          switch (routeName) {
+            case "home":
+              return <FontAwesome name="home" size={size + 4} color={color} />;
+            case "order":
+              return (
+                <MaterialIcons
+                  name="shopping-cart"
+                  size={size + 2}
+                  color={color}
+                />
+              );
+            case "help":
+              return (
+                <MaterialIcons name="help" size={size + 3} color={color} />
+              );
+            case "tutorial":
+              return (
+                <MaterialIcons name="book" size={size + 3} color={color} />
+              );
+            case "profile":
+              return <FontAwesome name="user" size={size + 3} color={color} />;
+            default:
+              return null;
+          }
+        };
+
+        return (
+          <CustomTabButton
+            key={route.key}
+            label={options.tabBarLabel || route.name}
+            icon={getIcon(
+              route.name,
+              isFocused ? colors.darkBlue : colors.gray,
+              24
+            )}
+            isFocused={isFocused}
+            onPress={onPress}
+          />
+        );
+      })}
+    </View>
+  );
+};
+
+const colors = {
+  lightBlue: "#EBF8FF",
+  darkBlue: "#1E40AF",
+  gray: "#94A3B8",
+};
+
+const styles = StyleSheet.create({
+  tabBar: {
+    flexDirection: "row",
+    backgroundColor: colors.lightBlue,
+    height: 50,
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  tabButton: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  iconContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 45,
+  },
+  tabLabel: {
+    fontSize: 12,
+    fontWeight: "500",
+    marginTop: -4, // Reduced gap between icon and text
+  },
+});
 
 const TabsLayout = () => {
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
-      <Tabs.Screen
-        name="home"
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="home" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="help"
-        options={{
-          tabBarLabel: "Help",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="help" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          tabBarLabel: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="user" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="tutorial"
-        options={{
-          tabBarLabel: "Tutorial",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="book" size={size} color={color} />
-          ),
-        }}
-      />
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+      }}
+      tabBar={(props) => <CustomTabBar {...props} />}
+    >
+      <Tabs.Screen name="home" options={{ tabBarLabel: "Home" }} />
+      <Tabs.Screen name="order" options={{ tabBarLabel: "Order" }} />
+      <Tabs.Screen name="help" options={{ tabBarLabel: "Help" }} />
+      <Tabs.Screen name="tutorial" options={{ tabBarLabel: "Tutorial" }} />
+      <Tabs.Screen name="profile" options={{ tabBarLabel: "Profile" }} />
     </Tabs>
   );
 };

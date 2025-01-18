@@ -3,9 +3,8 @@ const userHandler = require("./routes/userHandler");
 const shopHandler = require("./routes/shopHandler");
 const KYCHandler = require("./routes/KYCHandler");
 const bankHandler = require("./routes/bankHandler");
-const groceryHandler = require("./routes/groceryHandler");
-const inventoryHandler = require("./routes/inventoryHandler");
-const orderHandler = require("./routes/orderHandler");
+const productHandler = require("./routes/productHandler");
+
 const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
@@ -13,9 +12,8 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 
-// Middleware to parse JSON bodies
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Use CORS middleware
 app.use(cors());
@@ -29,9 +27,8 @@ app.use("/api/users", userHandler);
 app.use("/api/shops", shopHandler);
 app.use("/api/kyc", KYCHandler);
 app.use("/api/bank-account", bankHandler);
-app.use("/api/grocery",groceryHandler);
-app.use("/api/inventory",inventoryHandler);
-app.use("/api/order", orderHandler);
+app.use("/api/product", productHandler);
+//app.use("/api/order", orderHandler);
 
 // Connect to MongoDB and start server
 mongoose
