@@ -4,6 +4,8 @@ const shopHandler = require("./routes/shopHandler");
 const KYCHandler = require("./routes/KYCHandler");
 const bankHandler = require("./routes/bankHandler");
 const groceryHandler = require("./routes/groceryHandler");
+const inventoryHandler = require("./routes/inventoryHandler");
+const orderHandler = require("./routes/orderHandler");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
@@ -28,6 +30,8 @@ app.use("/api/shops", shopHandler);
 app.use("/api/kyc", KYCHandler);
 app.use("/api/bank-account", bankHandler);
 app.use("/api/grocery",groceryHandler);
+app.use("/api/inventory",inventoryHandler);
+app.use("/api/order", orderHandler);
 
 // Connect to MongoDB and start server
 mongoose
