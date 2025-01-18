@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const User=require('./User');
 
 const Schema=mongoose.Schema;
 
@@ -110,6 +111,11 @@ const GrocerySchema = new Schema({
     },
     SKU: {
         type: String,
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
     createdAt: {
         type: Date,

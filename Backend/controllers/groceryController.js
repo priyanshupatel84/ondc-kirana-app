@@ -1,10 +1,21 @@
 const Grocery = require('../models/Grocery');
+const Inventory = require('../models/Inventory');
 
 // Add a new product
 exports.addProduct = async (req, res) => {
     try {
-        const newProduct = new Grocery(req.body);
+
+        if (!req.user || !req.user.id) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+        const newProduct = new Grocery({ 
+            user: req.user.id, 
+            ...req.body 
+        });
         const savedProduct = await newProduct.save();
+
+        const newInventory = new Inventory({ product: savedProduct._id, user: req.user.id });
+        await newInventory.save();
         res.status(201).json(savedProduct);
     } catch (error) {
         res.status(400).json({ message: error.message });
