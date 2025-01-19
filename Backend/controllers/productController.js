@@ -37,14 +37,28 @@ exports.getInventoryProducts = async (req, res) => {
 // You can also update the addProduct controller to remove Inventory references
 exports.addProduct = async (req, res) => {
   try {
-    // Process the incoming data
     const {
       images,
       CancellableSetting,
       ReturnableSetting,
       CashOnDeliverySetting,
+      productCode,
       ...productData
     } = req.body;
+
+    // Check for existing product with same code for this user
+    const existingProduct = await Product.findOne({
+      user: req.user.id,
+      productCode: productCode,
+    });
+
+    if (existingProduct) {
+      return res.status(400).json({
+        message: "A product with this code already exists in your inventory",
+        field: "productCode",
+        type: "duplicate",
+      });
+    }
 
     // Convert image paths to appropriate format
     const productImages = Object.values(images).filter(Boolean);
@@ -52,6 +66,7 @@ exports.addProduct = async (req, res) => {
     // Create product object
     const newProduct = new Product({
       ...productData,
+      productCode,
       productImages,
       cancellable: CancellableSetting,
       returnable: ReturnableSetting,
@@ -65,13 +80,22 @@ exports.addProduct = async (req, res) => {
     res.status(201).json(savedProduct);
   } catch (error) {
     console.error("Error adding product:", error);
+
+    // Handle MongoDB duplicate key error specifically
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "A product with this code already exists in your inventory",
+        field: "productCode",
+        type: "duplicate",
+      });
+    }
+
     res.status(400).json({
       message: error.message,
       details: error.errors || "Failed to add product",
     });
   }
 };
-
 // Update product
 exports.updateProduct = async (req, res) => {
   try {
@@ -186,6 +210,37 @@ exports.getProductById = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error fetching product details",
+      error: error.message,
+    });
+  }
+};
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findOne({
+      _id: req.params.id,
+      user: req.user.id, // Ensure user can only delete their own products
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found or you don't have permission to delete it",
+      });
+    }
+
+    // Delete the product
+    await Product.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error deleting product",
       error: error.message,
     });
   }

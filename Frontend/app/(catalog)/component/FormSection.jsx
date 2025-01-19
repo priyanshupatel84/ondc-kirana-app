@@ -73,15 +73,15 @@ export const FormField = React.forwardRef(
       field === "customerCare" ||
       field === "instructions" ||
       field === "storageInstructions" ||
-      field === "allergenInfo";
-    field === "shortDescription";
+      field === "allergenInfo" ||
+      field === "shortDescription";
 
     const displayValue = typeof value === "number" ? value.toString() : value;
 
     return (
       <View ref={ref} key={field} className="mb-3">
         <Label
-          className={`text-base font-medium text-gray-700 mb-1`}
+          className="text-base font-medium text-gray-700 mb-1"
           style={{ lineHeight: 24 }}
         >
           {fieldLabels[field]}
@@ -147,9 +147,9 @@ const FormSection = React.forwardRef(
           {fields.map((field) => (
             <FormField
               key={field}
-              ref={(fieldRef) => {
-                if (fieldRefs && typeof fieldRefs.current === "object") {
-                  fieldRefs.current[field] = fieldRef;
+              ref={(el) => {
+                if (fieldRefs?.current) {
+                  fieldRefs.current[field] = el;
                 }
               }}
               field={field}

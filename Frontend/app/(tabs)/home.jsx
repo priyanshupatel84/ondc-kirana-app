@@ -1,12 +1,14 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import ShopStatus from "../(shopDetails)/components/ShopStatus";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
 const StatCard = ({ title, value, trend, subValue }) => (
-  <View className={`bg-white p-3 w-[49%] shadow-sm rounded-xl`}>
+  <View className={`bg-white p-3 pb-2 w-[49%] shadow-sm rounded-xl`}>
     <Text className="text-gray-800 text font-medium">{title}</Text>
     <Text className="text-gray-900 text-3xl font-bold mt-1">{value}</Text>
     {trend && (
@@ -28,9 +30,8 @@ const StatCard = ({ title, value, trend, subValue }) => (
   </View>
 );
 
-// Enhanced Alert Card for low stock items
-const AlertCard = ({ item }) => (
-  <View className="bg-red-50 py-2 px-3 rounded-xl mb-2 border border-red-100">
+const AlertCard = ({ item, onRestock }) => (
+  <View className="bg-red-50 py-1 px-3 rounded-xl mb-2 border border-red-100">
     <View className="flex-row items-center justify-between">
       <View className="flex-row items-center">
         <MaterialIcons
@@ -46,8 +47,11 @@ const AlertCard = ({ item }) => (
           </Text>
         </View>
       </View>
-      <TouchableOpacity className="bg-red-500 px-3 py-2 rounded-lg">
-        <Text className="text-white font-medium">Restock</Text>
+      <TouchableOpacity
+        className="bg-white px-3 py-2 rounded-lg border border-red-500"
+        onPress={() => onRestock(item.id)}
+      >
+        <Text className="text-red-500 font-medium">Restock</Text>
       </TouchableOpacity>
     </View>
   </View>
@@ -71,9 +75,36 @@ const QuickActionCard = ({
 );
 
 const Home = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const router = useRouter();
   const [isLiveShop, setIsLiveShop] = useState(false);
+  const [lowStockItems, setLowStockItems] = useState([]);
+  const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
+
+  const STOCK_THRESHOLD = 3;
+
+  const fetchInventory = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/product/inventory`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success) {
+        const lowStockProducts = response.data.products
+          .filter((product) => product.stock <= STOCK_THRESHOLD)
+          .map((product) => ({
+            id: product.id,
+            name: product.name,
+            quantity: product.stock,
+          }));
+        setLowStockItems(lowStockProducts);
+      }
+    } catch (error) {
+      console.error("Error fetching inventory:", error);
+    }
+  };
 
   // Hardcoded stats
   const stats = {
@@ -88,13 +119,6 @@ const Home = () => {
     deliveryPending: 3,
   };
 
-  // Hardcoded low stock items
-  const lowStockItems = [
-    { name: "Product A", quantity: 3 },
-    { name: "Product B", quantity: 2 },
-  ];
-
-  // Message object for ShopStatus
   const msg = {
     formLabels: {
       liveShopStatus: "Shop Status",
@@ -103,6 +127,21 @@ const Home = () => {
       live: "Your store is open for orders",
       offline: "Your store is currently closed",
     },
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (token) {
+        fetchInventory();
+      }
+    }, [token])
+  );
+
+  const handleRestock = (productId) => {
+    router.push({
+      pathname: "../(catalog)/productEdit",
+      params: { id: productId },
+    });
   };
 
   return (
@@ -140,7 +179,7 @@ const Home = () => {
 
       <View className="p-2">
         {/* Today's Performance */}
-        <View className="mb-3 bg-blue-500 p-2 rounded-2xl">
+        <View className="mb-1 bg-blue-500 p-2 rounded-2xl">
           <Text className="text-lg px-2 font-semibold mb-3 text-white">
             Today's Performance
           </Text>
@@ -160,21 +199,21 @@ const Home = () => {
           </View>
         </View>
 
-        {/* Priority Alerts */}
-        {/* {lowStockItems.length > 0 && (
-          <View className="mb-1">
+        {/*Priority Alerts */}
+        {lowStockItems.length > 0 && (
+          <View className="">
             <Text className="text-lg px-1 font-semibold mb-2">
               Priority Alerts
             </Text>
-            {lowStockItems.map((item, index) => (
-              <AlertCard key={index} item={item} />
+            {lowStockItems.map((item) => (
+              <AlertCard key={item.id} item={item} onRestock={handleRestock} />
             ))}
           </View>
-        )} */}
+        )}
 
         {/* Quick Actions */}
         <View className="mb-4">
-          <Text className="text-lg font-semibold mb-3 px-1">Quick Actions</Text>
+          <Text className="text-lg font-semibold mb-2 px-1">Quick Actions</Text>
           <View className="flex-row flex-wrap gap-2">
             <QuickActionCard
               title="Add Product"
@@ -216,7 +255,7 @@ const Home = () => {
             />
 
             <TouchableOpacity
-              className="w-full bg-yellow-50 p-6 rounded-xl flex-row justify-between items-center border border-gray-400"
+              className="w-full bg-yellow-50 p-4 rounded-xl flex-row justify-between items-center border border-gray-400"
               onPress={() => router.push("../myComponent/tutorial")}
             >
               <View className="flex-row items-center">

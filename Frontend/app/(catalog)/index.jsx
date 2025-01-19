@@ -13,7 +13,7 @@ const CategoryBox = ({
 }) => {
   return (
     <TouchableOpacity
-      activeOpacity={0.7}
+      activeOpacity={0.5}
       className={`${backgroundColor} border border-blue-500`}
       onPress={onPress}
     >

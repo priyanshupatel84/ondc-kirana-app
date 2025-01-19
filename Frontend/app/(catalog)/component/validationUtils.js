@@ -192,6 +192,8 @@ const ERROR_MESSAGES = {
   STOCK: "Stock must be a positive whole number",
   PROCESSING_ERROR: "Error processing image. Please try again.",
   IMAGE_UPLOAD_ERROR: "Error selecting image. Please try again.",
+  DUPLICATE_PRODUCT:
+    "A product with this code already exists in your inventory",
 };
 
 const validateLength = (value, min, max) => {

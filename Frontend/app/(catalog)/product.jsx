@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import ProductSettings from "./component/productSettings";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
+import { scrollToError } from "./component/scrollToError";
 
 const Product = () => {
   const router = useRouter();
@@ -172,8 +173,8 @@ const Product = () => {
 
   const handleSubmit = async () => {
     try {
-      console.log("images", productImages);
-      console.log("Product Details Submitted", formData);
+      console.log("Starting form submission...");
+      console.log("Form Data:", JSON.stringify(formData, null, 2));
 
       if (validateAllFields()) {
         setLoading(true);
@@ -184,8 +185,6 @@ const Product = () => {
           images: productImages,
           category: category,
         };
-
-        console.log("Product Details Submitted", submitData);
 
         const response = await axios.post(
           `${API_URL}/api/product/add-product`,
@@ -199,7 +198,6 @@ const Product = () => {
         );
 
         if (response.data) {
-          // Show success message
           Alert.alert("Success", "Product added successfully!", [
             {
               text: "OK",
@@ -211,18 +209,52 @@ const Product = () => {
     } catch (error) {
       console.error("Error submitting product:", error);
 
-      // Handle different types of errors
-      let errorMessage = "Failed to add product. Please try again.";
-
       if (error.response) {
-        // Server responded with error
-        errorMessage = error.response.data.message || errorMessage;
-      } else if (error.request) {
-        // Request made but no response
-        errorMessage = "Network error. Please check your connection.";
-      }
+        const { data, status } = error.response;
+        console.log(`Server responded with status ${status}`);
+        console.log("Error response data:", data);
 
-      Alert.alert("Error", errorMessage);
+        if (data.type === "duplicate") {
+          // Set error for the specific field
+          setErrors((prev) => ({
+            ...prev,
+            [data.field]: data.message,
+          }));
+
+          // Scroll to the error field
+          if (fieldRefs.current[data.field]) {
+            scrollToError(data.field, fieldRefs, scrollViewRef);
+          }
+
+          // Show alert for better visibility
+          Alert.alert("Duplicate Product", data.message, [{ text: "OK" }]);
+        } else if (data.errors) {
+          // Handle multiple validation errors
+          setErrors((prev) => ({
+            ...prev,
+            ...data.errors,
+          }));
+
+          // Scroll to first error field
+          const firstErrorField = Object.keys(data.errors)[0];
+          if (firstErrorField && fieldRefs.current[firstErrorField]) {
+            scrollToError(firstErrorField, fieldRefs, scrollViewRef);
+          }
+        } else {
+          // Handle generic error
+          Alert.alert(
+            "Error",
+            data.message || "Failed to add product. Please try again."
+          );
+        }
+      } else if (error.request) {
+        Alert.alert(
+          "Network Error",
+          "Please check your internet connection and try again."
+        );
+      } else {
+        Alert.alert("Error", "An unexpected error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
       setLoadingStatus("");
@@ -238,7 +270,11 @@ const Product = () => {
         />
       )}
 
-      <ScrollView ref={scrollViewRef} className="flex-1">
+      <ScrollView
+        ref={scrollViewRef}
+        className="flex-1"
+        keyboardShouldPersistTaps="handled"
+      >
         <View>
           <View className="px-4 border-b border-gray-200 py-2 bg-white rounded-lg">
             <Text className="text-xl font-semibold text-gray-800">
@@ -275,6 +311,7 @@ const Product = () => {
             onChange={handleChange}
             fieldRefs={fieldRefs}
           />
+
           <ProductSettings
             formData={formData}
             onChange={handleChange}

@@ -6,14 +6,15 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  ActivityIndicator,
   RefreshControl,
   Alert,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "expo-router";
+import { handleDelete } from "./handleDelete";
+import { SkeletonLoader } from "./ProductSkeleton";
 
 const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
 
@@ -39,25 +40,26 @@ const Index = () => {
       }
     } catch (error) {
       console.error("Error fetching products:", error);
-      Alert.alert("Error", "Failed to fetch products. Please try again later.");
+      Alert.alert(
+        "Error",
+        "Failed to fetch products. Please check your connection and try again.",
+        [{ text: "Retry", onPress: () => fetchProducts() }, { text: "OK" }]
+      );
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
   };
 
-  // Initial fetch
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // Handle refresh
   const onRefresh = () => {
     setRefreshing(true);
     fetchProducts();
   };
 
-  // Filter products based on search term
   const filteredProducts = products.filter((product) => {
     const searchLower = searchTerm.toLowerCase();
     return (
@@ -66,99 +68,163 @@ const Index = () => {
     );
   });
 
-  // Handle update product
   const handleUpdate = (productId) => {
     router.push(`/(catalog)/productEdit?id=${productId}`);
   };
-  // Render each product item
+
+  const handleDeleteProduct = (productId) => {
+    Alert.alert(
+      "Delete Product",
+      "Are you sure you want to delete this product?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          onPress: () => handleDelete(productId, token, fetchProducts),
+          style: "destructive",
+        },
+      ]
+    );
+  };
+
+  const StockBadge = ({ stock }) => (
+    <View
+      className={`rounded-full px-3 py-1 ${
+        stock > 0 ? "bg-green-100" : "bg-red-100"
+      }`}
+    >
+      <Text
+        className={`text-sm ${stock > 0 ? "text-green-800" : "text-red-800"}`}
+      >
+        {stock > 0 ? `${stock} in stock` : "Out of stock"}
+      </Text>
+    </View>
+  );
+
   const renderItem = ({ item }) => (
-    <View className="flex-row border-b border-gray-300 justify-between bg-blue-50 p-1 my-1 rounded-lg">
-      {/* Image */}
-      <View className="h-22 w-1/5 relative border rounded-lg">
-        <Image
-          source={
-            item.productImages
-              ? { uri: item.productImages }
-              : require("../../assets/images/seller-photo.png")
-          }
-          style={{ width: 70, height: 75 }}
-          className="rounded-lg"
-        />
+    <View className=" rounded-xl shadow-sm px-2 py-1 mx-2 my-1 bg-white border border-gray-300">
+      <View className="flex-row p-2 border-b border-gray-300">
+        {/* Image */}
+        <View className="mr-4">
+          <Image
+            source={
+              item.productImages
+                ? { uri: item.productImages }
+                : require("../../assets/images/seller-photo.png")
+            }
+            style={{ width: 100, height: 100 }}
+            className="rounded-lg"
+          />
+        </View>
+
+        {/* Product Details */}
+        <View className="flex-1 justify-between">
+          <View>
+            <Text className="text-lg font-bold" numberOfLines={2}>
+              {item.name}
+            </Text>
+            <Text className="text-gray-600 text-sm mb-1">{item.category}</Text>
+            <Text className="text-xl font-semibold text-blue-600 mb-1">
+              ₹{item.price.toLocaleString()}
+            </Text>
+            <Text className="text-gray-500 text-sm" numberOfLines={2}>
+              {item.description}
+            </Text>
+          </View>
+        </View>
       </View>
 
-      {/* Product name and category */}
-      <View className="w-3/5 py-1 px-[4px] rounded-lg">
-        <Text className="font-semibold" numberOfLines={2}>
-          {item.name}
-        </Text>
-        <Text className="text-gray-600">{item.category}</Text>
-        <Text className="text-gray-600">₹{item.price}</Text>
-        <Text className="text-gray-600" numberOfLines={1}>
-          {item.description}
-        </Text>
-      </View>
+      {/* Bottom Section */}
+      <View className="flex-row justify-between items-center p-1 pt-2 ">
+        <StockBadge stock={item.stock} />
 
-      {/* Edit button and stats */}
-      <View className="w-[19%] rounded flex justify-center gap-2">
-        <TouchableOpacity
-          className="bg-blue-500 px-1 py-1 rounded-lg"
-          onPress={() => handleUpdate(item.id)}
-        >
-          <Text className="text-white text-center">Update</Text>
-        </TouchableOpacity>
+        <View className="flex-row gap-2">
+          <TouchableOpacity
+            className="bg-blue-50 px-3 py-1 rounded-lg flex-row items-center"
+            onPress={() => handleUpdate(item.id)}
+          >
+            <MaterialIcons name="edit" size={16} color="#1D4ED8" />
+            <Text className="text-blue-700 ml-1 font-medium">Edit</Text>
+          </TouchableOpacity>
 
-        <Text className="text-gray-600 bg-white rounded text-center">
-          {item.stock > 0 ? `Stock: ${item.stock}` : "Stock ❌"}
-        </Text>
+          <TouchableOpacity
+            className="bg-red-50 px-3 py-1 rounded-lg flex-row items-center"
+            onPress={() => handleDeleteProduct(item.id)}
+          >
+            <MaterialIcons name="delete-outline" size={16} color="#DC2626" />
+            <Text className="text-red-700 ml-1 font-medium">Delete</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 
-  if (loading) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
-
   return (
-    <View className="flex-1 py-3 px-2 bg-white">
-      {/* Search input with icon */}
-      <View className="relative mx-1">
-        <TextInput
-          className="h-14 border border-gray-800 mb-4 p-4 pl-12 rounded-xl bg-white"
-          placeholder="Search products by name or category..."
-          value={searchTerm}
-          onChangeText={setSearchTerm}
-        />
-        <Ionicons
-          name="search-outline"
-          size={24}
-          color="gray"
-          style={{
-            position: "absolute",
-            top: "40%",
-            left: "03%",
-            transform: [{ translateY: -12 }],
-          }}
-        />
+    <View className="flex-1 bg-gray-50">
+      {/* Search Header */}
+      <View className="bg-white px-4 py-3 ">
+        <View className="relative border border-gray-800 rounded-xl bg-gray-50">
+          <TextInput
+            className="h-12 bg-gray-50 px-12 rounded-xl text-base"
+            placeholder="Search products..."
+            value={searchTerm}
+            onChangeText={setSearchTerm}
+          />
+          <Ionicons
+            name="search-outline"
+            size={20}
+            color="gray"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: 16,
+              transform: [{ translateY: -10 }],
+            }}
+          />
+          {searchTerm ? (
+            <TouchableOpacity
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: 16,
+                transform: [{ translateY: -10 }],
+              }}
+              onPress={() => setSearchTerm("")}
+            >
+              <Ionicons name="close-circle" size={20} color="gray" />
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
 
-      {/* Products list */}
-      <FlatList
-        data={filteredProducts}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        ListEmptyComponent={
-          <Text className="text-center text-gray-500 mt-4">
-            No products found
-          </Text>
-        }
-      />
+      {/* Products List */}
+      {loading ? (
+        <SkeletonLoader />
+      ) : (
+        <FlatList
+          data={filteredProducts}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={["#1D4ED8"]}
+            />
+          }
+          contentContainerStyle={{ paddingVertical: 8 }}
+          ListEmptyComponent={
+            <View className="flex-1 justify-center items-center p-8">
+              <MaterialIcons name="inventory" size={48} color="#9CA3AF" />
+              <Text className="text-gray-500 text-lg mt-4 text-center">
+                {searchTerm
+                  ? "No products found matching your search"
+                  : "No products in inventory"}
+              </Text>
+            </View>
+          }
+        />
+      )}
     </View>
   );
 };

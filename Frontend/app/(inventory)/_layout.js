@@ -3,35 +3,36 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const InventoryLayout = () => {
+// Common header component to reduce duplication
+const Header = ({ iconName }) => {
   const router = useRouter();
+  return (
+    <View
+      className="flex-row items-center bg-blue-500 px-4"
+      style={{ height: 54 }}
+    >
+      <TouchableOpacity
+        onPress={() => router.push("/(tabs)/home")}
+        className="mr-2"
+      >
+        <Icon name="keyboard-backspace" size={24} color="white" />
+      </TouchableOpacity>
+      <View className="flex-1 flex-row items-center justify-center">
+        <Icon name={iconName} size={24} color="white" className="mr-2" />
+        <Text className="font-bold text-2xl text-white">Inventory</Text>
+      </View>
+      <View className="w-10" />
+    </View>
+  );
+};
 
-  const handleBack = () => {
-    router.replace("/(tabs)");
-  };
-
+const InventoryLayout = () => {
   return (
     <Stack>
       <Stack.Screen
         name="index"
         options={{
-          header: () => (
-            <View className="flex-row items-center h-16 bg-blue-500 px-4">
-              <TouchableOpacity onPress={handleBack} className="mr-2">
-                <Icon name="arrow-back" size={24} color="white" />
-              </TouchableOpacity>
-              <View className="flex-1 flex-row items-center justify-center">
-                <Icon
-                  name="inventory"
-                  size={24}
-                  color="white"
-                  className="mr-2"
-                />
-                <Text className="font-bold text-2xl text-white">Inventory</Text>
-              </View>
-              <View className="w-10" />
-            </View>
-          ),
+          header: () => <Header iconName="inventory" />,
           headerStyle: {
             height: 60,
           },
