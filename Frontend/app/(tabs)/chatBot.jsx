@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const help = () => {
+const ChatBot = () => {
   return (
     <View>
-      <Text>help</Text>
+      <Text>Chat Bot</Text>
     </View>
   );
 };
 
-export default help;
+export default ChatBot;

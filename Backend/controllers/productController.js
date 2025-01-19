@@ -2,22 +2,23 @@ const Product = require("../models/Product");
 
 exports.getInventoryProducts = async (req, res) => {
   try {
-    // Find all products belonging to the user
     const products = await Product.find({ user: req.user.id })
       .select(
-        "productName category productImages shortDescription sellingPrice stock"
+        "_id productName category productImages shortDescription sellingPrice stock createdAt updatedAt"
       )
+      .sort({ updatedAt: -1, createdAt: -1 })
       .lean();
 
-    // Format the response data
     const formattedProducts = products.map((product) => ({
       id: product._id,
       name: product.productName,
       category: product.category,
       stock: product.stock || 0,
-      productImages: product.productImages[0], // Get first image
+      productImages: product.productImages[0],
       description: product.shortDescription,
       price: product.sellingPrice,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
     }));
 
     res.status(200).json({
@@ -34,7 +35,6 @@ exports.getInventoryProducts = async (req, res) => {
   }
 };
 
-// You can also update the addProduct controller to remove Inventory references
 exports.addProduct = async (req, res) => {
   try {
     const {
@@ -147,8 +147,6 @@ exports.updateProduct = async (req, res) => {
     });
   }
 };
-
-// In ProductController.js
 
 exports.getProductById = async (req, res) => {
   try {

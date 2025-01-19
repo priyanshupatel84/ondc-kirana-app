@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import ProductSettings from "./component/productSettings";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
+import SuccessPopup from "../myComponent/successPopup";
 
 const ProductEdit = () => {
   const router = useRouter();
@@ -25,6 +26,7 @@ const ProductEdit = () => {
   const [loading, setLoading] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState("");
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   // Form fields
   const requiredFields = [
@@ -72,9 +74,11 @@ const ProductEdit = () => {
 
   const [errors, setErrors] = useState({});
   const [productImages, setProductImages] = useState({
+    image1: null,
+    image2: null,
+    image3: null,
     backImage: null,
   });
-
   // Setup validation
   const { validateSingleField, validateAllFields } = useFormValidation(
     formData,
@@ -217,13 +221,12 @@ const ProductEdit = () => {
           }
         );
 
-        if (response.data.success) {
-          Alert.alert("Success", "Product updated successfully!", [
-            {
-              text: "OK",
-              onPress: () => router.replace("/(inventory)"),
-            },
-          ]);
+        if (response.data) {
+          setShowSuccessPopup(true); // Show success popup instead of Alert
+          // Navigate after popup closes
+          setTimeout(() => {
+            router.replace("(inventory)");
+          }, 500); // Wait for popup duration (2000ms) + animation time
         }
       }
     } catch (error) {
@@ -251,6 +254,12 @@ const ProductEdit = () => {
           loadingProgress={loadingProgress}
         />
       )}
+      <SuccessPopup
+        visible={showSuccessPopup}
+        message="Product updated successfully!"
+        title="Success!"
+        onClose={() => setShowSuccessPopup(false)}
+      />
 
       <ScrollView ref={scrollViewRef} className="flex-1">
         <View>

@@ -107,11 +107,7 @@ const Index = () => {
         {/* Image */}
         <View className="mr-4">
           <Image
-            source={
-              item.productImages
-                ? { uri: item.productImages }
-                : require("../../assets/images/seller-photo.png")
-            }
+            source={{ uri: item.productImages }}
             style={{ width: 100, height: 100 }}
             className="rounded-lg"
           />

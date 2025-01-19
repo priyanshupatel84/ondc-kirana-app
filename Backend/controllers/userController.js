@@ -164,23 +164,6 @@ exports.getUserDetails = async (req, res) => {
   }
 };
 
-// Delete a user
-exports.deleteUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findById(id);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    await User.findByIdAndDelete(id);
-    res.json({ message: "User deleted successfully!" });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
 // Logout a user
 exports.logoutUser = async (req, res) => {
   try {
@@ -199,5 +182,22 @@ exports.logoutUser = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal server error", error: error.message });
+  }
+};
+
+// Delete a user
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await User.findByIdAndDelete(id);
+    res.json({ message: "User deleted successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };

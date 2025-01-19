@@ -1,9 +1,6 @@
 const validator = require("validator");
 const Bank = require("../models/Bank");
-require("dotenv").config();
-const JWT_SECRET = process.env.JWT_SECRET;
 
-// Helper function to validate bank account data
 const validateBankData = (data) => {
   const errors = [];
 
@@ -38,52 +35,6 @@ const validateBankData = (data) => {
 
   return errors;
 };
-
-// Add bank account details
-// exports.addBankAccountDetails = async (req, res) => {
-//   try {
-//     const { user } = req;
-//     const userId = req.user.id;
-//     user.isBankDetailsVerified = true;
-//     const {
-//       accountHolderName,
-//       accountNumber,
-//       ifscCode,
-//       bankName,
-//       branchName,
-//       cancelledChequeImage,
-//     } = req.body;
-
-//     // Validate input data
-//     const validationErrors = validateBankData({
-//       accountHolderName,
-//       accountNumber,
-//       ifscCode,
-//       bankName,
-//       branchName,
-//     });
-//     if (validationErrors.length > 0) {
-//       return res.status(400).json({ errors: validationErrors });
-//     }
-
-//     const bank = await Bank.create({
-//       userId,
-//       accountHolderName,
-//       accountNumber,
-//       bankName,
-//       ifscCode,
-//       branchName,
-//       cancelledChequeImage,
-//     });
-//     res.status(201).json({
-//       message: "Bank details added successfully!",
-//       bank,
-//       user,
-//     });
-//   } catch (error) {
-//     res.status(400).json({ error: error.message });
-//   }
-// };
 
 exports.addBankAccountDetails = async (req, res) => {
   try {
@@ -134,60 +85,73 @@ exports.addBankAccountDetails = async (req, res) => {
 // Update bank account details
 exports.updateBankAccountDetails = async (req, res) => {
   try {
-    const { id } = req.params;
+    const userId = req.user.id;
     const {
       accountHolderName,
       accountNumber,
-      bankName,
       ifscCode,
+      bankName,
       branchName,
-      cancelled_cheque_url,
+      cancelledChequeImage,
     } = req.body;
 
     // Validate input data
     const validationErrors = validateBankData({
       accountHolderName,
       accountNumber,
-      bankName,
       ifscCode,
+      bankName,
       branchName,
-      cancelled_cheque_url,
     });
+
     if (validationErrors.length > 0) {
       return res.status(400).json({ errors: validationErrors });
     }
 
-    const bank = await Bank.findById(id);
+    // Update the bank record
+    const bank = await Bank.findOneAndUpdate(
+      { userId },
+      {
+        accountHolderName,
+        accountNumber,
+        bankName,
+        ifscCode,
+        branchName,
+        cancelledChequeImage,
+      },
+      { new: true }
+    );
+
     if (!bank) {
-      return res.status(404).json({ message: "Bank Account not found" });
+      return res.status(404).json({ error: "Bank details not found" });
     }
 
-    if (accountHolderName) bank.accountHolderName = accountHolderName;
-    if (accountNumber) bank.accountNumber = accountNumber;
-    if (bankName) bank.bankName = bankName;
-    if (ifscCode) bank.ifscCode = ifscCode;
-    if (branchName) bank.branchName = branchName;
-    if (cancelled_cheque_url) bank.cancelled_cheque_url = cancelled_cheque_url;
-
-    await bank.save();
-    res.json({ message: "Bank details updated successfully!", bank });
+    res.status(200).json({
+      message: "Bank details updated successfully!",
+      bank,
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error updating bank account details:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
 // Get bank account details by ID
 exports.getBankAccountDetails = async (req, res) => {
   try {
-    const { id } = req.params;
+    const userId = req.user.id;
+    const bankDetails = await Bank.findOne({ userId });
 
-    const bank = await Bank.findById(id);
-    if (!bank) {
-      return res.status(404).json({ message: "Bank Account not found" });
+    if (!bankDetails) {
+      return res.status(404).json({ error: "Bank details not found" });
     }
 
-    res.json(bank);
+    res.status(200).json({
+      success: true,
+      bankDetails,
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error fetching bank account details:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

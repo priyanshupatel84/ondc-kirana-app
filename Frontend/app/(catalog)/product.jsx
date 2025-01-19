@@ -20,6 +20,8 @@ import ProductSettings from "./component/productSettings";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { scrollToError } from "./component/scrollToError";
+import uploadToCloudinary from "../../utils/uploadedImages";
+import SuccessPopup from "../myComponent/successPopup";
 
 const Product = () => {
   const router = useRouter();
@@ -34,6 +36,7 @@ const Product = () => {
   const [loading, setLoading] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState("");
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   // Form fields
   const requiredFields = [
@@ -80,14 +83,13 @@ const Product = () => {
   });
 
   const [errors, setErrors] = useState({});
+
   const [productImages, setProductImages] = useState({
+    image1: null,
+    image2: null,
+    image3: null,
     backImage: null,
   });
-
-  // const [base64Images, setBase64Images] = useState({
-  //   backImage: null,
-  // });
-
   // Setup validation
   const { validateSingleField, validateAllFields } = useFormValidation(
     formData,
@@ -178,11 +180,34 @@ const Product = () => {
 
       if (validateAllFields()) {
         setLoading(true);
+        setLoadingStatus("Uploading images...");
+
+        // Upload all images to Cloudinary
+        const uploadedImages = {};
+        const totalImages = Object.keys(productImages).length;
+        let currentImageIndex = 0;
+
+        for (const [key, uri] of Object.entries(productImages)) {
+          if (uri) {
+            try {
+              setLoadingProgress((currentImageIndex / totalImages) * 100);
+              setLoadingStatus(`Uploading ${key}...`);
+              const cloudinaryUrl = await uploadToCloudinary(uri);
+              uploadedImages[key] = cloudinaryUrl;
+              currentImageIndex++;
+            } catch (error) {
+              console.error(`Error uploading ${key}:`, error);
+              throw new Error(`Failed to upload ${key}: ${error.message}`);
+            }
+          }
+        }
+
         setLoadingStatus("Adding product...");
+        setLoadingProgress(90);
 
         const submitData = {
           ...formData,
-          images: productImages,
+          images: uploadedImages, // Use the Cloudinary URLs instead of local URIs
           category: category,
         };
 
@@ -197,13 +222,14 @@ const Product = () => {
           }
         );
 
+        setLoadingProgress(100);
+
         if (response.data) {
-          Alert.alert("Success", "Product added successfully!", [
-            {
-              text: "OK",
-              onPress: () => router.push("../(inventory)"),
-            },
-          ]);
+          setShowSuccessPopup(true); // Show success popup instead of Alert
+          // Navigate after popup closes
+          setTimeout(() => {
+            router.push("../(inventory)");
+          }, 500); // Wait for popup duration (2000ms) + animation time
         }
       }
     } catch (error) {
@@ -215,38 +241,37 @@ const Product = () => {
         console.log("Error response data:", data);
 
         if (data.type === "duplicate") {
-          // Set error for the specific field
           setErrors((prev) => ({
             ...prev,
             [data.field]: data.message,
           }));
 
-          // Scroll to the error field
           if (fieldRefs.current[data.field]) {
             scrollToError(data.field, fieldRefs, scrollViewRef);
           }
 
-          // Show alert for better visibility
           Alert.alert("Duplicate Product", data.message, [{ text: "OK" }]);
         } else if (data.errors) {
-          // Handle multiple validation errors
           setErrors((prev) => ({
             ...prev,
             ...data.errors,
           }));
 
-          // Scroll to first error field
           const firstErrorField = Object.keys(data.errors)[0];
           if (firstErrorField && fieldRefs.current[firstErrorField]) {
             scrollToError(firstErrorField, fieldRefs, scrollViewRef);
           }
         } else {
-          // Handle generic error
           Alert.alert(
             "Error",
             data.message || "Failed to add product. Please try again."
           );
         }
+      } else if (error.message && error.message.includes("Failed to upload")) {
+        Alert.alert(
+          "Image Upload Error",
+          "Failed to upload one or more images. Please try again."
+        );
       } else if (error.request) {
         Alert.alert(
           "Network Error",
@@ -258,9 +283,9 @@ const Product = () => {
     } finally {
       setLoading(false);
       setLoadingStatus("");
+      setLoadingProgress(0);
     }
   };
-
   return (
     <View className="flex-1 bg-gray-200">
       {loading && (
@@ -269,6 +294,12 @@ const Product = () => {
           loadingProgress={loadingProgress}
         />
       )}
+      <SuccessPopup
+        visible={showSuccessPopup}
+        message="Product added successfully!"
+        title="Success!"
+        onClose={() => setShowSuccessPopup(false)}
+      />
 
       <ScrollView
         ref={scrollViewRef}

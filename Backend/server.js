@@ -28,12 +28,11 @@ app.use("/api/shops", shopHandler);
 app.use("/api/kyc", KYCHandler);
 app.use("/api/bank-account", bankHandler);
 app.use("/api/product", productHandler);
-//app.use("/api/order", orderHandler);
 
 // Connect to MongoDB and start server
 mongoose
   .connect(process.env.MONGODB_URI, {
-    dbName: "ONDC-Seller-App", // Specify the database name here
+    dbName: "ONDC-Seller-App",
   })
   .then(() => {
     console.log("Connected to MongoDB");

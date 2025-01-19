@@ -1,57 +1,5 @@
-const validator = require("validator");
 const Shop = require("../models/Shop");
 const User = require("../models/User");
-// Helper function to validate shop data
-const validateShopData = (data) => {
-  const errors = [];
-
-  if (!data.name || !validator.isLength(data.name, { min: 3, max: 50 })) {
-    errors.push("Shop name must be between 3 and 50 characters.");
-  }
-  if (
-    !data.address ||
-    !validator.isLength(data.address, { min: 10, max: 200 })
-  ) {
-    errors.push("Address must be between 10 and 200 characters.");
-  }
-  if (data.support_email && !validator.isEmail(data.support_email)) {
-    errors.push("Invalid support email address.");
-  }
-  if (data.phone && !validator.isMobilePhone(data.phone, "any")) {
-    errors.push("Invalid phone number.");
-  }
-  if (data.shop_logo_url && !validator.isURL(data.shop_logo_url)) {
-    errors.push("Invalid shop logo URL.");
-  }
-  if (
-    data.supported_products &&
-    (!Array.isArray(data.supported_products) ||
-      data.supported_products.some((p) => typeof p !== "string"))
-  ) {
-    errors.push("Supported products must be an array of strings.");
-  }
-
-  return errors;
-};
-
-// Register a new shop
-// exports.registerShop = async (req, res) => {
-//     try {
-//         const userId = req.user.id;
-//         const { name, address, support_email, phone, supported_products, shop_logo_url } = req.body;
-
-//         const validationErrors = validateShopData({ name, address, support_email, phone, supported_products, shop_logo_url });
-//         if (validationErrors.length > 0) {
-//             return res.status(400).json({ errors: validationErrors });
-//         }
-
-//         const shop = await Shop.create({ userId, name, address, support_email, phone, supported_products, shop_logo_url });
-//         res.status(201).json({ message: 'Shop registered successfully!', shop });
-//     } catch (error) {
-//         res.status(400).json({ error: error.message });
-//     }
-// };
-// Register a new shop
 
 exports.registerShop = async (req, res) => {
   const userId = req.user?.id;
@@ -189,35 +137,46 @@ exports.updateShop = async (req, res) => {
   }
 };
 
-// Delete a shop
-exports.deleteShop = async (req, res) => {
-  try {
-    const { id } = req.params;
+// Get shop details
+exports.getShopDetails = async (req, res) => {
+  const userId = req.user?.id;
 
-    const shop = await Shop.findById(id);
+  try {
+    const shop = await Shop.findOne({ userId });
+
     if (!shop) {
-      return res.status(404).json({ message: "Shop not found" });
+      return res.status(404).json({
+        success: false,
+        error: "Shop not found",
+      });
     }
 
-    await Shop.findByIdAndDelete(id);
-    res.json({ message: "Shop deleted successfully!" });
+    return res.status(200).json({
+      success: true,
+      shop,
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error fetching shop details:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
   }
 };
 
-// Get shop details by ID
-exports.getShopById = async (req, res) => {
-  try {
-    const { id } = req.params;
+// // Delete a shop
+// exports.deleteShop = async (req, res) => {
+//   try {
+//     const { id } = req.params;
 
-    const shop = await Shop.findById(id);
-    if (!shop) {
-      return res.status(404).json({ message: "Shop not found" });
-    }
+//     const shop = await Shop.findById(id);
+//     if (!shop) {
+//       return res.status(404).json({ message: "Shop not found" });
+//     }
 
-    res.json(shop);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+//     await Shop.findByIdAndDelete(id);
+//     res.json({ message: "Shop deleted successfully!" });
+//   } catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// };

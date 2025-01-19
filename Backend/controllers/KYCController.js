@@ -155,15 +155,9 @@ exports.updateKYCDetails = async (req, res) => {
 // Get KYC Details by ID
 exports.getKYCDetails = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const kyc = await KYC.findById(id);
-    if (!kyc) {
-      return res.status(404).json({ message: "KYC details not found" });
-    }
-
-    res.json(kyc);
+    const kyc = await KYC.findOne({ userId: req.user.id });
+    res.json({ success: true, kyc });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: "Failed to fetch KYC details" });
   }
 };

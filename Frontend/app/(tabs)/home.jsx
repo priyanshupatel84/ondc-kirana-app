@@ -7,8 +7,12 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
-const StatCard = ({ title, value, trend, subValue }) => (
-  <View className={`bg-white p-3 pb-2 w-[49%] shadow-sm rounded-xl`}>
+const StatCard = ({ title, value, trend, subValue, onPress }) => (
+  <TouchableOpacity
+    onPress={onPress}
+    activeOpacity={0.8}
+    className={`bg-white p-5 w-[49%] shadow-sm rounded-xl `}
+  >
     <Text className="text-gray-800 text font-medium">{title}</Text>
     <Text className="text-gray-900 text-3xl font-bold mt-1">{value}</Text>
     {trend && (
@@ -27,7 +31,7 @@ const StatCard = ({ title, value, trend, subValue }) => (
       </View>
     )}
     {subValue && <Text className="text-gray-600 text">{subValue}</Text>}
-  </View>
+  </TouchableOpacity>
 );
 
 const AlertCard = ({ item, onRestock }) => (
@@ -108,13 +112,13 @@ const Home = () => {
 
   // Hardcoded stats
   const stats = {
-    todayOrders: 25,
-    totalSales: 12500,
-    pendingOrders: 5,
-    totalProducts: 150,
-    orderTrend: 5.2,
-    saleTrend: -2.1,
-    avgOrderValue: 500,
+    todayOrders: 0,
+    totalSales: 0.0,
+    pendingOrders: 3,
+    totalProducts: 0,
+    orderTrend: 0,
+    saleTrend: 0,
+    avgOrderValue: 0,
     mostSoldItem: "Product X",
     deliveryPending: 3,
   };
@@ -179,7 +183,7 @@ const Home = () => {
 
       <View className="p-2">
         {/* Today's Performance */}
-        <View className="mb-1 bg-blue-500 p-2 rounded-2xl">
+        <View className=" bg-blue-500 p-2 rounded-2xl mb-3">
           <Text className="text-lg px-2 font-semibold mb-3 text-white">
             Today's Performance
           </Text>
@@ -189,6 +193,7 @@ const Home = () => {
               value={stats.todayOrders}
               trend={stats.orderTrend}
               subValue={`${stats.pendingOrders} pending`}
+              onPress={() => router.push("(tabs)/order")}
             />
             <StatCard
               title="Sales"
@@ -255,7 +260,7 @@ const Home = () => {
             />
 
             <TouchableOpacity
-              className="w-full bg-yellow-50 p-4 rounded-xl flex-row justify-between items-center border border-gray-400"
+              className="w-full bg-yellow-50 p-5 py-8 rounded-xl flex-row justify-between items-center border border-gray-400"
               onPress={() => router.push("../myComponent/tutorial")}
             >
               <View className="flex-row items-center">

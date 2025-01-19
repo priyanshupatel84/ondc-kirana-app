@@ -1,166 +1,200 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, FlatList } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Import search icon
+import React from "react";
+import { View, ScrollView } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { Text } from "~/components/ui/text";
 
-// Sample data for products with return info
-const productsData = [
+// Sample data for incoming returns to the seller
+const incomingReturnsData = [
   {
-    id: "1",
-    name: "Apple",
+    id: "RET001",
+    userName: "Priya Sharma",
+    productName: "Basmati Rice (5kg)",
+    quantity: 1,
     category: "Grocery",
-    stock: 10,
-    orders: 20,
-    status: "Delivered",
-    refundStatus: "None",
-    user: { name: "John Doe", email: "johndoe@example.com", orderId: "ORD123" },
-    returnReason: "Damaged Item",
-    expectedArrivalDate: "2025-01-15",
+    expectedArrivalDate: "2024-02-05",
+    expectedArrivalTime: "10:00 AM - 12:00 PM",
+    returnReason: "Quality Concern",
+    courierPartner: "BlueDart",
+    trackingNumber: "BD987654321",
+    status: "Pending",
   },
   {
-    id: "2",
-    name: "Shampoo",
-    category: "Beauty",
-    stock: 5,
-    orders: 12,
-    status: "Delivered",
-    refundStatus: "None",
-    user: {
-      name: "Jane Smith",
-      email: "janesmith@example.com",
-      orderId: "ORD124",
-    },
-    returnReason: "Wrong Product",
-    expectedArrivalDate: "2025-01-20",
+    id: "RET002",
+    userName: "Rajesh Patel",
+    productName: "Turmeric Powder (200g)",
+    quantity: 2,
+    category: "Spices",
+    expectedArrivalDate: "2024-01-25",
+    expectedArrivalTime: "02:00 PM - 04:00 PM",
+    returnReason: "Packaging Damage",
+    courierPartner: "Delhivery",
+    trackingNumber: "DL123456789",
+    status: "Delayed",
   },
   {
-    id: "3",
-    name: "Football",
-    category: "Sports",
-    stock: 8,
-    orders: 150,
-    status: "Delivered",
-    refundStatus: "None",
-    user: {
-      name: "Mike Johnson",
-      email: "mikejohnson@example.com",
-      orderId: "ORD125",
-    },
-    returnReason: "Not as described",
-    expectedArrivalDate: "2025-01-18",
-  },
-  {
-    id: "4",
-    name: "Banana",
-    category: "Grocery",
-    stock: 0,
-    orders: 5,
-    status: "Delivered",
-    refundStatus: "None",
-    user: {
-      name: "Alice Brown",
-      email: "alicebrown@example.com",
-      orderId: "ORD126",
-    },
-    returnReason: "Quality Issue",
-    expectedArrivalDate: "2025-01-22",
-  },
-  {
-    id: "5",
-    name: "Lotion",
-    category: "Beauty",
-    stock: 2,
-    orders: 8,
-    status: "Delivered",
-    refundStatus: "None",
-    user: {
-      name: "Chris Green",
-      email: "chrisgreen@example.com",
-      orderId: "ORD127",
-    },
-    returnReason: "Allergic Reaction",
-    expectedArrivalDate: "2025-01-25",
+    id: "RET003",
+    userName: "Anjali Gupta",
+    productName: "Ghee (500ml)",
+    quantity: 1,
+    category: "Dairy",
+    expectedArrivalDate: "2024-02-07",
+    expectedArrivalTime: "11:00 AM - 01:00 PM",
+    returnReason: "Leaking Packaging",
+    courierPartner: "Shadowfax",
+    trackingNumber: "SF456789123",
+    status: "In Transit",
   },
 ];
 
-const RefundPage = () => {
-  const [searchTerm, setSearchTerm] = useState(""); // For search functionality
-  const [refundRequests, setRefundRequests] = useState(productsData); // List of refund requests
-
-  // Function to filter products based on search
-  const filteredProducts = refundRequests.filter((product) => {
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      product.name.toLowerCase().includes(searchLower) ||
-      product.category.toLowerCase().includes(searchLower)
-    );
-  });
-
-  // Render refund request item
-  const renderRefundItem = ({ item }) => (
-    <View
-      style={{
-        flexDirection: "row",
-        borderBottomWidth: 1,
-        padding: 10,
-        marginBottom: 10,
-        backgroundColor: "#f0f8ff",
-        borderRadius: 8,
-      }}
-    >
-      <View style={{ flex: 1 }}>
-        <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
-        <Text>{item.category}</Text>
-        <Text>Status: {item.status}</Text>
-
-        {/* User information */}
-        <Text style={{ fontSize: 12, color: "gray" }}>
-          <Text style={{ fontWeight: "bold" }}>User: </Text>
-          {item.user.name} ({item.user.email})
-        </Text>
-        <Text style={{ fontSize: 12, color: "gray" }}>
-          <Text style={{ fontWeight: "bold" }}>Order ID: </Text>
-          {item.user.orderId}
-        </Text>
-
-        {/* Return information */}
-        <Text style={{ fontSize: 12, color: "gray" }}>
-          <Text style={{ fontWeight: "bold" }}>Return Reason: </Text>
-          {item.returnReason}
-        </Text>
-        <Text style={{ fontSize: 12, color: "gray" }}>
-          <Text style={{ fontWeight: "bold" }}>Expected Arrival: </Text>
-          {item.expectedArrivalDate}
-        </Text>
-      </View>
-    </View>
-  );
+const IncomingReturnsPage = () => {
+  const getStatusDetails = (status) => {
+    switch (status) {
+      case "Pending":
+        return {
+          text: "Pending",
+          color: "text-yellow-800",
+          bg: "bg-yellow-100",
+          icon: "#CA8A04",
+        };
+      case "Delayed":
+        return {
+          text: "Delayed",
+          color: "text-red-800",
+          bg: "bg-red-100",
+          icon: "#DC2626",
+        };
+      case "In Transit":
+        return {
+          text: "In Transit",
+          color: "text-blue-800",
+          bg: "bg-blue-100",
+          icon: "#2563EB",
+        };
+      default:
+        return {
+          text: "Unknown",
+          color: "text-gray-800",
+          bg: "bg-gray-100",
+          icon: "#4B5563",
+        };
+    }
+  };
 
   return (
-    <View style={{ flex: 1, padding: 15 }}>
-      {/* Search bar */}
-      <View style={{ flexDirection: "row", marginBottom: 20 }}>
-        <Ionicons
-          name="search-outline"
-          size={24}
-          color="gray"
-          style={{ marginTop: 12, marginRight: 10 }}
-        />
-        <TextInput
-          style={{ borderWidth: 1, flex: 1, padding: 10, borderRadius: 8 }}
-          placeholder="Search products"
-          value={searchTerm}
-          onChangeText={setSearchTerm}
-        />
-      </View>
+    <ScrollView className="flex-1 bg-white">
+      <View className="p-2">
+        <View className="bg-red-100 border border-red-200 p-2 mb-4 rounded-lg">
+          <Text className="text-base text-red-800 text-center">
+            🚨Not Connected to Backend, just for DEMO 🚨
+          </Text>
+        </View>
+        <View className="mb-3 px-1">
+          <Text className="text-2xl font-bold text-gray-900">
+            Incoming Returns
+          </Text>
+          <Text className="text-base text-gray-600">
+            Track products expected to be returned
+          </Text>
+        </View>
 
-      {/* List of refund requests */}
-      <FlatList
-        data={filteredProducts}
-        renderItem={renderRefundItem}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
+        <View className="space-y-3">
+          {incomingReturnsData.map((returnItem) => {
+            const statusDetails = getStatusDetails(returnItem.status);
+            return (
+              <Card
+                key={returnItem.id}
+                className="border border-gray-200 bg-white"
+              >
+                <CardHeader className="p-4 pb-2 flex-row justify-between items-center">
+                  <View className="flex-row items-center space-x-2">
+                    <Text className="text-lg text-gray-900">
+                      Return #{returnItem.id}
+                    </Text>
+                    <View
+                      className={`flex-row items-center px-2 py-1 mx-2 rounded-full ${statusDetails.bg}`}
+                    >
+                      {returnItem.status === "Pending" && (
+                        <MaterialIcons
+                          name="pending"
+                          size={16}
+                          color={statusDetails.icon}
+                        />
+                      )}
+                      {returnItem.status === "Delayed" && (
+                        <MaterialIcons
+                          name="warning"
+                          size={16}
+                          color={statusDetails.icon}
+                        />
+                      )}
+                      {returnItem.status === "In Transit" && (
+                        <MaterialIcons
+                          name="local-shipping"
+                          size={16}
+                          color={statusDetails.icon}
+                        />
+                      )}
+                      <Text
+                        className={`ml-2 text-sm font-medium ${statusDetails.color}`}
+                      >
+                        {statusDetails.text}
+                      </Text>
+                    </View>
+                  </View>
+                  <Text className="text-sm text-gray-500">
+                    {returnItem.expectedArrivalDate}
+                  </Text>
+                </CardHeader>
+                <CardContent className="p-4 pt-2">
+                  <View className="space-y-2">
+                    <View>
+                      <Text className="text-base font-medium text-gray-900">
+                        Customer: {returnItem.userName}
+                      </Text>
+                    </View>
+                    <View>
+                      <Text className="text-base font-medium text-gray-900">
+                        Product Details
+                      </Text>
+                      <Text className="text-base text-gray-600">
+                        {returnItem.productName} x {returnItem.quantity}
+                      </Text>
+                      <Text className="text-base text-gray-600">
+                        Category: {returnItem.category}
+                      </Text>
+                    </View>
+                    <View>
+                      <Text className="text-base font-medium text-gray-900">
+                        Return Details
+                      </Text>
+                      <Text className="text-base text-gray-600">
+                        Expected Time: {returnItem.expectedArrivalTime}
+                      </Text>
+                      <Text className="text-base text-gray-600">
+                        Return Reason: {returnItem.returnReason}
+                      </Text>
+                    </View>
+                    <View>
+                      <Text className="text-base font-medium text-gray-900">
+                        Shipping Information
+                      </Text>
+                      <Text className="text-base text-gray-600">
+                        Courier: {returnItem.courierPartner}
+                      </Text>
+                      <Text className="text-base text-gray-600">
+                        Tracking Number: {returnItem.trackingNumber}
+                      </Text>
+                    </View>
+                  </View>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
-export default RefundPage;
+export default IncomingReturnsPage;

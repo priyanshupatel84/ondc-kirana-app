@@ -1,15 +1,15 @@
-const express = require('express');
+const express = require("express");
 const {
-    addBankAccountDetails,
-    getBankAccountDetails,
-    updateBankAccountDetails
-} = require('../controllers/bankController');
-const { authenticate } = require('../middlewares/authMiddleware');
+  addBankAccountDetails,
+  getBankAccountDetails,
+  updateBankAccountDetails,
+} = require("../controllers/bankController");
+const { authenticate } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.post('/add',authenticate, addBankAccountDetails);
-router.get('/:id', authenticate, getBankAccountDetails);
-router.put('/:id', authenticate, updateBankAccountDetails);
+router.post("/add", authenticate, addBankAccountDetails);
+router.get("/details", authenticate, getBankAccountDetails);
+router.put("/update", authenticate, updateBankAccountDetails);
 
 module.exports = router;

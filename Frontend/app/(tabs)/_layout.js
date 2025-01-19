@@ -56,7 +56,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                   color={color}
                 />
               );
-            case "help":
+            case "chatBot":
               return (
                 <MaterialIcons name="help" size={size + 3} color={color} />
               );
@@ -90,7 +90,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 };
 
 const colors = {
-  lightBlue: "#EBF8FF",
+  lightBlue: "white",
   darkBlue: "#1E40AF",
   gray: "#94A3B8",
 };
@@ -130,8 +130,7 @@ const TabsLayout = () => {
     >
       <Tabs.Screen name="home" options={{ tabBarLabel: "Home" }} />
       <Tabs.Screen name="order" options={{ tabBarLabel: "Order" }} />
-      <Tabs.Screen name="help" options={{ tabBarLabel: "Help" }} />
-      <Tabs.Screen name="tutorial" options={{ tabBarLabel: "Tutorial" }} />
+      <Tabs.Screen name="help" options={{ tabBarLabel: "Chat Bot" }} />
       <Tabs.Screen name="profile" options={{ tabBarLabel: "Profile" }} />
     </Tabs>
   );
