@@ -114,7 +114,7 @@ const Profile = () => {
         case "KYC Verified":
           router.push("../update/getKYCDetails");
           break;
-        case "Store Details":
+        case "Shop Details":
           router.push("../update/getShopDetails");
           break;
         default:
@@ -125,13 +125,13 @@ const Profile = () => {
     const handleEdit = () => {
       switch (title) {
         case "Bank Account":
-          router.push("../update/bankDetails");
+          router.push("../update/updateBankDetails");
           break;
         case "KYC Verified":
           router.push("../update/kycDetails");
           break;
-        case "Store Details":
-          router.push("../update/storeDetails");
+        case "ShopDetails":
+          router.push("../update/shopDetails");
           break;
         default:
           break;
@@ -291,7 +291,7 @@ const Profile = () => {
           <VerificationItem title="Bank Account" icon="account-balance" />
           <VerificationItem title="KYC Verified" icon="verified-user" />
 
-          <VerificationItem title="Store Details" icon="store" />
+          <VerificationItem title="Shop Details" icon="store" />
         </View>
       </View>
 

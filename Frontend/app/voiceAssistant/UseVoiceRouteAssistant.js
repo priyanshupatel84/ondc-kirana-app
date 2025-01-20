@@ -1,38 +1,56 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useSegments } from "expo-router";
 import { useVoice } from "./VoiceContext";
+import { useMute } from "./MuteContext";
 import i18n from "i18next";
 import UseRouteAssistant from "./UseRouteAssistant";
 
 const UseVoiceRouteAssistant = () => {
-  const currentLanguage = i18n.language; // Get the current language
-  const segments = useSegments(); // Get the current route segments
-  const { speakText, stopAudio } = useVoice(); // Get the speakText and stopAudio functions
-  const [lastSpokenRoute, setLastSpokenRoute] = useState(""); // State to track the last spoken route
-  const routeText = UseRouteAssistant(); // Get the translated route texts
+  const currentLanguage = i18n.language;
+  const segments = useSegments();
+  const { speakText, stopAudio } = useVoice();
+  const { isMuted } = useMute();
+  const routeText = UseRouteAssistant();
+  const lastRouteRef = useRef("");
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
-    // Get the current route key
-    const currentRoute = segments[segments.length - 1]; // Get the last segment
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      stopAudio();
+    };
+  }, []);
+
+  useEffect(() => {
+    const currentRoute = segments[segments.length - 1];
+    if (!currentRoute || isMuted) return;
+
+    const textToSpeak = routeText[currentRoute];
     console.log("Current Route:", currentRoute);
+    if (!textToSpeak || currentRoute === lastRouteRef.current) return;
 
-    const textToSpeak =
-      routeText[currentRoute] || routeText["anotherComponent"]; // Get the text based on the current route
-
-    // Speak the text if it exists and if the route has changed
-    if (textToSpeak && currentRoute !== lastSpokenRoute) {
-      stopAudio(); // Stop any currently playing audio
-      speakText(textToSpeak, `${currentLanguage}-IN`); // Specify the language code
-      setLastSpokenRoute(currentRoute); // Update the last spoken route
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-  }, [
-    segments,
-    speakText,
-    lastSpokenRoute,
-    stopAudio,
-    routeText,
-    currentLanguage,
-  ]); // Dependency array to trigger on segments change
+
+    stopAudio();
+
+    timeoutRef.current = setTimeout(() => {
+      lastRouteRef.current = currentRoute;
+      speakText(textToSpeak, `${currentLanguage}-IN`);
+    }, 300);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      stopAudio();
+    };
+  }, [segments, isMuted, currentLanguage]);
+
+  return null;
 };
 
 export default UseVoiceRouteAssistant;

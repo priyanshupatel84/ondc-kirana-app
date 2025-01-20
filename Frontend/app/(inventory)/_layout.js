@@ -27,7 +27,7 @@ const InventoryLayout = () => {
   return (
     <Stack>
       <Stack.Screen
-        name="index"
+        name="inventoryIndex"
         options={{
           header: ({ navigation }) => (
             <Header navigation={navigation} iconName="inventory" />

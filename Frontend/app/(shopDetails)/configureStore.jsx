@@ -124,10 +124,10 @@ const ConfigureStore = () => {
 
       <View className="px-4 py-3 border-b border-gray-200">
         <Text className="text-2xl font-semibold text-gray-800">
-          {t("Customize your store")}
+          {t("Customize your shop")}
         </Text>
         <Text className="text-sm text-gray-500 mt-1">
-          {t("Customize your store settings")}
+          {t("Customize your shop settings")}
         </Text>
       </View>
 

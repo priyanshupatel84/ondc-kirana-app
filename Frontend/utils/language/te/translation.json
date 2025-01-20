@@ -11,5 +11,66 @@
   "Please enter a valid 10-digit mobile number": "దయచేసి ఒక చెల్లుబాటు అయ్యే 10-అంకెల మొబైల్ నంబర్ నమోదు చేయండి",
   "Password must be at least 6 characters long": "పాస్వర్డ్ కనీసం 6 అక్షరాలు ఉండాలి",
   "Already have an account?": "మీకు ఇప్పటికే ఒక ఖాతా ఉందా?",
-  "Don't have an account? Click on Register": "మీకు ఖాతా లేదు? నమోదు చేయడానికి క్లిక్ చేయండి"
+  "Don't have an account? Click on Register": "మీకు ఖాతా లేదు? నమోదు చేయడానికి క్లిక్ చేయండి",
+  "Document Verification": "ஆவண சரிபார்ப்பு",
+  "Need help with documents?": "ஆவணங்களுக்கு உதவி தேவையா?",
+  "Initializing document scan...": "ஆவண ஸ்கேன் தொடங்குகிறது...",
+  "Opening camera...": "கேமரா திறக்கிறது...",
+  "Processing image...": "படம் செயலாக்கப்படுகிறது...",
+  "Converting image...": "படம் மாற்றப்படுகிறது...",
+
+  "Bank Details": "வங்கி விவரங்கள்",
+  "Please provide your bank account information": "உங்கள் வங்கி கணக்கு தகவலை வழங்கவும்",
+  "Account Holder Name": "கணக்கு வைத்திருப்பவரின் பெயர்",
+  "Account Number": "கணக்கு எண்",
+  "IFSC Code": "IFSC குறியீடு",
+  "Bank Name": "வங்கியின் பெயர்",
+  "Branch Name": "கிளையின் பெயர்",
+
+  "KYC Details": "KYC விவரங்கள்",
+  "Please provide your KYC information": "உங்கள் KYC தகவலை வழங்கவும்",
+  "Store Details": "கடை விவரங்கள்",
+  "Please provide your shop information": "உங்கள் கடை தகவலை வழங்கவும்",
+
+  "No products found matching your search": "உங்கள் தேடலுக்கு பொருந்தும் பொருட்கள் எதுவும் கிடைக்கவில்லை",
+  "No products in inventory": "சரக்குப் பட்டியலில் பொருட்கள் எதுவும் இல்லை",
+
+  "Customize your shop settings": "உங்கள் கடை அமைப்புகளை தனிப்பயனாக்கவும்",
+  "Customize your shop": "உங்கள் கடையை தனிப்பயனாக்கவும்",
+
+  "If you already have an account, enter your email and password. If you're a new user, click on 'Register' to create your account.": "ஏற்கனவே கணக்கு இருந்தால், உங்கள் மின்னஞ்சல் மற்றும் கடவுச்சொல்லை உள்ளிடவும். புதிய பயனராக இருந்தால், கணக்கை உருவாக்க 'பதிவு செய்க' என்பதைக் கிளிக் செய்யவும்.",
+
+  "Enter your details to create an account. If you already have an account, click on 'Login'": "கணக்கை உருவாக்க உங்கள் விவரங்களை உள்ளிடவும். ஏற்கனவே கணக்கு இருந்தால், 'உள்நுழைக' என்பதைக் கிளிக் செய்யவும்",
+
+  "Congrulation you loggged to ONDC succesfully Now, You'll need to upload several important documents here. Make sure you have clear photos of you documents. Click on repective icon to upload the document.": "வாழ்த்துக்கள், நீங்கள் ONDC-ல் வெற்றிகரமாக உள்நுழைந்துள்ளீர்கள். இப்போது, நீங்கள் இங்கே பல முக்கியமான ஆவணங்களை பதிவேற்ற வேண்டும். உங்கள் ஆவணங்களின் தெளிவான படங்கள் இருப்பதை உறுதி செய்யவும். ஆவணத்தைப் பதிவேற்ற அந்தந்த ஐகானைக் கிளிக் செய்யவும்.",
+
+  "Please verify your bank details. You will receive customer payments in this account. After verification, click on the checkbox and Submit Details.": "உங்கள் வங்கி விவரங்களை சரிபார்க்கவும். இந்த கணக்கில் வாடிக்கையாளர் கட்டணங்களைப் பெறுவீர்கள். சரிபார்த்த பிறகு, சரிபார்ப்பு பெட்டியைக் கிளிக் செய்து விவரங்களை சமர்ப்பிக்கவும்.",
+
+  "Please verify and fill your KYC details. This is a mandatory step to ensure the security of your account. After verification, click on the checkbox and Submit.": "உங்கள் KYC விவரங்களை சரிபார்த்து நிரப்பவும். உங்கள் கணக்கின் பாதுகாப்பை உறுதி செய்ய இது ஒரு கட்டாய படி. சரிபார்த்த பிறகு, சரிபார்ப்பு பெட்டியைக் கிளிக் செய்து சமர்ப்பிக்கவும்.",
+
+  "Please fill in your shop details. This information will be displayed to customers. After filling in the details, click on Submit.": "உங்கள் கடை விவரங்களை நிரப்பவும். இந்த தகவல் வாடிக்கையாளர்களுக்குக் காட்டப்படும். விவரங்களை நிரப்பிய பிறகு, சமர்ப்பி என்பதைக் கிளிக் செய்யவும்.",
+
+  "Please configure your shop. You can add categories, and manage your shop settings here, after configuring your shop click on Save Configuration.": "உங்கள் கடையை கட்டமைக்கவும். நீங்கள் இங்கே வகைகளைச் சேர்க்கலாம், உங்கள் கடை அமைப்புகளை நிர்வகிக்கலாம், உங்கள் கடையை கட்டமைத்த பிறகு கட்டமைப்பை சேமி என்பதைக் கிளிக் செய்யவும்.",
+
+  "You can update your shop settings here.": "நீங்கள் இங்கே உங்கள் கடை அமைப்புகளை புதுப்பிக்கலாம்.",
+
+  "Welcome to your dashboard!. Here you can manage your shop, view orders, add products to your inventory, and access all features of the application by clicking on the respective buttons": "உங்கள் டாஷ்போர்டுக்கு வரவேற்கிறோம்! இங்கே நீங்கள் உங்கள் கடையை நிர்வகிக்கலாம், ஆர்டர்களைப் பார்க்கலாம், உங்கள் சரக்குப் பட்டியலில் பொருட்களைச் சேர்க்கலாம், மற்றும் அந்தந்த பொத்தான்களைக் கிளிக் செய்வதன் மூலம் பயன்பாட்டின் அனைத்து அம்சங்களையும் அணுகலாம்.",
+
+  "Here you can view all your orders and their status. Click on 'Mark as Shipped' when you have shipped the product from your shop.": "இங்கே நீங்கள் உங்கள் அனைத்து ஆர்டர்களையும் அவற்றின் நிலையையும் பார்க்கலாம். உங்கள் கடையிலிருந்து பொருளை அனுப்பியவுடன் 'அனுப்பப்பட்டதாக குறி' என்பதைக் கிளிக் செய்யவும்.",
+
+  "Here you can view and edit your profile details, such as bank details, KYC details, and shop details.": "இங்கே நீங்கள் உங்கள் சுயவிவர விவரங்களை பார்க்கலாம் மற்றும் திருத்தலாம், அதாவது வங்கி விவரங்கள், KYC விவரங்கள், மற்றும் கடை விவரங்கள்.",
+
+  "In inventory, you can see all the products added by you. These products are visible to customers for purchase. You can edit or delete existing products.": "சரக்குப் பட்டியலில், நீங்கள் சேர்த்த அனைத்து பொருட்களையும் காணலாம். இந்த பொருட்கள் வாங்குவதற்கு வாடிக்கையாளர்களுக்குத் தெரியும். நீங்கள் ஏற்கனவே உள்ள பொருட்களைத் திருத்தலாம் அல்லது நீக்கலாம்.",
+
+  "Here you can view all the complaints raised by customers.": "இங்கே நீங்கள் வாடிக்கையாளர்கள் எழுப்பிய அனைத்து புகார்களையும் பார்க்கலாம்.",
+
+  "In Returns, you can view all the items that have been returned by customers, along with details of each return.": "திருப்பங்களில், வாடிக்கையாளர்களால் திருப்பி அனுப்பப்பட்ட அனைத்து பொருட்களையும், ஒவ்வொரு திருப்பத்தின் விவரங்களுடன் பார்க்கலாம்.",
+
+  "Here you need to select the category of the product you want to add to your inventory": "இங்கே நீங்கள் உங்கள் சரக்குப் பட்டியலில் சேர்க்க விரும்பும் பொருளின் வகையைத் தேர்ந்தெடுக்க வேண்டும்",
+
+  "Please, Upload the images of the product you want to add to your inventory. Make sure the 4th image shows the back side of the product. This image will be used for auto-filling your product details.": "தயவுசெய்து, நீங்கள் உங்கள் சரக்குப் பட்டியலில் சேர்க்க விரும்பும் பொருளின் படங்களை பதிவேற்றவும். 4வது படம் பொருளின் பின்புறத்தைக் காட்டுவதை உறுதிசெய்யவும். இந்த படம் உங்கள் பொருள் விவரங்களை தானாக நிரப்புவதற்குப் பயன்படுத்தப்படும்.",
+
+  "You can edit the details of the product here. Make sure to click on 'Save' after editing the details.": "நீங்கள் இங்கே பொருளின் விவரங்களைத் திருத்தலாம். விவரங்களைத் திருத்திய பிறகு 'சேமி' என்பதைக் கிளிக் செய்வதை உறுதிசெய்யவும்.",
+
+  "You can chat with our chatbot here. It will assist and help you with queries related to the application.": "நீங்கள் இங்கே எங்கள் சாட்போட்டுடன் அரட்டை அடிக்கலாம். இது பயன்பாடு தொடர்பான கேள்விகளுக்கு உதவி செய்யும்."
 }

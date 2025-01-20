@@ -43,7 +43,7 @@ const BankDetailsLayout = () => {
         }}
       />
       <Stack.Screen
-        name="bankDetails"
+        name="updateBankDetails"
         options={{
           header: ({ navigation }) => (
             <Header

@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 
 const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
 
-const BankDetails = () => {
+const UpdateBankDetails = () => {
   const { t } = useTranslation();
 
   const { token, logout } = useAuth();
@@ -350,4 +350,4 @@ const BankDetails = () => {
   );
 };
 
-export default BankDetails;
+export default UpdateBankDetails;

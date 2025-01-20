@@ -449,9 +449,54 @@
   "Enrollment Center Locator": "नामांकन केंद्र लोकेटर",
   "To update your existing Aadhaar information:": "अपनी मौजूदा आधार जानकारी अपडेट करने के लिए:",
   "Self Service Update Portal": "सेल्फ सर्विस अपडेट पोर्टल",
+  "No products found matching your search": "आपकी खोज से मेल खाने वाला कोई उत्पाद नहीं मिला",
+  "No products in inventory": "भंडारण में कोई उत्पाद नहीं",
 
-  "_comment": "From here voice Assisatnt translation start",
-  "Welcome to ONDC, Please choose a language ": "ONDC में आपका स्वागत है, कृपया एक भाषा चुनें",
-  "You are on the home page": "आप होम पेज पर हैं",
-  "This page is not defined yet; we are currently working on it.": "यह पेज अभी तक निर्धारित नहीं किया गया है; हम इस पर काम कर रहे हैं"
+  "Customize your shop settings": "अपनी दुकान सेटिंग्स को अनुकूलित करें",
+  "Customize your shop": "अपनी दुकान को अनुकूलित करें",
+  "If you already have an account, enter your email and password. If you're a new user, click on 'Register' to create your account.": "यदि आपका पहले से खाता है, तो अपना ईमेल और पासवर्ड दर्ज करें। यदि आप नए उपयोगकर्ता हैं, तो खाता बनाने के लिए 'रजिस्टर' पर क्लिक करें।",
+
+  "Enter your details to create an account. If you already have an account, click on 'Login'": "खाता बनाने के लिए अपना विवरण दर्ज करें। यदि आपका पहले से खाता है, तो 'लॉगिन' पर क्लिक करें।",
+
+  "Congrulation you loggged to ONDC succesfully Now, You'll need to upload several important documents here. Make sure you have clear photos of you documents. Click on repective icon to upload the document.": "बधाई हो, आप ONDC में सफलतापूर्वक लॉग इन हो गए हैं। अब, आपको यहां कुछ महत्वपूर्ण दस्तावेज अपलोड करने होंगे। सुनिश्चित करें कि आपके दस्तावेजों की स्पष्ट तस्वीरें हैं। दस्तावेज अपलोड करने के लिए संबंधित आइकन पर क्लिक करें।",
+
+  "Please verify your bank details. You will receive customer payments in this account. After verification, click on the checkbox and Submit Details.": "कृपया अपने बैंक विवरण की जांच करें। आपको इस खाते में ग्राहक भुगतान प्राप्त होंगे। सत्यापन के बाद, चेकबॉक्स पर क्लिक करें और विवरण जमा करें।",
+
+  "Please verify and fill your KYC details. This is a mandatory step to ensure the security of your account. After verification, click on the checkbox and Submit.": "कृपया अपने KYC विवरण को सत्यापित करें और भरें। आपके खाते की सुरक्षा सुनिश्चित करने के लिए यह एक अनिवार्य कदम है। सत्यापन के बाद, चेकबॉक्स पर क्लिक करें और जमा करें।",
+
+  "Please fill in your shop details. This information will be displayed to customers. After filling in the details, click on Submit.": "कृपया अपनी दुकान का विवरण भरें। यह जानकारी ग्राहकों को दिखाई जाएगी। विवरण भरने के बाद, जमा करें पर क्लिक करें।",
+
+  "Please configure your shop. You can add categories, and manage your shop settings here, after configuring your shop click on Save Configuration.": "कृपया अपनी दुकान को कॉन्फ़िगर करें। आप यहां श्रेणियां जोड़ सकते हैं और अपनी दुकान की सेटिंग्स प्रबंधित कर सकते हैं, दुकान को कॉन्फ़िगर करने के बाद कॉन्फ़िगरेशन सहेजें पर क्लिक करें।",
+
+  "You can update your shop settings here.": "आप यहां अपनी दुकान की सेटिंग्स अपडेट कर सकते हैं।",
+
+  "Welcome to your dashboard!. Here you can manage your shop, view orders, add products to your inventory, and access all features of the application by clicking on the respective buttons": "आपके डैशबोर्ड में आपका स्वागत है! यहां आप अपनी दुकान का प्रबंधन कर सकते हैं, ऑर्डर देख सकते हैं, अपनी भंडारण में उत्पाद जोड़ सकते हैं, और संबंधित बटनों पर क्लिक करके एप्लिकेशन की सभी सुविधाओं का उपयोग कर सकते हैं।",
+
+  "Here you can view all your orders and their status. Click on 'Mark as Shipped' when you have shipped the product from your shop.": "यहां आप अपने सभी ऑर्डर और उनकी स्थिति देख सकते हैं। जब आप अपनी दुकान से उत्पाद शिप कर दें, तो 'शिप किया गया के रूप में चिह्नित करें' पर क्लिक करें।",
+
+  "Here you can view and edit your profile details, such as bank details, KYC details, and shop details.": "यहां आप अपने प्रोफ़ाइल विवरण को देख और संपादित कर सकते हैं, जैसे बैंक विवरण, KYC विवरण, और दुकान का विवरण।",
+
+  "In inventory, you can see all the products added by you. These products are visible to customers for purchase. You can edit or delete existing products.": "इन्वेंट्री में, आप अपने द्वारा जोड़े गए सभी उत्पादों को देख सकते हैं। ये उत्पाद ग्राहकों को खरीदारी के लिए दिखाई देते हैं। आप मौजूदा उत्पादों को संपादित या हटा सकते हैं।",
+
+  "Here you can view all the complaints raised by customers.": "यहां आप ग्राहकों द्वारा की गई सभी शिकायतें देख सकते हैं।",
+
+  "In Returns, you can view all the items that have been returned by customers, along with details of each return.": "रिटर्न में, आप ग्राहकों द्वारा वापस किए गए सभी आइटम देख सकते हैं, साथ ही प्रत्येक रिटर्न का विवरण भी।",
+
+  "Here you need to select the category of the product you want to add to your inventory": "यहां आपको उस उत्पाद की श्रेणी का चयन करना होगा जिसे आप अपनी भंडारण में जोड़ना चाहते हैं।",
+
+  "Please, Upload the images of the product you want to add to your inventory. Make sure the 4th image shows the back side of the product. This image will be used for auto-filling your product details.": "कृपया, उस उत्पाद की तस्वीरें अपलोड करें जिसे आप अपनी भंडारण में जोड़ना चाहते हैं। सुनिश्चित करें कि चौथी तस्वीर उत्पाद का पिछला भाग दिखाती है। इस तस्वीर का उपयोग आपके उत्पाद विवरण को स्वचालित रूप से भरने के लिए किया जाएगा।",
+
+  "You can edit the details of the product here. Make sure to click on 'Save' after editing the details.": "आप यहां उत्पाद का विवरण संपादित कर सकते हैं। विवरण संपादित करने के बाद 'सहेजें' पर क्लिक करना सुनिश्चित करें।",
+
+  "You can chat with our chatbot here. It will assist and help you with queries related to the application.": "आप यहां हमारे चैटबोट से चैट कर सकते हैं। यह एप्लिकेशन से संबंधित प्रश्नों में आपकी सहायता करेगा।",
+
+  "You can view the tutorial here. It will guide you through the features of the application.": "आप यहां ट्यूटोरियल देख सकते हैं। यह आपको एप्लिकेशन की सुविधाओं के बारे में मार्गदर्शन करेगा।",
+
+  "You can update your bank details here. After changing the details, click on 'Update Details'.": "आप यहां अपने बैंक विवरण अपडेट कर सकते हैं। विवरण बदलने के बाद, 'विवरण अपडेट करें' पर क्लिक करें।",
+
+  "These are your bank details. If you want to update them, go back to Profile and click on the Edit button.": "ये आपके बैंक विवरण हैं। यदि आप इन्हें अपडेट करना चाहते हैं, तो प्रोफ़ाइल पर वापस जाएं और संपादित बटन पर क्लिक करें।",
+
+  "These are your KYC details that you submitted during registration.": "ये आपके KYC विवरण हैं जो आपने पंजीकरण के दौरान जमा किए थे।",
+
+  "These are your shop details. If you want to update them, go to Home Page and click on shop Settings.": "ये आपकी दुकान के विवरण हैं। यदि आप इन्हें अपडेट करना चाहते हैं, तो होम पेज पर जाएं और दुकान सेटिंग्स पर क्लिक करें।"
 }

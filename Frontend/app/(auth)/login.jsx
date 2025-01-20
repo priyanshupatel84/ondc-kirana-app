@@ -28,9 +28,9 @@ const Login = () => {
     if (!loading && user) {
       console.log(user);
       if (!user.isDocumentVerified) {
-        router.replace("/(docVerification)");
+        router.replace("/(docVerification)/docVerificationIndex");
       } else if (!user.isShopSetuped) {
-        router.replace("/(shopDetails)");
+        router.replace("/(shopDetails)/shopDetailsIndex");
       } else {
         router.replace("/(tabs)/home");
       }

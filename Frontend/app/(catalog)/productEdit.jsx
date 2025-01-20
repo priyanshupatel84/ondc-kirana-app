@@ -216,7 +216,7 @@ const ProductEdit = () => {
         if (response.data) {
           setShowSuccessPopup(true);
           setTimeout(() => {
-            router.replace("(inventory)");
+            router.replace("(inventory)/inventoryIndex");
           }, 500);
         }
       }

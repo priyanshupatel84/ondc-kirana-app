@@ -27,7 +27,7 @@ const ComplaintsLayout = () => {
   return (
     <Stack>
       <Stack.Screen
-        name="index"
+        name="complaintsIndex"
         options={{
           header: ({ navigation }) => (
             <Header navigation={navigation} iconName="report-problem" />

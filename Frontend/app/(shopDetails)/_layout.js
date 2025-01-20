@@ -5,7 +5,7 @@ const ShopLayout = () => {
   return (
     <Stack options={{ headerShown: false }}>
       <Stack.Screen
-        name="index"
+        name="shopDetailsIndex"
         options={{
           headerShown: false,
         }}

@@ -31,13 +31,11 @@ const Product = () => {
   const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
   const { token } = useAuth();
 
-  // Loading state
   const [loading, setLoading] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState("");
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
-  // Form fields
   const requiredFields = [
     "productCode",
     "productName",
@@ -68,11 +66,10 @@ const Product = () => {
     "customerCare",
   ];
 
-  // State management
   const [formData, setFormData] = useState({
     ...requiredFields.reduce((acc, field) => ({ ...acc, [field]: "" }), {}),
     ...optionalFields.reduce((acc, field) => ({ ...acc, [field]: "" }), {}),
-    category: category, // Store the category
+    category: category,
     CancellableSetting: false,
     ReturnableSetting: false,
     CashOnDeliverySetting: false,
@@ -89,7 +86,7 @@ const Product = () => {
     image3: null,
     backImage: null,
   });
-  // Setup validation
+
   const { validateSingleField, validateAllFields } = useFormValidation(
     formData,
     productImages,
@@ -98,7 +95,6 @@ const Product = () => {
     scrollViewRef
   );
 
-  // Event handlers
   const handleChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -130,7 +126,6 @@ const Product = () => {
       if (analyzedData) {
         setFormData((prev) => {
           const newData = { ...prev, ...analyzedData };
-          // Validate new data
           Object.keys(analyzedData).forEach((field) => {
             validateSingleField(field, analyzedData[field]);
           });
@@ -206,7 +201,7 @@ const Product = () => {
 
         const submitData = {
           ...formData,
-          images: uploadedImages, // Use the Cloudinary URLs instead of local URIs
+          images: uploadedImages,
           category: category,
         };
 
@@ -226,7 +221,7 @@ const Product = () => {
         if (response.data) {
           setShowSuccessPopup(true);
           setTimeout(() => {
-            router.push("../(inventory)");
+            router.replace("../(inventory)/inventoryIndex");
           }, 500);
         }
       }

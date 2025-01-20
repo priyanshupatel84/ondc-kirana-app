@@ -25,7 +25,7 @@ const CatalogLayout = () => {
   return (
     <Stack>
       <Stack.Screen
-        name="index"
+        name="catalogIndex"
         options={{
           header: ({ navigation }) => (
             <Header

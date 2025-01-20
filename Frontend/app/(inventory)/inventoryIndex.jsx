@@ -201,8 +201,8 @@ const Index = () => {
               <MaterialIcons name="inventory" size={48} color="#9CA3AF" />
               <Text className="text-gray-500 text-lg mt-4 text-center">
                 {searchTerm
-                  ? "No products found matching your search"
-                  : "No products in inventory"}
+                  ? t("No products found matching your search")
+                  : t("No products in inventory")}
               </Text>
             </View>
           }

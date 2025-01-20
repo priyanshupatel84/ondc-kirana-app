@@ -103,7 +103,6 @@ const Index = () => {
     if (category.route === "component/commingSoon") {
       router.push(category.route);
     } else {
-      // Pass the category name as a parameter
       router.push({
         pathname: "product",
         params: { category: category.label },

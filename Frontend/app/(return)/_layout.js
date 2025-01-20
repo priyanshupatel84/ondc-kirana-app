@@ -28,7 +28,7 @@ const ReturnLayout = () => {
   return (
     <Stack>
       <Stack.Screen
-        name="index"
+        name="returnIndex"
         options={{
           header: ({ navigation }) => (
             <Header navigation={navigation} iconName="assignment-return" />

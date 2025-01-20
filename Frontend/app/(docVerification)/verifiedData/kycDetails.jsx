@@ -194,7 +194,7 @@ const KYCForm = () => {
           await AsyncStorage.setItem("user", JSON.stringify(updatedUser));
           setUser(updatedUser);
           setKyc(response.data.kyc);
-          router.replace("../../(shopDetails)");
+          router.replace("../../(shopDetails)/shopDetailsIndex");
         }
       } catch (error) {
         console.error("Error submitting KYC:", error);

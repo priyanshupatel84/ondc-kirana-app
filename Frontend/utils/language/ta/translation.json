@@ -11,5 +11,40 @@
   "Please enter a valid 10-digit mobile number": "தயவுசெய்து ஒரு செல்லுபடியாகும் 10-எண் மொபைல் எண்ணை உள்ளிடவும்",
   "Password must be at least 6 characters long": "கடவுச்சொல் குறைந்தது 6 எழுத்துகள் நீளமாக இருக்க வேண்டும்",
   "Already have an account?": "உங்களுக்கு ஏற்கனவே ஒரு கணக்கு உள்ளதா?",
-  "Don't have an account? Click on Register": "உங்களுக்கு கணக்கு இல்லை? பதிவு செய்ய கிளிக் செய்யவும்"
+  "Don't have an account? Click on Register": "உங்களுக்கு கணக்கு இல்லை? பதிவு செய்ய கிளிக் செய்யவும்",
+  "If you already have an account, enter your email and password. If you're a new user, click on 'Register' to create your account.": "మీకు ఇప్పటికే ఖాతా ఉంటే, మీ ఇమెయిల్ మరియు పాస్‌వర్డ్‌ను నమోదు చేయండి. మీరు కొత్త యూజర్ అయితే, మీ ఖాతాను సృష్టించడానికి 'నమోదు' పై క్లిక్ చేయండి.",
+
+  "Enter your details to create an account. If you already have an account, click on 'Login'": "ఖాతాను సృష్టించడానికి మీ వివరాలను నమోదు చేయండి. మీకు ఇప్పటికే ఖాతా ఉంటే, 'లాగిన్' పై క్లిక్ చేయండి.",
+
+  "Congrulation you loggged to ONDC succesfully Now, You'll need to upload several important documents here. Make sure you have clear photos of you documents. Click on repective icon to upload the document.": "అభినందనలు, మీరు ONDCలో విజయవంతంగా లాగిన్ అయ్యారు. ఇప్పుడు, మీరు ఇక్కడ కొన్ని ముఖ్యమైన పత్రాలను అప్‌లోడ్ చేయాలి. మీ పత్రాల స్పష్టమైన ఫోటోలు ఉన్నాయో లేదో నిర్ధారించుకోండి. పత్రాన్ని అప్‌లోడ్ చేయడానికి సంబంధిత ఐకాన్‌పై క్లిక్ చేయండి.",
+
+  "Please verify your bank details. You will receive customer payments in this account. After verification, click on the checkbox and Submit Details.": "మీ బ్యాంక్ వివరాలను ధృవీకరించండి. మీరు ఈ ఖాతాలో కస్టమర్ చెల్లింపులను స్వీకరిస్తారు. ధృవీకరణ తరువాత, చెక్‌బాక్స్‌ను క్లిక్ చేసి వివరాలను సమర్పించండి.",
+
+  "Please verify and fill your KYC details. This is a mandatory step to ensure the security of your account. After verification, click on the checkbox and Submit.": "మీ KYC వివరాలను ధృవీకరించి పూరించండి. ఇది మీ ఖాతా భద్రతను నిర్ధారించడానికి అవసరమైన దశ. ధృవీకరణ తరువాత, చెక్‌బాక్స్‌ను క్లిక్ చేసి సమర్పించండి.",
+
+  "Please fill in your shop details. This information will be displayed to customers. After filling in the details, click on Submit.": "మీ షాప్ వివరాలను పూరించండి. ఈ సమాచారం కస్టమర్లకు చూపబడుతుంది. వివరాలను పూరించిన తర్వాత, సమర్పించు పై క్లిక్ చేయండి.",
+
+  "Please configure your shop. You can add categories, and manage your shop settings here, after configuring your shop click on Save Configuration.": "మీ షాప్‌ను కాన్ఫిగర్ చేయండి. మీరు ఇక్కడ కేటగిరీలను జోడించవచ్చు మరియు షాప్ సెట్టింగులను నిర్వహించవచ్చు. మీ షాప్‌ను కాన్ఫిగర్ చేసిన తర్వాత సెట్టింగులను సేవ్ చేయండి.",
+
+  "You can update your shop settings here.": "మీరు ఇక్కడ మీ షాప్ సెట్టింగులను నవీకరించవచ్చు.",
+
+  "Welcome to your dashboard!. Here you can manage your shop, view orders, add products to your inventory, and access all features of the application by clicking on the respective buttons": "మీ డ్యాష్‌బోర్డ్‌కు స్వాగతం! ఇక్కడ మీరు మీ షాప్‌ను నిర్వహించవచ్చు, ఆర్డర్లను వీక్షించవచ్చు, ఇన్వెంటరీలో ఉత్పత్తులను జోడించవచ్చు మరియు సంబంధిత బటన్‌లను క్లిక్ చేయడం ద్వారా అనువర్తనం యొక్క అన్ని ఫీచర్‌లను యాక్సెస్ చేయవచ్చు.",
+
+  "Here you can view all your orders and their status. Click on 'Mark as Shipped' when you have shipped the product from your shop.": "ఇక్కడ మీరు మీ ఆర్డర్‌లన్నింటిని మరియు వాటి స్థితిని వీక్షించవచ్చు. మీరు మీ షాప్ నుండి ఉత్పత్తిని షిప్ చేసినప్పుడు 'షిప్ చేయబడినట్లు గుర్తించండి' పై క్లిక్ చేయండి.",
+
+  "Here you can view and edit your profile details, such as bank details, KYC details, and shop details.": "ఇక్కడ మీరు మీ ప్రొఫైల్ వివరాలను, బ్యాంక్ వివరాలు, KYC వివరాలు మరియు షాప్ వివరాలను వీక్షించవచ్చు మరియు సవరించవచ్చు.",
+
+  "In inventory, you can see all the products added by you. These products are visible to customers for purchase. You can edit or delete existing products.": "ఇన్వెంటరీలో, మీరు జోడించిన అన్ని ఉత్పత్తులను చూడవచ్చు. ఈ ఉత్పత్తులు కొనుగోలు కోసం కస్టమర్లకు కనిపిస్తాయి. మీరు ప్రస్తుతం ఉన్న ఉత్పత్తులను సవరించవచ్చు లేదా తొలగించవచ్చు.",
+
+  "Here you can view all the complaints raised by customers.": "ఇక్కడ మీరు కస్టమర్లచే వచ్చిన అన్ని ఫిర్యాదులను చూడవచ్చు.",
+
+  "In Returns, you can view all the items that have been returned by customers, along with details of each return.": "రిటర్న్స్‌లో, కస్టమర్లు తిరిగి ఇచ్చిన అన్ని వస్తువులను మరియు వాటి వివరాలను చూడవచ్చు.",
+
+  "Here you need to select the category of the product you want to add to your inventory": "ఇక్కడ మీరు మీ ఇన్వెంటరీలో జోడించాలనుకుంటున్న ఉత్పత్తి యొక్క కేటగిరీని ఎంచుకోవాలి.",
+
+  "Please, Upload the images of the product you want to add to your inventory. Make sure the 4th image shows the back side of the product. This image will be used for auto-filling your product details.": "దయచేసి, మీరు మీ ఇన్వెంటరీలో జోడించాలనుకుంటున్న ఉత్పత్తి యొక్క చిత్రాలను అప్‌లోడ్ చేయండి. 4వ చిత్రం ఉత్పత్తి వెనుక భాగాన్ని చూపుతున్నదని నిర్ధారించుకోండి. ఈ చిత్రం మీ ఉత్పత్తి వివరాలను ఆటో-ఫిల్ చేయడానికి ఉపయోగించబడుతుంది.",
+
+  "You can edit the details of the product here. Make sure to click on 'Save' after editing the details.": "మీరు ఇక్కడ ఉత్పత్తి వివరాలను సవరించవచ్చు. వివరాలను సవరించిన తర్వాత 'సేవ్' పై క్లిక్ చేయండి.",
+
+  "You can chat with our chatbot here. It will assist and help you with queries related to the application.": "మీరు ఇక్కడ మా చాట్‌బాట్‌తో చాట్ చేయవచ్చు. ఇది అనువర్తనం సంబంధిత ప్రశ్నలలో మీకు సహాయం చేస్తుంది."
 }

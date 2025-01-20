@@ -263,7 +263,7 @@ const Home = () => {
               title="Add Product"
               subtitle="Expand your catalog"
               icon={<MaterialIcons name="add-box" size={36} color="#059669" />}
-              onPress={() => router.push("../(catalog)")}
+              onPress={() => router.push("../(catalog)/catalogIndex")}
               bgColor="bg-green-50"
               t={t}
             />
@@ -273,7 +273,7 @@ const Home = () => {
               icon={
                 <MaterialIcons name="inventory" size={36} color="#2563EB" />
               }
-              onPress={() => router.push("../(inventory)")}
+              onPress={() => router.push("../(inventory)/inventoryIndex")}
               bgColor="bg-blue-50"
               t={t}
             />
@@ -287,7 +287,7 @@ const Home = () => {
                   color="#DC2626"
                 />
               }
-              onPress={() => router.push("../(return)")}
+              onPress={() => router.push("../(return)/returnIndex")}
               bgColor="bg-red-50"
               t={t}
             />
@@ -297,7 +297,7 @@ const Home = () => {
               icon={
                 <MaterialIcons name="support-agent" size={36} color="#7C3AED" />
               }
-              onPress={() => router.push("/(complaints)")}
+              onPress={() => router.push("/(complaints)/complaintsIndex")}
               bgColor="bg-purple-50"
               t={t}
             />

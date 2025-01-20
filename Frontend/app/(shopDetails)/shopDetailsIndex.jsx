@@ -134,7 +134,7 @@ const StoreForm = () => {
         <Progress value={61} className="web:w-[60%]" />
         <View className="px-4 py-3 border-b border-gray-200">
           <Text className="text-2xl font-semibold text-gray-800">
-            {t("Store Details")}
+            {t("Shop Details")}
           </Text>
           <Text className="text-sm text-gray-500 mt-1">
             {t("Please provide your shop information")}
