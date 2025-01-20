@@ -1,4 +1,3 @@
-// voiceAssistant/useVoiceRouteAssistant.js
 import { useEffect, useState } from "react";
 import { useSegments } from "expo-router";
 import { useVoice } from "./VoiceContext";

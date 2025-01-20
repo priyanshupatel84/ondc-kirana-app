@@ -1,6 +1,3 @@
-// validationUtils.js
-
-// Validation rules for each field type
 const validationRules = {
   productCode: {
     required: true,
@@ -42,7 +39,6 @@ const validationRules = {
     message: "Selling price must be a positive number",
   },
 
-  // Optional Fields - Validated only if a value is provided
   longDescription: {
     required: false,
     maxLength: 1000,
@@ -140,7 +136,6 @@ const validationRules = {
     message: "Customer care details cannot exceed 200 characters",
   },
 
-  // Return/Cancellation Window Fields
   returnWindow: {
     required: false,
     type: "number",
@@ -160,7 +155,6 @@ const validationRules = {
     message: "Cancellation window must be a positive number of days",
   },
 
-  // Settings Fields
   ReturnableSetting: {
     required: false,
     type: "boolean",
@@ -179,7 +173,6 @@ const validationRules = {
   },
 };
 
-// Centralized error messages
 const ERROR_MESSAGES = {
   REQUIRED: "This field is required",
   PRICE: "Selling price cannot be greater than MRP",
@@ -216,7 +209,6 @@ const validateNumber = (value, min, max, integer = false) => {
   return true;
 };
 
-// Core validation functions
 const validateImages = (productImages) => {
   const errors = {};
   const requiredImages = ["image1", "image2", "image3"];
@@ -283,17 +275,14 @@ const validateField = (field, value, formData = {}) => {
 
   const normalizedValue = value === "" ? null : value;
 
-  // Required field check
   if (rules.required && !normalizedValue) {
     return ERROR_MESSAGES.REQUIRED;
   }
 
-  // Skip validation for empty optional fields
   if (!normalizedValue && !rules.required) {
     return null;
   }
 
-  // Validate non-empty values
   if (normalizedValue) {
     if (
       rules.type === "number" &&
@@ -317,7 +306,6 @@ const validateField = (field, value, formData = {}) => {
   return null;
 };
 
-// Scroll helper
 const scrollToError = (fieldName, fieldRefs, scrollViewRef) => {
   const fieldRef = fieldRefs.current[fieldName];
   if (fieldRef && scrollViewRef.current) {
@@ -334,7 +322,6 @@ const scrollToError = (fieldName, fieldRefs, scrollViewRef) => {
   }
 };
 
-// Form validation hook
 const useFormValidation = (
   formData,
   productImages,
@@ -342,16 +329,13 @@ const useFormValidation = (
   fieldRefs,
   scrollViewRef
 ) => {
-  // Handle individual field validation
   const validateSingleField = (field, value) => {
     const currentFormData = { ...formData, [field]: value };
     const errors = {};
 
-    // Basic field validation
     const fieldError = validateField(field, value);
     if (fieldError) errors[field] = fieldError;
 
-    // Related validations
     const pricingErrors = validatePricing(currentFormData);
     const dimensionErrors = validateDimensions(currentFormData);
     const policyErrors = validateReturnsAndCancellation(currentFormData);
@@ -366,17 +350,14 @@ const useFormValidation = (
     return Object.keys(errors).length === 0;
   };
 
-  // Handle form submission validation
   const validateAllFields = () => {
     const errors = {};
 
-    // Validate all individual fields
     Object.keys(formData).forEach((field) => {
       const fieldError = validateField(field, formData[field]);
       if (fieldError) errors[field] = fieldError;
     });
 
-    // Cross-field validations
     const pricingErrors = validatePricing(formData);
     const dimensionErrors = validateDimensions(formData);
     const policyErrors = validateReturnsAndCancellation(formData);

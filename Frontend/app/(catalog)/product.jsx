@@ -1,4 +1,3 @@
-// (tabs)/catalog/product.jsx
 import React, { useState, useRef } from "react";
 import { View, Text, ScrollView, Alert } from "react-native";
 import { Button } from "~/components/ui/button";
@@ -225,11 +224,10 @@ const Product = () => {
         setLoadingProgress(100);
 
         if (response.data) {
-          setShowSuccessPopup(true); // Show success popup instead of Alert
-          // Navigate after popup closes
+          setShowSuccessPopup(true);
           setTimeout(() => {
             router.push("../(inventory)");
-          }, 500); // Wait for popup duration (2000ms) + animation time
+          }, 500);
         }
       }
     } catch (error) {
@@ -292,6 +290,7 @@ const Product = () => {
         <LoadingOverlay
           loadingStatus={loadingStatus}
           loadingProgress={loadingProgress}
+          t={t}
         />
       )}
       <SuccessPopup
@@ -309,10 +308,10 @@ const Product = () => {
         <View>
           <View className="px-4 border-b border-gray-200 py-2 bg-white rounded-lg">
             <Text className="text-xl font-semibold text-gray-800">
-              Category : {category}
+              {t("Category")} : {t(category)}
             </Text>
             <Text className="text-gray-500">
-              Add products to your inventory
+              {t("Add products to your inventory")}
             </Text>
           </View>
 
@@ -324,7 +323,7 @@ const Product = () => {
           />
 
           <FormSection
-            title="Required Information"
+            title={t("Required Information")}
             fields={requiredFields}
             formData={formData}
             requiredFields={requiredFields}
@@ -334,7 +333,7 @@ const Product = () => {
           />
 
           <FormSection
-            title="Additional Information"
+            title={t("Additional Information")}
             fields={optionalFields}
             formData={formData}
             requiredFields={[]}
@@ -348,6 +347,7 @@ const Product = () => {
             onChange={handleChange}
             errors={errors}
             fieldRefs={fieldRefs}
+            t={t}
           />
 
           <View className="p-4 bg-white border-t border-gray-200">
@@ -358,7 +358,7 @@ const Product = () => {
               className="w-full bg-blue-500 hover:bg-blue-600 active:bg-blue-700 h-12 rounded-xl shadow-sm"
             >
               <Text className="text-white font-semibold text-lg">
-                Add Product
+                {t("Add Product")}
               </Text>
             </Button>
           </View>

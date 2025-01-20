@@ -1,24 +1,24 @@
 import React, { useEffect, useRef } from "react";
 import { View, Text, Animated } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const SuccessPopup = ({
   visible,
   message = "Operation completed successfully!",
   title = "Success!",
-  duration = 2000,
+  duration = 500,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
 
   useEffect(() => {
     if (visible) {
-      // Reset animations
       fadeAnim.setValue(0);
       scaleAnim.setValue(0.8);
 
-      // Start animations
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
@@ -33,7 +33,6 @@ const SuccessPopup = ({
         }),
       ]).start();
 
-      // Setup timeout for hiding
       const timer = setTimeout(() => {
         Animated.parallel([
           Animated.timing(fadeAnim, {
@@ -97,9 +96,9 @@ const SuccessPopup = ({
           <MaterialIcons name="check-circle" size={48} color="#10B981" />
         </Animated.View>
         <Text className="text-xl font-bold text-gray-800 text-center mb-2">
-          {title}
+          {t(title)}
         </Text>
-        <Text className="text-gray-600 text-center">{message}</Text>
+        <Text className="text-gray-600 text-center">{t(message)}</Text>
       </Animated.View>
     </Animated.View>
   );

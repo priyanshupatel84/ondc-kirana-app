@@ -1,15 +1,159 @@
 // prompts.js
 export const prompts = {
-  "Cancelled Bank Cheque":
-    "Analyze the following text, which has been extracted from an image, and determine whether it belongs to a bank cheque. **Important:** Your response should be one of two options: If the text does not represent a bank cheque, simply respond with '[false]'. If it is a bank cheque, extract the following information and present it in an array format:\n\n1. A boolean value indicating if the text represents a bank cheque (true).\n2. The account holder's name as a string.\n3. The account number as a string.\n4. The IFSC code as a string.\n5. The bank name as a string.\n6. The branch name with address as a string.\n\n**Important:** Only two types of responses are acceptable: '[false]' for non-bank cheque documents, or an array with the specified information if it is a bank cheque. Any other responses will not be accepted.\n\n**Text to Analyze:**\n",
+  "Cancelled Bank Cheque": `Analyze the following text, which has been extracted from an image, and determine whether it belongs to a bank cheque. **Important:** Your response should be one of two options: If the text does not represent a bank cheque, simply respond with '[false]'. If it is a bank cheque, extract the following information and present it in an array format:\n\n1. A boolean value indicating if the text represents a bank cheque (true).\n2. The account holder's name as a string.\n3. The account number as a string.\n4. The IFSC code as a string.\n5. The bank name as a string.\n6. The branch name with address as a string.\n\n**Important:** Only two types of responses are acceptable: '[false]' for non-bank cheque documents, or an array with the specified information if it is a bank cheque. Any other responses will not be accepted.\n\n**Text to Analyze:**\n
+  `,
 
-  "PAN Card":
-    "Analyze if the following text represents a PAN Card. **Important:** Your response should be one of two options: If the text does not represent a PAN Card, respond with '[false]'. If it is a PAN Card, extract the following information and present it in an array format:\n\n1. A boolean value indicating if the text represents a PAN Card (true).\n2. The PAN number as a string.\n3. The name as a string.\n\n**Important:** Only two types of responses are acceptable: '[false]' for non-PAN Card documents, or an array with the specified information if it is a PAN Card. Any other responses will not be accepted.\n\n**Text to Analyze:**",
+  "PAN Card": `Analyze if the following text represents an Indian PAN (Permanent Account Number) Card.
 
-  "AADHAAR Card":
-    "Analyze the following text to determine if it represents an Indian Aadhaar Card issued by the Government of India. **Important:** Your response should be one of two options: If the text does not represent an Aadhaar Card, respond with '[false]'. If it is an Aadhaar Card, extract the following information and present it in an array format:\n\n1. A boolean value indicating if the text represents an Aadhaar Card (true).\n2. The Aadhaar number as a string.\n3. The name of the Aadhaar cardholder as a string.\n\n**Important:** If the text is not explicitly labeled as an Aadhaar Card, analyze the pattern and content to make an informed decision. Typical characteristics of an Aadhaar Card include:\n- Contains both English and Hindi text.\n- Includes the phrases 'मेरा आधार मेरी पहचान' and 'My Aadhaar My Identity'.\n- Displays personal details such as name, date of birth (DOB), and gender.\n\n**Important:** Only two types of responses are acceptable: '[false]' for non-Aadhaar Card documents, or an array with the specified information if it is an Aadhaar Card. Any other responses will not be accepted.\n\n**Text to Analyze:**\n",
-  "GSTIN Certificate":
-    "You are tasked with extracting specific information from a text document related to GST registration. The text may contain various details about a business, including their GST number, address, and potentially a shop or store name.\n\nPlease extract the following information from the text:\n\n1. *GST Number: Find the unique alphanumeric code associated with the Goods and Services Tax.\n2. **Address: Locate the full address, including city, state, and pincode.\n3. **Shop Store Name*: Identify the name of the business, if available. It might be listed as 'Business Name', 'Trade Name', or 'Shop Name'.\n\nThe text might contain other information, so please focus on identifying these specific details.\n\nYour response should be an array where:\n- The first element (index 0) is true if all three pieces of information (GST Number, Address, Shop Store Name) are successfully extracted; otherwise, it should be false.\n- The second element (index 1) should contain the extracted GST Number, or null if not found.\n- The third element (index 2) should contain the extracted Address, or null if not found.\n- The fourth element (index 3) should contain the extracted Shop Store Name, or null if not found.\n\nExample response format: [ true, // or false \"GST123456789\", // or null \"123 Main St, City, State, 123456\", // or null \"My Shop\" // or null ]**Text to Analyze:**",
-  "Address Proof":
-    "nomatter what text is there after that just give response as [true] only this is valid resonse , now ignore text after that,",
+Validation Rules:
+- Must contain a 10-character PAN number format: AAAPL1234C
+  (First 5 letters, followed by 4 numbers, ending with a letter)
+- Should include cardholder's name
+- May contain "Income Tax Department" or "Government of India" text
+- Should match standard PAN card formatting
+
+Required Response Format:
+For non-PAN documents:
+  Return exactly [false]
+
+For valid PAN cards:
+  Return JSON array:
+  [
+    true,              // Boolean: confirms valid PAN card
+    "AAAPL1234C",      // String: PAN number in exact format
+    "FULL NAME"        // String: Name as shown on card
+  ]
+
+Note: 
+- Response must be exactly [false] OR the array format above
+- No additional text or explanations
+- PAN number must match the standard format
+- Name should be in capital letters as shown on card
+
+Input Text to Analyze:
+`,
+
+  "AADHAAR Card": `Analyze if this text represents an Indian Aadhaar Card. Return true if it contains key Aadhaar elements.
+
+  Response Format:
+  For valid Aadhaar (Any TWO of these conditions):
+  - Contains 12-digit number
+  - Has 'Aadhaar' OR 'आधार' reference
+  - Shows 'Government of India' OR 'भारत सरकार'
+  Return:
+  [
+    true,
+    "xxxxxxxxxxxx",    // 12-digit number
+    "NAME"            // Person's name
+  ]
+  
+  For definitely non-Aadhaar (ALL must be true):
+  - Contains "PAN" OR "TAN" OR "GST"
+  - Has PAN format (ABCDE1234F)
+  - Explicitly mentions "Income Tax"
+  Return: [false]
+  
+  If in doubt, prefer returning true with extracted information.
+  *IMPORTANT 
+  NO EXPLANATIONS. ONLY ARRAY FORMAT:
+[false] or [true,"123456789012","NAME"]
+  
+  Text to Analyze:
+  `,
+  "GSTIN Certificate": `Your task is to extract information from GST registration documents.
+
+  KEY INFORMATION TO EXTRACT:
+  1. GST Number (15-character alphanumeric code)
+  2. Complete Address (including city, state, pincode)
+  3. Business/Shop Name (may appear as 'Trade Name' or 'Legal Name')
+  
+  RESPONSE FORMAT:
+  Return an array with 4 elements:
+  [
+    boolean,  // true if all 3 items found, false otherwise
+    string | null,  // GST Number or null
+    string | null,  // Full Address or null
+    string | null   // Business Name or null
+  ]
+  
+  Example valid response:
+  [
+    true,
+    "29AAACW1234F1Z5",
+    "123 Business Park, Tech City, Karnataka 560001",
+    "WebTech Solutions"
+  ]
+  
+  Example invalid/partial response:
+  [
+    false
+  ]
+  
+  IMPORTANT NOTES:
+  - Extract only the specified information
+  - Return null for any missing fields
+  - Validate GST number format (15 characters)
+  - Include complete address with pincode
+  - Do not modify or format the extracted text
+  
+  INPUT TEXT:
+  `,
+
+  "Address Proof": `
+IMPORTANT: When in doubt about minor issues, prefer to ACCEPT the document rather than reject it.
+
+VALID ADDRESS PROOF DOCUMENTS:
+1. Utility Bills (Electricity/Water/Gas)
+   - Accept if within 4 months (be lenient with dates)
+2. Bank Statement/Passbook
+   - Accept if shows recent activity
+3. Rent Agreement
+   - Accept if appears current/valid
+4. Government IDs (Aadhaar/Passport/Voter ID/Driving License)
+   - Accept unless clearly expired
+5. Property Documents
+   - Accept any official property document
+6. Telephone/Internet Bills
+   - Accept if relatively recent
+
+VALIDATION APPROACH:
+1. Address Components (accept if has MOST of these):
+   - Any identifiable location number
+   - Area or street identifier
+   - City or district
+   - State (optional)
+   - PIN code (accept even if partial)
+
+2. Document Essentials (accept if has ANY TWO):
+   - Identifiable document type
+   - Name
+   - Date/period
+   - Document identifier/number
+
+RESPONSE FORMAT:
+Return boolean:
+true: If document shows reasonable evidence of address
+false: Only if document is clearly invalid/fake
+
+KEY PRINCIPLE:
+- If the document appears genuine but has minor issues, return true
+- Return false ONLY when you are highly confident the document is invalid
+
+Example Scenarios - Return TRUE:
+- Address missing PIN code but rest is clear
+- Utility bill slightly older but clearly genuine
+- Minor spelling variations in address
+- Partial document number but address clear
+- Unclear date but document appears official
+
+Return FALSE only for:
+- Completely missing address
+- Obviously fake/tampered document
+- Wrong document type (not an address proof)
+- Completely illegible document like bank cheque, etc.
+
+Response must be ONLY in array format [true] or [false].
+
+INPUT TEXT:
+`,
 };

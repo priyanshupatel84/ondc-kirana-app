@@ -30,7 +30,7 @@ export const fieldLabels = {
 };
 
 export const placeholders = {
-  productCode: "Enter unique product code (e.g., ABC123)",
+  productCode: "Enter unique bar code ",
   productName: "Enter product name (e.g., Organic Green Tea)",
   shortDescription: "Brief product description in 15-20 words",
   weight: "Enter product weight (e.g., 100)",
@@ -65,6 +65,7 @@ import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { Text } from "~/components/ui/text";
 import { Label } from "~/components/ui/label";
+import { useTranslation } from "react-i18next";
 
 export const FormField = React.forwardRef(
   ({ field, value, isRequired, error, onChange }, ref) => {
@@ -77,14 +78,14 @@ export const FormField = React.forwardRef(
       field === "shortDescription";
 
     const displayValue = typeof value === "number" ? value.toString() : value;
-
+    const { t } = useTranslation();
     return (
       <View ref={ref} key={field} className="mb-3">
         <Label
           className="text-base font-medium text-gray-700 mb-1"
           style={{ lineHeight: 24 }}
         >
-          {fieldLabels[field]}
+          {t(fieldLabels[field])}
           {isRequired && <Text className="text-red-500 ml-0.5">*</Text>}
         </Label>
 
@@ -124,7 +125,7 @@ export const FormField = React.forwardRef(
           />
         )}
         {error && (
-          <Text className="text-red-500 text-sm mt-2 px-1">{error}</Text>
+          <Text className="text-red-500 text-sm mt-2 px-1">{t(error)}</Text>
         )}
       </View>
     );

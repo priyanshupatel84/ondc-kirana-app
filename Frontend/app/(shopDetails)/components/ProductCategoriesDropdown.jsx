@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Label } from "~/components/ui/label";
+import { useTranslation } from "react-i18next";
 
 const ProductCategoriesDropdown = ({
   categories,
@@ -21,6 +22,7 @@ const ProductCategoriesDropdown = ({
   searchable = true,
   multiple = true,
 }) => {
+  const { t } = useTranslation();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [dropdownAnimation] = useState(new Animated.Value(0));
@@ -78,7 +80,9 @@ const ProductCategoriesDropdown = ({
 
   return (
     <View className="mb-4">
-      <Label className="text-lg font-semibold mb-2">Product Categories</Label>
+      <Label className="text-lg font-semibold mb-2">
+        {t("Product Categories")}
+      </Label>
       <TouchableOpacity
         onPress={toggleDropdown}
         activeOpacity={0.7}
@@ -147,7 +151,7 @@ const ProductCategoriesDropdown = ({
                         : "text-gray-700"
                     }`}
                   >
-                    {item}
+                    {t(item)}
                   </Text>
                   {selectedCategories.includes(item) && (
                     <MaterialIcons name="check" size={20} color="#2563eb" />
@@ -156,7 +160,9 @@ const ProductCategoriesDropdown = ({
               )}
               ListEmptyComponent={
                 <View className="py-8 items-center">
-                  <Text className="text-gray-500">No categories found</Text>
+                  <Text className="text-gray-500">
+                    {t("No categories found")}
+                  </Text>
                 </View>
               }
             />

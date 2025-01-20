@@ -13,14 +13,17 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+  const { t } = useTranslation();
   const { user, logout, token } = useAuth();
   const [inventorySize, setInventorySize] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [shopDetails, setShopDetails] = useState(null);
   const [isLoadingShop, setIsLoadingShop] = useState(true);
+
   const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
 
   const fetchShopDetails = async () => {
@@ -91,7 +94,7 @@ const Profile = () => {
               : "8B5CF6"
           }`}
         />
-        <Text className={`text-${color}-800 font-medium`}>{title}</Text>
+        <Text className={`text-${color}-800 font-medium`}>{t(title)}</Text>
       </View>
       <Text className={`text-3xl font-bold text-center text-${color}-900 mt-3`}>
         {value}
@@ -100,6 +103,7 @@ const Profile = () => {
   );
 
   const VerificationItem = ({ title, icon }) => {
+    const { t } = useTranslation();
     const router = useRouter();
 
     const handleView = () => {
@@ -140,7 +144,7 @@ const Profile = () => {
           <View className="bg-green-50 p-2 rounded-full">
             <MaterialIcons name={icon} size={20} color="#10B981" />
           </View>
-          <Text className="text-black font-medium">{title}</Text>
+          <Text className="text-black font-medium">{t(title)}</Text>
         </View>
         <View className="flex-row space-x-2">
           {title === "Bank Account" && (
@@ -148,14 +152,14 @@ const Profile = () => {
               className="bg-blue-500 px-4 py-1 mr-2 rounded-xl border border-gray-300"
               onPress={handleEdit}
             >
-              <Text className="text-white font-medium">Edit</Text>
+              <Text className="text-white font-medium">{t("Edit")}</Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity
             className="bg-white px-4 py-1 rounded-xl border border-black"
             onPress={handleView}
           >
-            <Text className="text-black font-medium">View</Text>
+            <Text className="text-black font-medium">{t("View")}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -176,7 +180,7 @@ const Profile = () => {
         <View className="flex-row justify-between items-center bg-blue-100 p-1 pl-3 rounded-2xl">
           <View className="flex-row items-center space-x-2 ">
             <Text className="text-2xl font-bold text-gray-800 mr-1">
-              Profile
+              {t("Profile")}
             </Text>
             <TouchableOpacity
               onPress={fetchInventorySize}
@@ -194,7 +198,7 @@ const Profile = () => {
             onPress={logout}
           >
             <MaterialIcons name="logout" size={20} color="white" />
-            <Text className="text-white font-semibold">Logout</Text>
+            <Text className="text-white font-semibold">{t("Logout")}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -217,13 +221,13 @@ const Profile = () => {
               />
             </View>
             <View className="ml-4 flex-1 justify-center">
-              <Text>Full Name : </Text>
+              <Text>{t("Full Name")} : </Text>
               <Text className="text-2xl font-bold text-blue-600 mb-1">
                 {user?.name}
               </Text>
-              <Text>Email</Text>
+              <Text>{t("Email")}</Text>
               <Text className="text-blue-600  text-md mb-1">{user?.email}</Text>
-              <Text>Mobile No.</Text>
+              <Text>{t("Mobile No.")}</Text>
               <Text className="text-blue-600 text-md">{user?.mob_no}</Text>
             </View>
           </View>
@@ -282,7 +286,7 @@ const Profile = () => {
         {/* Verification Status */}
         <View className=" rounded-xl shadow-sm p-2 mt-2 bg-green-50 border border-gray-300">
           <Text className="text-xl font-bold text-gray-800">
-            Verification Status
+            {t("Verification Status")}
           </Text>
           <VerificationItem title="Bank Account" icon="account-balance" />
           <VerificationItem title="KYC Verified" icon="verified-user" />

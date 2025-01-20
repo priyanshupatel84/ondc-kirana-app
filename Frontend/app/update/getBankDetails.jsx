@@ -1,19 +1,13 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import { View, Text, ActivityIndicator, Image, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const BankDetails = () => {
   const { token } = useAuth();
+  const { t } = useTranslation();
   const [bankDetails, setBankDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -45,7 +39,9 @@ const BankDetails = () => {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50">
         <ActivityIndicator size="large" color="#3B82F6" />
-        <Text className="text-gray-600 mt-4">Loading bank details...</Text>
+        <Text className="text-gray-600 mt-4">
+          {t("Loading bank details...")}
+        </Text>
       </View>
     );
   }
@@ -64,7 +60,7 @@ const BankDetails = () => {
       <View className="flex-1 justify-center items-center bg-gray-50 p-4">
         <MaterialIcons name="account-balance" size={48} color="#6B7280" />
         <Text className="text-gray-600 text-center text-lg mt-2">
-          No bank details found
+          {t("No bank details found")}
         </Text>
       </View>
     );
@@ -81,10 +77,10 @@ const BankDetails = () => {
             </View>
             <View>
               <Text className="text-green-800 font-medium text-lg">
-                Verified Account
+                {t("Verified Account")}
               </Text>
               <Text className="text-green-600">
-                Your bank account is verified and active
+                {t("Your bank account is verified and active")}
               </Text>
             </View>
           </View>
@@ -96,9 +92,11 @@ const BankDetails = () => {
             <MaterialIcons name="account-balance" size={28} color="#3B82F6" />
             <View className="ml-3">
               <Text className="text-xl font-bold text-gray-800">
-                Bank Account Details
+                {t("Bank Account Details")}
               </Text>
-              <Text className="text-gray-500">Primary Account Information</Text>
+              <Text className="text-gray-500">
+                {"Primary Account Information"}
+              </Text>
             </View>
           </View>
 
@@ -108,6 +106,7 @@ const BankDetails = () => {
               label="Account Holder"
               value={bankDetails.accountHolderName}
               iconBg="bg-blue-50"
+              t={t}
             />
             <DetailRow
               icon="credit-card"
@@ -115,6 +114,7 @@ const BankDetails = () => {
               value={bankDetails.accountNumber}
               iconBg="bg-purple-50"
               iconColor="#9333EA"
+              t={t}
             />
             <DetailRow
               icon="business"
@@ -122,6 +122,7 @@ const BankDetails = () => {
               value={bankDetails.bankName}
               iconBg="bg-indigo-50"
               iconColor="#6366F1"
+              t={t}
             />
             <DetailRow
               icon="vpn-key"
@@ -129,6 +130,7 @@ const BankDetails = () => {
               value={bankDetails.ifscCode}
               iconBg="bg-pink-50"
               iconColor="#EC4899"
+              t={t}
             />
             <DetailRow
               icon="location-city"
@@ -136,6 +138,7 @@ const BankDetails = () => {
               value={bankDetails.branchName}
               iconBg="bg-amber-50"
               iconColor="#F59E0B"
+              t={t}
             />
           </View>
         </View>
@@ -145,7 +148,7 @@ const BankDetails = () => {
           <View className="flex-row items-center mb-4">
             <MaterialIcons name="image" size={24} color="#3B82F6" />
             <Text className="text-xl font-bold text-gray-800 ml-2">
-              Cancelled Cheque
+              {t("Cancelled Cheque")}
             </Text>
           </View>
           <View className="w-full h-48 bg-gray-100 rounded-xl overflow-hidden">
@@ -158,7 +161,7 @@ const BankDetails = () => {
             />
           </View>
           <Text className="text-gray-500  mt-2 text-center">
-            Uploaded cancelled cheque for verification purposes
+            {t("Uploaded cancelled cheque for verification purposes")}
           </Text>
         </View>
       </View>
@@ -172,13 +175,14 @@ const DetailRow = ({
   value,
   iconBg = "bg-blue-50",
   iconColor = "#3B82F6",
+  t,
 }) => (
   <View className="flex-row items-center">
     <View className={`${iconBg} p-3 rounded-full mr-4`}>
       <MaterialIcons name={icon} size={22} color={iconColor} />
     </View>
     <View className="flex-1">
-      <Text className="text-gray-900 text-md">{label}</Text>
+      <Text className="text-gray-900 text-md">{t(label)}</Text>
       <Text className="text-black font-semibold text-lg">{value}</Text>
     </View>
   </View>

@@ -70,17 +70,7 @@ exports.registerShop = async (req, res) => {
 exports.updateShop = async (req, res) => {
   const userId = req.user?.id;
   try {
-    const { id } = req.params;
     const {
-      name,
-      logo,
-      location,
-      city,
-      pinCode,
-      state,
-      country,
-      supportEmail,
-      supportMobile,
       isLiveShop,
       openingTime,
       closingTime,
@@ -91,30 +81,14 @@ exports.updateShop = async (req, res) => {
       defaultReturnableSetting,
     } = req.body;
 
-    // Find the shop by ID
-    const shop = await Shop.findById(id);
-    console.log("shop", shop);
+    // Find the shop by userId instead of shop ID
+    const shop = await Shop.findOne({ userId });
+
     if (!shop) {
       return res.status(404).json({ message: "Shop not found" });
     }
 
-    // Check if the user is authorized to update this shop
-    if (shop.userId.toString() !== userId) {
-      return res.status(403).json({
-        message: "Forbidden: You do not have permission to update this shop.",
-      });
-    }
-
     // Update the shop fields only if they are provided
-    if (name !== undefined) shop.name = name;
-    if (logo !== undefined) shop.name = name;
-    if (location !== undefined) shop.location = location;
-    if (city !== undefined) shop.city = city;
-    if (pinCode !== undefined) shop.pinCode = pinCode;
-    if (state !== undefined) shop.state = state;
-    if (country !== undefined) shop.country = country;
-    if (supportEmail !== undefined) shop.supportEmail = supportEmail;
-    if (supportMobile !== undefined) shop.supportMobile = supportMobile;
     if (isLiveShop !== undefined) shop.isLiveShop = isLiveShop;
     if (openingTime !== undefined) shop.openingTime = openingTime;
     if (closingTime !== undefined) shop.closingTime = closingTime;
@@ -130,10 +104,16 @@ exports.updateShop = async (req, res) => {
 
     await shop.save();
 
-    res.status(200).json({ message: "Shop updated successfully!", shop });
+    res.status(200).json({
+      message: "Shop updated successfully!",
+      shop,
+    });
   } catch (error) {
-    console.error("Error updating shop:", error.message);
-    res.status(400).json({ error: error.message });
+    console.error("Error updating shop:", error);
+    res.status(400).json({
+      message: "Failed to update shop",
+      error: error.message,
+    });
   }
 };
 

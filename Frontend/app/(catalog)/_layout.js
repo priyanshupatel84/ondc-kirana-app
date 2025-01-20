@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Stack } from "expo-router";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useTranslation } from "react-i18next";
 
-// Common header component to reduce duplication
-const Header = ({ navigation, iconName = "inventory", headerText }) => (
+const Header = ({ navigation, iconName = "inventory", headerText, t }) => (
   <View
     className="flex-row items-center bg-blue-500 px-4"
     style={{ height: 54 }}
@@ -14,13 +14,14 @@ const Header = ({ navigation, iconName = "inventory", headerText }) => (
     </TouchableOpacity>
     <View className="flex-1 flex-row items-center justify-center">
       <Icon name={iconName} size={24} color="white" className="mr-2" />
-      <Text className="font-bold text-2xl text-white">{headerText}</Text>
+      <Text className="font-bold text-2xl text-white">{t(headerText)}</Text>
     </View>
     <View className="w-10" />
   </View>
 );
 
 const CatalogLayout = () => {
+  const { t } = useTranslation();
   return (
     <Stack>
       <Stack.Screen
@@ -31,6 +32,7 @@ const CatalogLayout = () => {
               navigation={navigation}
               iconName="inventory"
               headerText="Add Product"
+              t={t}
             />
           ),
           headerStyle: {
@@ -47,6 +49,7 @@ const CatalogLayout = () => {
               navigation={navigation}
               iconName="shopping-cart"
               headerText="Add Product"
+              t={t}
             />
           ),
           headerStyle: {
@@ -63,6 +66,7 @@ const CatalogLayout = () => {
               navigation={navigation}
               iconName="edit"
               headerText="Edit Product"
+              t={t}
             />
           ),
           headerStyle: {

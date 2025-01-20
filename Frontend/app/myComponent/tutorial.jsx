@@ -4,7 +4,6 @@ import { WebView } from "react-native-webview";
 import { useRouter } from "expo-router";
 import { MaterialIcons as Icon } from "@expo/vector-icons";
 
-// Header Component
 const Header = ({ title = "Tutorial" }) => {
   const router = useRouter();
 

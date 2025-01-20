@@ -1,9 +1,9 @@
-// components/ImageUploadSection.jsx
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
+import { useTranslation } from "react-i18next";
 
 const ImageButton = React.forwardRef(
-  ({ imageUri, label, onPress, error, required }, ref) => (
+  ({ imageUri, label, onPress, error, required, t }, ref) => (
     <TouchableOpacity
       ref={ref}
       onPress={onPress}
@@ -36,11 +36,11 @@ const ImageButton = React.forwardRef(
             >
               {label} {required && <Text className="text-red-500">*</Text>}
             </Text>
-            <Text className="text-blue-500 font-medium text-sm">
-              Tap to upload
+            <Text className="text-blue-500 font-medium text">
+              {t("Tap to upload")}
             </Text>
             {required && !imageUri && (
-              <Text className="text-red-500 text-xs mt-1">Required</Text>
+              <Text className="text-red-500 text mt-1">{t("Required")}</Text>
             )}
           </View>
         </View>
@@ -53,21 +53,22 @@ ImageButton.displayName = "ImageButton";
 
 const ImageUploadSection = React.forwardRef(
   ({ productImages, onImagePick, errors }, ref) => {
+    const { t } = useTranslation();
     const imageButtons = [
-      { key: "image1", label: "Front View", required: true },
-      { key: "image2", label: "Side View", required: true },
-      { key: "image3", label: "Additional View", required: true },
-      { key: "backImage", label: "Back side of Product", required: false },
+      { key: "image1", label: t("Front View"), required: true },
+      { key: "image2", label: t("Side View"), required: true },
+      { key: "image3", label: t("Additional View"), required: true },
+      { key: "backImage", label: t("Back side of Product"), required: false },
     ];
 
     return (
       <View ref={ref} className="bg-white rounded-xl p-3 shadow-sm m-2">
         <View>
           <Text className="text-xl font-semibold text-gray-800 mb-2 p-1 text-center bg-blue-500 text-white rounded-lg">
-            Images
+            {t("Images")}
           </Text>
           <Text className="text-gray-500 mb-2 px-2">
-            First 3 product images are mandatory.
+            {t("First 3 product images are mandatory.")}
           </Text>
         </View>
         <View className="flex-row flex-wrap justify-center gap-2">
@@ -84,17 +85,18 @@ const ImageUploadSection = React.forwardRef(
               required={button.required}
               onPress={() => onImagePick(button.key)}
               error={errors?.[button.key]}
+              t={t}
             />
           ))}
         </View>
         {errors?.images && (
           <Text className="text-red-500 text-sm mt-2 px-2">
-            {errors.images}
+            {t(errors.images)}
           </Text>
         )}
         {errors?.imageProcessing && (
           <Text className="text-red-500 text-sm mt-2 px-2">
-            {errors.imageProcessing}
+            {t(errors.imageProcessing)}
           </Text>
         )}
       </View>

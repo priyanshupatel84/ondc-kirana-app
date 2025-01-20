@@ -14,10 +14,8 @@ const UseDocumentData = () => {
     setDocumentData((prevData) => {
       const newData = [...prevData];
 
-      // Remove any undefined values from response
       const cleanResponse = response.filter((item) => item !== undefined);
 
-      // Add cloudinaryUrl if it exists
       const finalResponse = cloudinaryUrl
         ? [...cleanResponse, cloudinaryUrl]
         : cleanResponse;
@@ -43,7 +41,7 @@ const UseDocumentData = () => {
       return newData;
     });
   };
-  //console.log("documentData", documentData);
+
   globalVerifiedData = documentData;
   return { documentData, updateDocumentData };
 };

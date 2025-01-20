@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  StyleSheet,
   ActivityIndicator,
   Image,
   ScrollView,
@@ -11,8 +10,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const getShopDetails = () => {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [shopDetails, setShopDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -57,7 +58,9 @@ const getShopDetails = () => {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50">
         <ActivityIndicator size="large" color="#3B82F6" />
-        <Text className="text-gray-600 mt-4">Loading shop details...</Text>
+        <Text className="text-gray-600 mt-4">
+          {t("Loading shop details...")}
+        </Text>
       </View>
     );
   }
@@ -66,7 +69,9 @@ const getShopDetails = () => {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50 p-4">
         <MaterialIcons name="error-outline" size={48} color="#EF4444" />
-        <Text className="text-red-500 text-center text-lg mt-2">{error}</Text>
+        <Text className="text-red-500 text-center text-lg mt-2">
+          {t(error)}
+        </Text>
       </View>
     );
   }
@@ -76,7 +81,7 @@ const getShopDetails = () => {
       <View className="flex-1 justify-center items-center bg-gray-50 p-4">
         <MaterialIcons name="store" size={48} color="#6B7280" />
         <Text className="text-gray-600 text-center text-lg mt-2">
-          No shop details found
+          {t("No shop details found")}
         </Text>
       </View>
     );
@@ -97,12 +102,12 @@ const getShopDetails = () => {
             </View>
             <View>
               <Text className="text-blue-800 font-medium text-lg">
-                {shopDetails.isLiveShop ? "Live Shop" : "Shop Offline"}
+                {shopDetails.isLiveShop ? t("Live Shop") : t("Shop Offline")}
               </Text>
               <Text className="text-blue-600">
                 {shopDetails.isLiveShop
-                  ? "Your shop is live and accepting orders"
-                  : "Your shop is currently offline"}
+                  ? t("Your shop is live and accepting orders")
+                  : t("Your shop is currently offline")}
               </Text>
             </View>
           </View>
@@ -129,7 +134,7 @@ const getShopDetails = () => {
           <View className="flex-row items-center border-b border-gray-100 pb-2 mb-4">
             <MaterialIcons name="location-city" size={24} color="#3B82F6" />
             <Text className="text-xl font-bold text-gray-800 ml-2">
-              Address Details
+              {t("Address Details")}
             </Text>
           </View>
           <View className="space-y-4">
@@ -139,6 +144,7 @@ const getShopDetails = () => {
               value={shopDetails.location}
               iconBg="bg-red-50"
               iconColor="#EF4444"
+              t={t}
             />
           </View>
           <View className="space-y-4">
@@ -148,6 +154,7 @@ const getShopDetails = () => {
               value={shopDetails.city}
               iconBg="bg-pink-50"
               iconColor="#EC4899"
+              t={t}
             />
             <DetailRow
               icon="pin-drop"
@@ -155,6 +162,7 @@ const getShopDetails = () => {
               value={shopDetails.pinCode}
               iconBg="bg-purple-50"
               iconColor="#9333EA"
+              t={t}
             />
             <DetailRow
               icon="map"
@@ -162,6 +170,7 @@ const getShopDetails = () => {
               value={shopDetails.state}
               iconBg="bg-blue-50"
               iconColor="#3B82F6"
+              t={t}
             />
             <DetailRow
               icon="public"
@@ -169,6 +178,7 @@ const getShopDetails = () => {
               value={shopDetails.country}
               iconBg="bg-green-50"
               iconColor="#10B981"
+              t={t}
             />
             <DetailRow
               icon="my-location"
@@ -176,6 +186,7 @@ const getShopDetails = () => {
               value={shopDetails.locationAvailability}
               iconBg="bg-purple-50"
               iconColor="#9333EA"
+              t={t}
             />
             {shopDetails.customRadius && (
               <DetailRow
@@ -184,6 +195,7 @@ const getShopDetails = () => {
                 value={`${shopDetails.customRadius} km`}
                 iconBg="bg-indigo-50"
                 iconColor="#6366F1"
+                t={t}
               />
             )}
           </View>
@@ -194,7 +206,7 @@ const getShopDetails = () => {
           <View className="flex-row items-center border-b border-gray-100 pb-2 mb-4">
             <MaterialIcons name="contact-phone" size={24} color="#3B82F6" />
             <Text className="text-xl font-bold text-gray-800 ml-2">
-              Contact Information
+              {t("Contact Information")}
             </Text>
           </View>
 
@@ -205,6 +217,7 @@ const getShopDetails = () => {
               value={shopDetails.supportEmail}
               iconBg="bg-amber-50"
               iconColor="#F59E0B"
+              t={t}
             />
             <DetailRow
               icon="phone"
@@ -212,6 +225,7 @@ const getShopDetails = () => {
               value={shopDetails.supportMobile}
               iconBg="bg-emerald-50"
               iconColor="#10B981"
+              t={t}
             />
           </View>
         </View>
@@ -221,7 +235,7 @@ const getShopDetails = () => {
           <View className="flex-row items-center border-b border-gray-100 pb-2 mb-4">
             <MaterialIcons name="access-time" size={24} color="#3B82F6" />
             <Text className="text-xl font-bold text-gray-800 ml-2">
-              Business Hours
+              {t("Business Hours")}
             </Text>
           </View>
 
@@ -232,6 +246,7 @@ const getShopDetails = () => {
               value={formatTime(shopDetails.openingTime)}
               iconBg="bg-yellow-50"
               iconColor="#F59E0B"
+              t={t}
             />
             <DetailRow
               icon="nights-stay"
@@ -239,6 +254,7 @@ const getShopDetails = () => {
               value={formatTime(shopDetails.closingTime)}
               iconBg="bg-indigo-50"
               iconColor="#6366F1"
+              t={t}
             />
           </View>
         </View>
@@ -248,7 +264,7 @@ const getShopDetails = () => {
           <View className="flex-row items-center border-b border-gray-100 pb-2 mb-2">
             <MaterialIcons name="settings" size={24} color="#3B82F6" />
             <Text className="text-xl font-bold text-gray-800 ml-2">
-              Shop Settings
+              {t("Shop Settings")}
             </Text>
           </View>
 
@@ -256,10 +272,12 @@ const getShopDetails = () => {
             <SwitchRow
               label="Default Cancellable"
               value={shopDetails.defaultCancellableSetting}
+              t={t}
             />
             <SwitchRow
               label="Default Returnable"
               value={shopDetails.defaultReturnableSetting}
+              t={t}
             />
           </View>
         </View>
@@ -269,14 +287,14 @@ const getShopDetails = () => {
           <View className="flex-row items-center border-b border-gray-100 pb-2 mb-4">
             <MaterialIcons name="category" size={24} color="#3B82F6" />
             <Text className="text-xl font-bold text-gray-800 ml-2">
-              Product Categories
+              {t("Product Categories")}
             </Text>
           </View>
 
           <View className="flex-row flex-wrap gap-2">
             {shopDetails.productCategories.map((category, index) => (
               <View key={index} className="bg-blue-50 px-3 py-1 rounded-full">
-                <Text className="text-blue-800">{category}</Text>
+                <Text className="text-blue-800">{t(category)}</Text>
               </View>
             ))}
           </View>
@@ -292,21 +310,22 @@ const DetailRow = ({
   value,
   iconBg = "bg-blue-50",
   iconColor = "#3B82F6",
+  t,
 }) => (
   <View className="flex-row items-center py-2">
     <View className={`${iconBg} p-3 rounded-full mr-4`}>
       <MaterialIcons name={icon} size={22} color={iconColor} />
     </View>
     <View className="flex-1">
-      <Text className="text-gray-500 text">{label}</Text>
+      <Text className="text-gray-500 text">{t(label)}</Text>
       <Text className="text-gray-900 font-semibold text-base">{value}</Text>
     </View>
   </View>
 );
 
-const SwitchRow = ({ label, value }) => (
+const SwitchRow = ({ label, value, t }) => (
   <View className="flex-row items-center justify-between py-2">
-    <Text className="text-gray-700 font-medium">{label}</Text>
+    <Text className="text-gray-700 font-medium">{t(label)}</Text>
     <Switch value={value} disabled={true} />
   </View>
 );

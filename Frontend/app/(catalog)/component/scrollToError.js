@@ -12,10 +12,8 @@ export const scrollToError = (fieldName, fieldRefs, scrollViewRef) => {
     return;
   }
 
-  // Add slight delay to ensure layout is complete
   setTimeout(() => {
     try {
-      // Get the correct node method based on platform
       const getNode = Platform.select({
         ios: () => scrollViewRef.current.getInnerViewNode(),
         android: () => scrollViewRef.current.getNativeScrollRef(),
@@ -29,7 +27,7 @@ export const scrollToError = (fieldName, fieldRefs, scrollViewRef) => {
         (x, y) => {
           console.log("Scrolling to position:", y);
           scrollViewRef.current.scrollTo({
-            y: Math.max(0, y - 120), // Scroll to show field with padding
+            y: Math.max(0, y - 120),
             animated: true,
           });
         },

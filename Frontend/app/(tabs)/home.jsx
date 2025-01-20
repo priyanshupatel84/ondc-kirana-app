@@ -6,35 +6,30 @@ import ShopStatus from "../(shopDetails)/components/ShopStatus";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
-const StatCard = ({ title, value, trend, subValue, onPress }) => (
+const StatCard = ({ title, value, subValue, onPress, t }) => (
   <TouchableOpacity
     onPress={onPress}
     activeOpacity={0.8}
-    className={`bg-white p-5 w-[49%] shadow-sm rounded-xl `}
+    className={`bg-white p-5 w-[49%] shadow-sm rounded-xl`}
   >
-    <Text className="text-gray-800 text font-medium">{title}</Text>
-    <Text className="text-gray-900 text-3xl font-bold mt-1">{value}</Text>
-    {trend && (
-      <View className="flex-row items-center ">
-        {trend > 0 ? (
-          <>
-            <Ionicons name="trending-up" size={16} color="#059669" />
-            <Text className="text-green-600 text ml-1">{trend}%</Text>
-          </>
-        ) : (
-          <>
-            <Ionicons name="trending-down" size={16} color="#DC2626" />
-            <Text className="text-red-600 text ml-1">{Math.abs(trend)}%</Text>
-          </>
-        )}
-      </View>
-    )}
-    {subValue && <Text className="text-gray-600 text">{subValue}</Text>}
+    <View>
+      <Text className="text-gray-800 text font-medium">{t(title)}</Text>
+      <Text className="text-gray-900 text-3xl font-bold mt-1">
+        {typeof value === "number" ? value : value}
+      </Text>
+
+      {subValue && (
+        <View>
+          <Text className="text-gray-600 text">{t(subValue)}</Text>
+        </View>
+      )}
+    </View>
   </TouchableOpacity>
 );
 
-const AlertCard = ({ item, onRestock }) => (
+const AlertCard = ({ item, onRestock, t }) => (
   <View className="bg-red-50 py-1 px-3 rounded-xl mb-2 border border-red-100">
     <View className="flex-row items-center justify-between">
       <View className="flex-row items-center">
@@ -47,7 +42,7 @@ const AlertCard = ({ item, onRestock }) => (
         <View>
           <Text className="font-semibold text-gray-800">{item.name}</Text>
           <Text className="text-sm text-red-600">
-            Only {item.quantity} units left
+            {t("Only ")} {item.quantity} {t(" units left")}
           </Text>
         </View>
       </View>
@@ -55,7 +50,7 @@ const AlertCard = ({ item, onRestock }) => (
         className="bg-white px-3 py-2 rounded-lg border border-red-500"
         onPress={() => onRestock(item.id)}
       >
-        <Text className="text-red-500 font-medium">Restock</Text>
+        <Text className="text-red-500 font-medium">{t("Restock")}</Text>
       </TouchableOpacity>
     </View>
   </View>
@@ -67,18 +62,20 @@ const QuickActionCard = ({
   icon,
   onPress,
   bgColor = "bg-gray-50",
+  t,
 }) => (
   <TouchableOpacity
     className={`${bgColor} p-4 rounded-xl w-[49%] shadow-sm border border-gray-400`}
     onPress={onPress}
   >
     <View className="flex-row items-center mb-2">{icon}</View>
-    <Text className="text-gray-800 font-medium text-lg">{title}</Text>
-    <Text className="text-gray-600 text-sm mt-1">{subtitle}</Text>
+    <Text className="text-gray-800 font-medium text-lg">{t(title)}</Text>
+    <Text className="text-gray-600 text-sm mt-1">{t(subtitle)}</Text>
   </TouchableOpacity>
 );
 
 const Home = () => {
+  const { t } = useTranslation();
   const { user, token } = useAuth();
   const router = useRouter();
   const [isLiveShop, setIsLiveShop] = useState(false);
@@ -110,14 +107,11 @@ const Home = () => {
     }
   };
 
-  // Hardcoded stats
   const stats = {
     todayOrders: 0,
     totalSales: 0.0,
     pendingOrders: 3,
     totalProducts: 0,
-    orderTrend: 0,
-    saleTrend: 0,
     avgOrderValue: 0,
     mostSoldItem: "Product X",
     deliveryPending: 3,
@@ -133,10 +127,46 @@ const Home = () => {
     },
   };
 
+  const fetchShopStatus = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/shops/details`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.success) {
+        setIsLiveShop(response.data.shop.isLiveShop);
+      }
+    } catch (error) {
+      console.error("Error fetching shop status:", error);
+    }
+  };
+
+  const updateShopStatus = async (newStatus) => {
+    try {
+      await axios.patch(
+        `${API_URL}/api/shops/update`,
+        {
+          isLiveShop: newStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsLiveShop(newStatus);
+    } catch (error) {
+      console.error("Error updating shop status:", error);
+      setIsLiveShop(!newStatus);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       if (token) {
         fetchInventory();
+        fetchShopStatus();
       }
     }, [token])
   );
@@ -153,28 +183,30 @@ const Home = () => {
       {/* Header Section with Shop Status */}
       <View className="bg-white ">
         <View className="px-3 pt-1">
-          <Text className="text-lg text-gray-800">Hello, {user?.name} 👋</Text>
+          <Text className="text-lg text-gray-800">
+            {t("Hello")}, {user?.name} 👋
+          </Text>
         </View>
 
         <View className="flex-row justify-between px-2 pt-2 pb-2">
           <View className="flex-1 mr-2">
             <ShopStatus
               isLiveShop={isLiveShop}
-              onChange={setIsLiveShop}
+              onChange={updateShopStatus}
               msg={msg}
             />
           </View>
           <TouchableOpacity
             className="bg-gray-100 py-3 px-5 rounded-xl flex-row items-center self-stretch border border-gray-400"
-            onPress={() => router.push("../(shopDetails)/configureStore")}
+            onPress={() => router.push("../(shopDetails)/updateShop")}
           >
             <Ionicons name="settings-outline" size={40} color="#374151" />
             <View className="ml-2">
               <Text className="text-gray-700 text-center text-md font-semibold">
-                Shop
+                {t("Shop")}
               </Text>
               <Text className="text-gray-700 text-center text-md font-semibold">
-                Setting
+                {t("Setting")}
               </Text>
             </View>
           </TouchableOpacity>
@@ -185,21 +217,21 @@ const Home = () => {
         {/* Today's Performance */}
         <View className=" bg-blue-500 p-2 rounded-2xl mb-3">
           <Text className="text-lg px-2 font-semibold mb-3 text-white">
-            Today's Performance
+            {t("Today's Performance")}
           </Text>
           <View className="flex-row flex-wrap rounded-xl justify-between item-center">
             <StatCard
               title="Orders"
               value={stats.todayOrders}
-              trend={stats.orderTrend}
-              subValue={`${stats.pendingOrders} pending`}
+              subValue="3 pending"
               onPress={() => router.push("(tabs)/order")}
+              t={t}
             />
             <StatCard
               title="Sales"
               value={`₹${stats.totalSales}`}
-              trend={stats.saleTrend}
-              subValue={`Avg. ₹${stats.avgOrderValue} per order`}
+              subValue="Avg. ₹0 per order"
+              t={t}
             />
           </View>
         </View>
@@ -208,17 +240,24 @@ const Home = () => {
         {lowStockItems.length > 0 && (
           <View className="">
             <Text className="text-lg px-1 font-semibold mb-2">
-              Priority Alerts
+              {t("Priority Alerts")}
             </Text>
             {lowStockItems.map((item) => (
-              <AlertCard key={item.id} item={item} onRestock={handleRestock} />
+              <AlertCard
+                key={item.id}
+                item={item}
+                onRestock={handleRestock}
+                t={t}
+              />
             ))}
           </View>
         )}
 
         {/* Quick Actions */}
         <View className="mb-4">
-          <Text className="text-lg font-semibold mb-2 px-1">Quick Actions</Text>
+          <Text className="text-lg font-semibold mb-2 px-1">
+            {t("Quick Actions")}
+          </Text>
           <View className="flex-row flex-wrap gap-2">
             <QuickActionCard
               title="Add Product"
@@ -226,6 +265,7 @@ const Home = () => {
               icon={<MaterialIcons name="add-box" size={36} color="#059669" />}
               onPress={() => router.push("../(catalog)")}
               bgColor="bg-green-50"
+              t={t}
             />
             <QuickActionCard
               title="Inventory"
@@ -235,6 +275,7 @@ const Home = () => {
               }
               onPress={() => router.push("../(inventory)")}
               bgColor="bg-blue-50"
+              t={t}
             />
             <QuickActionCard
               title="Returns"
@@ -248,6 +289,7 @@ const Home = () => {
               }
               onPress={() => router.push("../(return)")}
               bgColor="bg-red-50"
+              t={t}
             />
             <QuickActionCard
               title="Support"
@@ -257,6 +299,7 @@ const Home = () => {
               }
               onPress={() => router.push("/(complaints)")}
               bgColor="bg-purple-50"
+              t={t}
             />
 
             <TouchableOpacity
@@ -270,11 +313,11 @@ const Home = () => {
                   color="#F59E0B"
                 />
                 <View className="ml-3">
-                  <Text className="text-gray-800 font-medium text-lg">
-                    Tutorial
+                  <Text className="text-gray-800 font-semibold text-lg">
+                    {t("Tutorial")}
                   </Text>
-                  <Text className="text-gray-600 text-sm">
-                    Learn how to use the app
+                  <Text className="text-gray-600 text">
+                    {t("Learn how to use the app")}
                   </Text>
                 </View>
               </View>

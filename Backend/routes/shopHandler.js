@@ -10,7 +10,8 @@ const router = express.Router();
 
 router.post("/register", authenticate, registerShop);
 router.get("/details", authenticate, getShopDetails);
-router.patch("/:id", authenticate, updateShop);
+router.patch("/update", authenticate, updateShop);
+
 //router.delete("/:id", authenticate, deleteShop);
 
 module.exports = router;

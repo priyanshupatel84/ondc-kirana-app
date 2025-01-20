@@ -26,7 +26,7 @@ export const VoiceProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_API_KEY}`, // Use the environment variable for the API key
+        `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_API_KEY}`,
         {
           input: { text },
           voice: {

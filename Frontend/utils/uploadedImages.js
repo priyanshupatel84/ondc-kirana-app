@@ -29,7 +29,6 @@ const uploadToCloudinary = async (imageUri) => {
     if (base64ImageData) {
       data.append("file", `data:image/jpeg;base64,${base64ImageData}`);
     } else {
-      // Otherwise use the URI directly
       data.append("file", {
         uri: imageUri,
         type: "image/jpeg",
@@ -60,7 +59,6 @@ const uploadToCloudinary = async (imageUri) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      //console.error("Cloudinary error response:", errorText);
       throw new Error(
         `Cloudinary upload failed: ${response.status} ${response.statusText}`
       );
@@ -69,21 +67,10 @@ const uploadToCloudinary = async (imageUri) => {
     const responseData = await response.json();
 
     if (!responseData || !responseData.secure_url) {
-      //console.error("Invalid Cloudinary response:", responseData);
       throw new Error("Invalid Cloudinary response");
     }
-
-    // console.log("Successfully uploaded to Cloudinary:", {
-    //   url: responseData.secure_url,
-    //   publicId: responseData.public_id,
-    // });
-
     return responseData.secure_url;
   } catch (error) {
-    // console.error("Error uploading to Cloudinary:", {
-    //   message: error.message,
-    //   stack: error.stack,
-    // });
     throw error;
   }
 };

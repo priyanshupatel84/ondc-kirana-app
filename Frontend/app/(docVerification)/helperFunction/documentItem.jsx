@@ -1,9 +1,8 @@
-// documentItem.js
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
-// Constants for status messages and colors
 const STATUS_COLORS = {
   verified: "bg-green-200",
   notVerified: "bg-red-200",
@@ -16,8 +15,8 @@ const STATUS_MESSAGES = {
   pending: "Pending",
 };
 
-// DocumentItem Component
 const DocumentItem = ({ icon, title, onPress, status, imageUri }) => {
+  const { t } = useTranslation();
   const getStatusColor = () => {
     if (status === true) return STATUS_COLORS.verified;
     if (status === false) return STATUS_COLORS.notVerified;
@@ -68,7 +67,7 @@ const DocumentItem = ({ icon, title, onPress, status, imageUri }) => {
             className="text-center text-lg font-bold leading-tight text-{#0076CE}"
             style={{ color: "rgb(0 110 177)", opacity: 1 }}
           >
-            {title}
+            {t(title)}
           </Text>
         </View>
       </TouchableOpacity>
@@ -90,7 +89,7 @@ const DocumentItem = ({ icon, title, onPress, status, imageUri }) => {
               : "text-yellow-600"
           }`}
         >
-          {getStatusText()}
+          {t(getStatusText())}
         </Text>
       </View>
     </View>

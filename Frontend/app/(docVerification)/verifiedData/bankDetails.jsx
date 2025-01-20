@@ -20,10 +20,12 @@ import { Progress } from "~/components/ui/progress";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import { FontAwesome } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
 
 const BankDetails = () => {
+  const { t } = useTranslation();
   const { token, logout } = useAuth();
   const router = useRouter();
   const documentData = getVerifiedData();
@@ -156,10 +158,10 @@ const BankDetails = () => {
         <Progress value={21} className="web:w-[60%]" />
         <View className="px-4 py-5 border-b border-gray-200">
           <Text className="text-2xl font-semibold text-gray-800">
-            Bank Details
+            {t("Bank Details")}
           </Text>
           <Text className="text-sm text-gray-500 mt-1">
-            Please provide your bank account information
+            {t("Please provide your bank account information")}
           </Text>
         </View>
 
@@ -184,7 +186,7 @@ const BankDetails = () => {
                     nativeID={key}
                     className="text-base font-medium text-gray-700 mb-1"
                   >
-                    {label}
+                    {t(label)}
                   </Label>
                   <Input
                     className={"bg-gray-50 rounded-lg"}
@@ -208,7 +210,7 @@ const BankDetails = () => {
                         color="#EF4444"
                       />
                       <Text className="text-red-500 text-sm ml-1">
-                        {errors[key]}
+                        {t(errors[key])}
                       </Text>
                     </View>
                   )}
@@ -226,12 +228,12 @@ const BankDetails = () => {
                   } border-2 border-blue-500`}
                 />
                 <Text className="ml-2 text-base text-gray-700 flex-1">
-                  I verify that all bank details are correct
+                  {t("I verify that all bank details are correct")}
                 </Text>
               </View>
               {checkboxError && (
                 <Text className="text-red-500 text-sm mt-2">
-                  {checkboxError}
+                  {t(checkboxError)}
                 </Text>
               )}
             </View>
@@ -245,7 +247,7 @@ const BankDetails = () => {
               disabled={!checked}
             >
               <Text className="text-white font-semibold text-lg text-center">
-                Submit Details
+                {t("Submit Details")}
               </Text>
             </TouchableOpacity>
           </View>

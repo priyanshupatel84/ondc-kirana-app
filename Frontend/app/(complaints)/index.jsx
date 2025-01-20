@@ -4,6 +4,7 @@ import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Card, CardHeader, CardContent } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
+import { useTranslation } from "react-i18next";
 
 const complaintsData = [
   {
@@ -57,6 +58,7 @@ const ButtonIcon = ({ IconComponent, name, size = 14 }) => (
 );
 
 const ActionButtons = ({ complaint, onDecline, onAction }) => {
+  const { t } = useTranslation();
   return (
     <View className="mt-2">
       <View className="flex-row justify-between space-x-1 gap-1">
@@ -67,7 +69,7 @@ const ActionButtons = ({ complaint, onDecline, onAction }) => {
         >
           <View className="flex-row items-center">
             <ButtonIcon IconComponent={MaterialIcons} name="cancel" />
-            <Text className="text-white text-sm">Decline</Text>
+            <Text className="text-white text-sm">{t("Decline")}</Text>
           </View>
         </Button>
 
@@ -78,7 +80,7 @@ const ActionButtons = ({ complaint, onDecline, onAction }) => {
         >
           <View className="flex-row items-center">
             <ButtonIcon IconComponent={MaterialIcons} name="check-circle" />
-            <Text className="text-white text-sm">Approve</Text>
+            <Text className="text-white text-sm">{t("Approve")}</Text>
           </View>
         </Button>
       </View>
@@ -86,25 +88,34 @@ const ActionButtons = ({ complaint, onDecline, onAction }) => {
   );
 };
 
-const ProcessRefundButton = ({ onPayment, complaintId }) => (
-  <View className="mt-2">
-    <View className="mb-2">
-      <Text className="text-sm font-medium text-gray-900">Payment Status</Text>
-    </View>
-    <Button
-      variant="default"
-      onPress={() => onPayment(complaintId)}
-      className="bg-yellow-500 px-3 py-1.5 h-8 w-full"
-    >
-      <View className="flex-row items-center">
-        <ButtonIcon IconComponent={MaterialCommunityIcons} name="cash-refund" />
-        <Text className="text-white text-sm">Process Refund</Text>
+const ProcessRefundButton = ({ onPayment, complaintId }) => {
+  const { t } = useTranslation();
+  return (
+    <View className="mt-2">
+      <View className="mb-2">
+        <Text className="text-sm font-medium text-gray-900">
+          {t("Payment Status")}
+        </Text>
       </View>
-    </Button>
-  </View>
-);
+      <Button
+        variant="default"
+        onPress={() => onPayment(complaintId)}
+        className="bg-yellow-500 px-3 py-1.5 h-8 w-full"
+      >
+        <View className="flex-row items-center">
+          <ButtonIcon
+            IconComponent={MaterialCommunityIcons}
+            name="cash-refund"
+          />
+          <Text className="text-white text-sm">{t("Process Refund")}</Text>
+        </View>
+      </Button>
+    </View>
+  );
+};
 
 const SellerComplaintPage = () => {
+  const { t } = useTranslation();
   const [complaints, setComplaints] = useState(complaintsData);
 
   const getStatusConfig = (status) => {
@@ -189,23 +200,23 @@ const SellerComplaintPage = () => {
       <View className="p-3">
         <View className="bg-red-100 border border-red-200 p-2 mb-2 rounded-lg">
           <Text className="text-base text-red-800 text-center">
-            🚨Not Connected to Backend, just for DEMO🚨
+            🚨{t(" Not Connected to Backend, just for DEMO ")}🚨
           </Text>
         </View>
 
         <View className="mb-2">
           <Text className="text-2xl font-bold text-gray-900">
-            Complaint Management
+            {t("Complaint Management")}
           </Text>
           <Text className="text-base text-gray-600">
-            Handle customer complaints and refund requests
+            {t("Handle customer complaints and refund requests")}
           </Text>
         </View>
 
         <View className="space-y-4">
           {complaints.length === 0 ? (
             <Text className="text-center text-gray-500">
-              No complaints submitted yet.
+              {t("No complaints submitted yet.")}
             </Text>
           ) : (
             complaints.map((complaint) => {
@@ -215,18 +226,20 @@ const SellerComplaintPage = () => {
               return (
                 <Card
                   key={complaint.id}
-                  className="border border-gray-200 bg-white"
+                  className=" bg-white mb-2 border-b border-gray-800"
                 >
-                  <CardHeader className="p-4 pb-2">
+                  <CardHeader className="p-4 pb-1">
                     <View className="space-y-2">
                       <View className="flex-row justify-between items-center">
                         <Text className="text-lg text-gray-900">
-                          Order #{complaint.orderId}
+                          {t("Order #")}
+                          {complaint.orderId}
                         </Text>
                         <Text className="text-sm text-gray-500">
-                          Submitted on {complaint.dateSubmitted}
+                          {t("Submitted on")} {complaint.dateSubmitted}
                         </Text>
                       </View>
+
                       <View className="flex-row items-center space-x-2">
                         <View
                           className={`flex-row items-center px-3 py-1.5 rounded-full ${statusConfig.bg}`}
@@ -240,7 +253,7 @@ const SellerComplaintPage = () => {
                           <Text
                             className={`text-base font-medium ${statusConfig.text}`}
                           >
-                            {complaint.status}
+                            {t(complaint.status)}
                           </Text>
                         </View>
                         <View className="flex-row items-center px-3 py-1.5 rounded-full bg-purple-100">
@@ -255,18 +268,18 @@ const SellerComplaintPage = () => {
                             style={{ marginRight: 6 }}
                           />
                           <Text className="text-base font-medium text-purple-800">
-                            {complaint.requestedAction}
+                            {t(complaint.requestedAction)}
                           </Text>
                         </View>
                       </View>
                     </View>
                   </CardHeader>
 
-                  <CardContent className="p-4 pt-2">
+                  <CardContent className="p-4 pt-1 ">
                     <View className="space-y-4">
                       <View className="space-y-1">
                         <Text className="text-base font-medium text-gray-900">
-                          Customer Details
+                          {t("Customer Details")}
                         </Text>
                         <Text className="text-base text-gray-600">
                           {complaint.userName}
@@ -276,14 +289,14 @@ const SellerComplaintPage = () => {
                         </Text>
                       </View>
 
-                      <View className="space-y-2">
+                      <View className="">
                         <Text className="text-base font-medium text-gray-900">
-                          Complaint Details
+                          {t("Complaint Details")}
                         </Text>
-                        <View className="space-y-1">
+                        <View className="">
                           <View className="flex-row">
                             <Text className="text font-medium text-gray-700 w-24">
-                              Product:
+                              {t("Product:")}
                             </Text>
                             <Text className="text text-gray-600 flex-1">
                               {complaint.productName}
@@ -291,7 +304,7 @@ const SellerComplaintPage = () => {
                           </View>
                           <View className="flex-row">
                             <Text className="text font-medium text-gray-700 w-24">
-                              Category:
+                              {t("Category:")}
                             </Text>
                             <Text className="text text-gray-600 flex-1">
                               {complaint.complaintCategory}
@@ -299,17 +312,17 @@ const SellerComplaintPage = () => {
                           </View>
                           <View className="flex-row">
                             <Text className="text font-medium text-gray-700 w-24">
-                              Action:
+                              {t("Action:")}
                             </Text>
                             <Text className="text text-gray-600 flex-1">
                               {complaint.requestedAction}
                             </Text>
                           </View>
-                          <View className="mt-2">
+                          <View>
                             <Text className="text font-medium text-gray-700">
-                              Description:
+                              {t("Description:")}
                             </Text>
-                            <Text className="text text-gray-600 mt-1">
+                            <Text className="text text-gray-600 ">
                               {complaint.description}
                             </Text>
                           </View>

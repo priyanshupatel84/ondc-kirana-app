@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Alert } from "react-native";
 import { Button } from "~/components/ui/button";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { pickImageWithEdit } from "../../utils/imagePicker";
-import { useFormValidation, ERROR_MESSAGES } from "./component/validationUtils";
+import { useFormValidation } from "./component/validationUtils";
 import LoadingOverlay from "./component/LoadingOverlay";
 import ImageUploadSection from "./component/ImageUploadSection";
 import FormSection from "./component/FormSection";
@@ -22,13 +22,11 @@ const ProductEdit = () => {
   const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
   const { token } = useAuth();
 
-  // Loading state
   const [loading, setLoading] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState("");
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
-  // Form fields
   const requiredFields = [
     "productCode",
     "productName",
@@ -59,7 +57,6 @@ const ProductEdit = () => {
     "customerCare",
   ];
 
-  // State management
   const [formData, setFormData] = useState({
     ...requiredFields.reduce((acc, field) => ({ ...acc, [field]: "" }), {}),
     ...optionalFields.reduce((acc, field) => ({ ...acc, [field]: "" }), {}),
@@ -79,7 +76,7 @@ const ProductEdit = () => {
     image3: null,
     backImage: null,
   });
-  // Setup validation
+
   const { validateSingleField, validateAllFields } = useFormValidation(
     formData,
     productImages,
@@ -88,7 +85,6 @@ const ProductEdit = () => {
     scrollViewRef
   );
 
-  // Fetch product data
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -103,8 +99,6 @@ const ProductEdit = () => {
 
         if (response.data.success) {
           const productData = response.data.product;
-
-          // Set form data
           setFormData({
             productCode: productData.productCode || "",
             productName: productData.productName || "",
@@ -139,7 +133,6 @@ const ProductEdit = () => {
             cancellationWindow: productData.cancellationWindow || "",
           });
 
-          // Set images
           if (
             productData.productImages &&
             productData.productImages.length > 0
@@ -169,7 +162,6 @@ const ProductEdit = () => {
     }
   }, [id]);
 
-  // Event handlers
   const handleChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -222,11 +214,10 @@ const ProductEdit = () => {
         );
 
         if (response.data) {
-          setShowSuccessPopup(true); // Show success popup instead of Alert
-          // Navigate after popup closes
+          setShowSuccessPopup(true);
           setTimeout(() => {
             router.replace("(inventory)");
-          }, 500); // Wait for popup duration (2000ms) + animation time
+          }, 500);
         }
       }
     } catch (error) {
@@ -252,6 +243,7 @@ const ProductEdit = () => {
         <LoadingOverlay
           loadingStatus={loadingStatus}
           loadingProgress={loadingProgress}
+          t={t}
         />
       )}
       <SuccessPopup
@@ -265,10 +257,10 @@ const ProductEdit = () => {
         <View>
           <View className="px-4 border-b border-gray-200 py-2 bg-white rounded-lg">
             <Text className="text-xl font-semibold text-gray-800">
-              Edit Product
+              {t("Edit Product")}
             </Text>
             <Text className="text-gray-500">
-              Update your product information
+              {t("Update your product information")}
             </Text>
           </View>
 
@@ -280,7 +272,7 @@ const ProductEdit = () => {
           />
 
           <FormSection
-            title="Required Information"
+            title={t("Required Information")}
             fields={requiredFields}
             formData={formData}
             requiredFields={requiredFields}
@@ -290,7 +282,7 @@ const ProductEdit = () => {
           />
 
           <FormSection
-            title="Additional Information"
+            title={t("Additional Information")}
             fields={optionalFields}
             formData={formData}
             requiredFields={[]}
@@ -304,6 +296,7 @@ const ProductEdit = () => {
             onChange={handleChange}
             errors={errors}
             fieldRefs={fieldRefs}
+            t={t}
           />
 
           <View className="p-4 bg-white border-t border-gray-200">
@@ -314,7 +307,7 @@ const ProductEdit = () => {
               className="w-full bg-blue-500 hover:bg-blue-600 active:bg-blue-700 h-12 rounded-xl shadow-sm"
             >
               <Text className="text-white font-semibold text-lg">
-                Update Product
+                {t("Update Product")}
               </Text>
             </Button>
           </View>

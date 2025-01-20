@@ -1,4 +1,3 @@
-// ProductSettings.jsx
 import React from "react";
 import { View, Text } from "react-native";
 import { Switch } from "~/components/ui/switch";
@@ -6,11 +5,11 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 
 const ProductSettings = React.forwardRef(
-  ({ formData, onChange, errors, fieldRefs }, ref) => {
+  ({ formData, onChange, errors, fieldRefs, t }, ref) => {
     return (
       <View ref={ref} className="rounded-xl p-5 mb-3 m-2 bg-white">
         <Text className="text-xl font-semibold mb-3 p-1 rounded-lg text-center bg-blue-500 text-white">
-          Product Settings
+          {t("Product Settings")}
         </Text>
 
         <View className="space-y-4">
@@ -20,7 +19,7 @@ const ProductSettings = React.forwardRef(
               htmlFor="stock"
               className="text-base font-medium text-gray-700 mb-1"
             >
-              Available Stock*
+              {t("Available Stock")}*
             </Label>
             <Input
               id="stock"
@@ -32,7 +31,9 @@ const ProductSettings = React.forwardRef(
               ref={(ref) => (fieldRefs.current["stock"] = ref)}
             />
             {errors?.stock && (
-              <Text className="text-red-500 text-sm mt-1">{errors.stock}</Text>
+              <Text className="text-red-500 text-sm mt-1">
+                {t(errors.stock)}
+              </Text>
             )}
           </View>
 
@@ -42,7 +43,7 @@ const ProductSettings = React.forwardRef(
               htmlFor="ReturnableSetting"
               className="text-base font-medium text-gray-700"
             >
-              Product is Returnable
+              {t("Product is Returnable")}
             </Label>
             <Switch
               id="ReturnableSetting"
@@ -61,7 +62,7 @@ const ProductSettings = React.forwardRef(
                 htmlFor="returnWindow"
                 className="text-base font-medium text-gray-700 mb-1"
               >
-                Return Window (in days)
+                {t("Return Window (in days)")}
               </Label>
               <Input
                 id="returnWindow"
@@ -74,7 +75,7 @@ const ProductSettings = React.forwardRef(
               />
               {errors?.returnWindow && (
                 <Text className="text-red-500 text-sm mt-1">
-                  {errors.returnWindow}
+                  {t(errors.returnWindow)}
                 </Text>
               )}
             </View>
@@ -86,7 +87,7 @@ const ProductSettings = React.forwardRef(
               htmlFor="CancellableSetting"
               className="text-base font-medium text-gray-700"
             >
-              Product is Cancellable
+              {t("Product is Cancellable")}
             </Label>
             <Switch
               id="CancellableSetting"
@@ -105,7 +106,7 @@ const ProductSettings = React.forwardRef(
                 htmlFor="cancellationWindow"
                 className="text-base font-medium text-gray-700 mb-1"
               >
-                Cancellation Window (in days)
+                {t("Cancellation Window (in days)")}
               </Label>
               <Input
                 id="cancellationWindow"
@@ -118,7 +119,7 @@ const ProductSettings = React.forwardRef(
               />
               {errors?.cancellationWindow && (
                 <Text className="text-red-500 text-sm mt-1">
-                  {errors.cancellationWindow}
+                  {t(errors.cancellationWindow)}
                 </Text>
               )}
             </View>
@@ -130,7 +131,7 @@ const ProductSettings = React.forwardRef(
               htmlFor="CashOnDeliverySetting"
               className="text-base font-medium text-gray-700"
             >
-              Cash on Delivery Available
+              {t("Cash on Delivery Available")}
             </Label>
             <Switch
               id="CashOnDeliverySetting"

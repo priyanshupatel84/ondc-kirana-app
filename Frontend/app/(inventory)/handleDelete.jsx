@@ -29,7 +29,6 @@ export const handleDelete = async (productId, token, fetchProducts) => {
 
               if (response.data.success) {
                 Alert.alert("Success", "Product deleted successfully");
-                // Refresh the products list
                 fetchProducts();
               }
             } catch (error) {

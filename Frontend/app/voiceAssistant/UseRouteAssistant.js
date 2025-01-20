@@ -1,4 +1,3 @@
-// app/utils/routeTextMap.js
 import { useTranslation } from "react-i18next";
 
 const UseRouteAssistant = () => {
@@ -10,11 +9,9 @@ const UseRouteAssistant = () => {
     home: t("You are on the home page"),
     profile: t("You are viewing your profile."),
     anotherComponent: t("Welcome to ONDC, Please choose a language"),
-    // Add more routes and their corresponding texts as needed
   };
 
   return routeText;
 };
 
-// Export the hook to use in your components
 export default UseRouteAssistant;

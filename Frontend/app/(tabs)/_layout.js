@@ -2,8 +2,9 @@ import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { useTranslation } from "react-i18next";
 
-const CustomTabButton = ({ label, icon, isFocused, onPress }) => {
+const CustomTabButton = ({ label, icon, isFocused, onPress, t }) => {
   return (
     <TouchableOpacity
       style={styles.tabButton}
@@ -18,7 +19,7 @@ const CustomTabButton = ({ label, icon, isFocused, onPress }) => {
             { color: isFocused ? colors.darkBlue : colors.gray },
           ]}
         >
-          {label}
+          {t(label)}
         </Text>
       </View>
     </TouchableOpacity>
@@ -26,6 +27,7 @@ const CustomTabButton = ({ label, icon, isFocused, onPress }) => {
 };
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.tabBar}>
       {state.routes.map((route, index) => {
@@ -82,6 +84,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             )}
             isFocused={isFocused}
             onPress={onPress}
+            t={t}
           />
         );
       })}
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
   tabLabel: {
     fontSize: 12,
     fontWeight: "500",
-    marginTop: -4, // Reduced gap between icon and text
+    marginTop: -4,
   },
 });
 
@@ -130,7 +133,7 @@ const TabsLayout = () => {
     >
       <Tabs.Screen name="home" options={{ tabBarLabel: "Home" }} />
       <Tabs.Screen name="order" options={{ tabBarLabel: "Order" }} />
-      <Tabs.Screen name="help" options={{ tabBarLabel: "Chat Bot" }} />
+      <Tabs.Screen name="chatBot" options={{ tabBarLabel: "Chat Bot" }} />
       <Tabs.Screen name="profile" options={{ tabBarLabel: "Profile" }} />
     </Tabs>
   );

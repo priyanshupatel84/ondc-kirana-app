@@ -20,10 +20,12 @@ import { getVerifiedData } from "../helperFunction/UseDocumentData";
 import { useAuth } from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
 
 const KYCForm = () => {
+  const { t } = useTranslation();
   const { token, setUser, user, logout, setKyc } = useAuth();
   const router = useRouter();
   const documentData = getVerifiedData();
@@ -222,10 +224,10 @@ const KYCForm = () => {
         <Progress value={41} className="web:w-[60%]" />
         <View className="px-4 py-4 border-b border-gray-200">
           <Text className="text-2xl font-semibold text-gray-800">
-            KYC Details
+            {t("KYC Details")}
           </Text>
           <Text className="text-sm text-gray-500 mt-1">
-            Please provide your KYC information
+            {t("Please provide your KYC information")}
           </Text>
         </View>
         <View className="flex-1 px-2 pb-0">
@@ -248,7 +250,7 @@ const KYCForm = () => {
               }) => (
                 <View className="mb-2" key={key}>
                   <Label nativeID={key} className="mb-1 text-lg font-semibold">
-                    {label}
+                    {t(label)}
                   </Label>
                   <Input
                     className="p-2 rounded"
@@ -269,14 +271,14 @@ const KYCForm = () => {
                     aria-errormessage={`${key}Error`}
                   />
                   {errors[key] && (
-                    <Text className="text-red-500 mt-1">{errors[key]}</Text>
+                    <Text className="text-red-500 mt-1">{t(errors[key])}</Text>
                   )}
                 </View>
               )
             )}
 
             {errors.submit && (
-              <Text className="text-red-500 mb-2">{errors.submit}</Text>
+              <Text className="text-red-500 mb-2">{t(errors.submit)}</Text>
             )}
 
             <View className="m-1 flex items-center flex-row">
@@ -286,11 +288,11 @@ const KYCForm = () => {
                 className={`${checked ? "bg-blue-500" : "bg-white"} p-1`}
               />
               <Text className="ml-2">
-                I verify and confirm that all details are correct.
+                {t("I verify and confirm that all details are correct.")}
               </Text>
             </View>
             {checkboxError && (
-              <Text className="text-red-500 mb-2">{checkboxError}</Text>
+              <Text className="text-red-500 mb-2">{t(checkboxError)}</Text>
             )}
 
             <TouchableOpacity
@@ -302,7 +304,7 @@ const KYCForm = () => {
               } justify-center`}
             >
               <Text className="text-white font-semibold text-xl text-center">
-                Submit
+                {t("Submit")}
               </Text>
             </TouchableOpacity>
           </ScrollView>

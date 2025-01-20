@@ -1,4 +1,3 @@
-// messages.js
 const messages = (t) => ({
   formLabels: {
     name: t("Shop Name"),
@@ -18,18 +17,18 @@ const messages = (t) => ({
   },
 
   formPlaceholder: {
-    name: t("Enter Shop Name"),
-    supportEmail: t("Enter Support Email"),
-    supportMobile: t("Enter Support Mobile Number"),
-    productCategories: t("Enter Supported Product Categories"),
-    location: t("Search location!"),
-    country: t("Enter Country"),
-    state: t("Enter State"),
-    city: t("Enter City"),
-    pinCode: t("Enter PIN Code"),
-    deliveryRadius: t("Enter Delivery Radius"),
-    openingTime: t("00:00 AM"),
-    closingTime: t("00:00 PM"),
+    name: "Enter Shop Name",
+    supportEmail: "Enter Support Email",
+    supportMobile: "Enter Support Mobile Number",
+    productCategories: "Enter Supported Product Categories",
+    location: "Search location!",
+    country: "Enter Country",
+    state: "Enter State",
+    city: "Enter City",
+    pinCode: "Enter PIN Code",
+    deliveryRadius: "Enter Delivery Radius",
+    openingTime: "00:00 AM",
+    closingTime: "00:00 PM",
   },
 
   locationOptions: [

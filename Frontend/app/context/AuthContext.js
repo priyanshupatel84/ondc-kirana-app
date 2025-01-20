@@ -28,15 +28,11 @@ export const AuthProvider = ({ children }) => {
       try {
         const storedUser = await AsyncStorage.getItem("user");
         const storedToken = await AsyncStorage.getItem("token");
-        const storedShopId = await AsyncStorage.getItem("shopId");
 
         if (storedUser && storedToken) {
           const userData = JSON.parse(storedUser);
           setUser(userData);
           setToken(storedToken);
-          if (storedShopId) {
-            setShopId(storedShopId);
-          }
         }
       } catch (error) {
         console.error("Error initializing auth:", error);
@@ -76,19 +72,18 @@ export const AuthProvider = ({ children }) => {
           }
         );
       }
-      await AsyncStorage.multiRemove(["user", "shopId", "token"]);
+      await AsyncStorage.multiRemove(["user", "token"]);
 
       setUser(null);
-      setShopId(null);
+
       setToken(null);
       setKyc(null);
       router.replace("/(auth)/login");
     } catch (error) {
       console.error("Error during logout:", error);
-      // Still clear local data and navigate even if API call fails
-      await AsyncStorage.multiRemove(["user", "shopId", "token"]);
+      await AsyncStorage.multiRemove(["user", "token"]);
       setUser(null);
-      setShopId(null);
+
       setToken(null);
       setKyc(null);
       router.replace("/(auth)/login");
@@ -99,7 +94,6 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        shopId,
         token,
         loading,
         kyc,
@@ -107,7 +101,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         setUser,
-        setShopId,
+
         setToken,
       }}
     >

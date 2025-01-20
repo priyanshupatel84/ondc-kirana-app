@@ -2,32 +2,14 @@ import React from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const SubmitButton = ({ isSubmitting, saveSuccess, onSubmit, messages }) => {
-  if (saveSuccess) {
-    return (
-      <View
-        className="rounded-xl py-4 px-6 my-4 bg-green-500 flex-row justify-center items-center"
-        style={{
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-        }}
-      >
-        <MaterialIcons name="check-circle" size={28} color="white" />
-      </View>
-    );
-  }
-
+const SubmitButton = ({ isSubmitting, onSubmit, messages }) => {
   return (
     <TouchableOpacity
       onPress={onSubmit}
       disabled={isSubmitting}
-      className={`rounded-xl py-4 px-6 my-4 flex-row justify-center items-center ${
-        isSubmitting ? "bg-blue-300" : "bg-blue-600"
-      }`}
+      className="rounded-xl py-4 px-6 my-4 flex-row justify-center items-center bg-blue-600"
       style={{
+        opacity: isSubmitting ? 0.7 : 1,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,

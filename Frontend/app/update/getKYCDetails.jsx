@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const getKYCDetails = () => {
+  const { t } = useTranslation();
   const { token, user } = useAuth();
   const [kycDetails, setKYCDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +39,9 @@ const getKYCDetails = () => {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50">
         <ActivityIndicator size="large" color="#3B82F6" />
-        <Text className="text-gray-600 mt-4">Loading KYC details...</Text>
+        <Text className="text-gray-600 mt-4">
+          {t("Loading KYC details...")}
+        </Text>
       </View>
     );
   }
@@ -46,7 +50,9 @@ const getKYCDetails = () => {
     return (
       <View className="flex-1 justify-center items-center bg-gray-50 p-4">
         <MaterialIcons name="error-outline" size={48} color="#EF4444" />
-        <Text className="text-red-500 text-center text-lg mt-2">{error}</Text>
+        <Text className="text-red-500 text-center text-lg mt-2">
+          {t(error)}
+        </Text>
       </View>
     );
   }
@@ -56,7 +62,7 @@ const getKYCDetails = () => {
       <View className="flex-1 justify-center items-center bg-gray-50 p-4">
         <MaterialIcons name="description" size={48} color="#6B7280" />
         <Text className="text-gray-600 text-center text-lg mt-2">
-          No KYC details found
+          {t("No KYC details found")}
         </Text>
       </View>
     );
@@ -77,12 +83,14 @@ const getKYCDetails = () => {
             </View>
             <View>
               <Text className="text-green-800 font-medium text-lg">
-                {user?.isDocumentVerified ? "Verified KYC" : "KYC Pending"}
+                {user?.isDocumentVerified
+                  ? t("Verified KYC")
+                  : t("KYC Pending")}
               </Text>
               <Text className="text-green-600">
                 {user?.isDocumentVerified
-                  ? "Your KYC verification is complete"
-                  : "Your KYC verification is under process"}
+                  ? t("Your KYC verification is complete")
+                  : t("Your KYC verification is under process")}
               </Text>
             </View>
           </View>
@@ -94,18 +102,21 @@ const getKYCDetails = () => {
             <MaterialIcons name="store" size={28} color="#3B82F6" />
             <View className="ml-3">
               <Text className="text-xl font-bold text-gray-800">
-                Store Information
+                {t("Store Information")}
               </Text>
-              <Text className="text-gray-500">Primary Business Details</Text>
+              <Text className="text-gray-500">
+                {t("Primary Business Details")}
+              </Text>
             </View>
           </View>
 
           <View className="space-y-4">
             <DetailRow
               icon="store"
-              label="Store Name"
+              label="Shop Name"
               value={kycDetails.storeName}
               iconBg="bg-blue-50"
+              t={t}
             />
             <DetailRow
               icon="location-on"
@@ -113,6 +124,7 @@ const getKYCDetails = () => {
               value={kycDetails.address}
               iconBg="bg-purple-50"
               iconColor="#9333EA"
+              t={t}
             />
             <DetailRow
               icon="email"
@@ -120,6 +132,7 @@ const getKYCDetails = () => {
               value={kycDetails.email}
               iconBg="bg-indigo-50"
               iconColor="#6366F1"
+              t={t}
             />
             <DetailRow
               icon="phone"
@@ -127,6 +140,7 @@ const getKYCDetails = () => {
               value={kycDetails.mobile}
               iconBg="bg-pink-50"
               iconColor="#EC4899"
+              t={t}
             />
           </View>
         </View>
@@ -137,10 +151,10 @@ const getKYCDetails = () => {
             <MaterialIcons name="description" size={28} color="#3B82F6" />
             <View className="ml-3">
               <Text className="text-xl font-bold text-gray-800">
-                Document Details
+                {t("Document Details")}
               </Text>
               <Text className="text-gray-500">
-                Business & Identity Documents
+                {t("Business & Identity Documents")}
               </Text>
             </View>
           </View>
@@ -152,6 +166,7 @@ const getKYCDetails = () => {
               value={kycDetails.panNumber}
               iconBg="bg-amber-50"
               iconColor="#F59E0B"
+              t={t}
             />
             <DetailRow
               icon="business"
@@ -159,6 +174,7 @@ const getKYCDetails = () => {
               value={kycDetails.gstin}
               iconBg="bg-emerald-50"
               iconColor="#10B981"
+              t={t}
             />
             <DetailRow
               icon="restaurant"
@@ -166,6 +182,7 @@ const getKYCDetails = () => {
               value={kycDetails.fssaiNumber}
               iconBg="bg-cyan-50"
               iconColor="#06B6D4"
+              t={t}
             />
           </View>
         </View>
@@ -176,25 +193,34 @@ const getKYCDetails = () => {
             <MaterialIcons name="image" size={28} color="#3B82F6" />
             <View className="ml-3">
               <Text className="text-xl font-bold text-gray-800">
-                Uploaded Documents
+                {t("Uploaded Documents")}
               </Text>
-              <Text className="text-gray-500">Verification Documents</Text>
+              <Text className="text-gray-500">
+                {t("Verification Documents")}
+              </Text>
             </View>
           </View>
 
-          <View className="space-y-4">
-            <DocumentImage label="PAN Card" imageUrl={kycDetails.panCard} />
+          <View className="">
+            <DocumentImage
+              label="PAN Card"
+              imageUrl={kycDetails.panCard}
+              t={t}
+            />
             <DocumentImage
               label="Aadhaar Card"
               imageUrl={kycDetails.aadhaarCard}
+              t={t}
             />
             <DocumentImage
               label="GSTIN Certificate"
               imageUrl={kycDetails.gstinCertificate}
+              t={t}
             />
             <DocumentImage
               label="Address Proof"
               imageUrl={kycDetails.addressProof}
+              t={t}
             />
           </View>
         </View>
@@ -209,21 +235,22 @@ const DetailRow = ({
   value,
   iconBg = "bg-blue-50",
   iconColor = "#3B82F6",
+  t,
 }) => (
-  <View className="flex-row items-center py-2">
+  <View className="flex-row items-center py-2 my-2 ">
     <View className={`${iconBg} p-3 rounded-full mr-4`}>
       <MaterialIcons name={icon} size={22} color={iconColor} />
     </View>
     <View className="flex-1">
-      <Text className="text-gray-500 text">{label}</Text>
+      <Text className="text-gray-500 text">{t(label)}</Text>
       <Text className="text-gray-900 font-semibold text-base">{value}</Text>
     </View>
   </View>
 );
 
-const DocumentImage = ({ label, imageUrl }) => (
+const DocumentImage = ({ label, imageUrl, t }) => (
   <View className="space-y-2">
-    <Text className="text-gray-700 font-medium">{label}</Text>
+    <Text className="text-gray-700 font-medium">{t(label)}</Text>
 
     <View className="w-full h-48 bg-gray-100 rounded-xl overflow-hidden">
       <Image

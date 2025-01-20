@@ -87,7 +87,7 @@ const Login = () => {
           aria-errormessage="emailError"
         />
         {formErrors.emailError && (
-          <Text className="text-red-500">{formErrors.emailError}</Text>
+          <Text className="text-red-500">{t(formErrors.emailError)}</Text>
         )}
       </View>
       <View className="mb-4 w-full px-4">
@@ -104,11 +104,11 @@ const Login = () => {
           secureTextEntry
         />
         {formErrors.passwordError && (
-          <Text className="text-red-500">{formErrors.passwordError}</Text>
+          <Text className="text-red-500">{t(formErrors.passwordError)}</Text>
         )}
       </View>
       {formErrors.loginError && (
-        <Text className="text-red-500">{formErrors.loginError}</Text>
+        <Text className="text-red-500">{t(formErrors.loginError)}</Text>
       )}
       <View className="mb-4 w-full px-4">
         <Button

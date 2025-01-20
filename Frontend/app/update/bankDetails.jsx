@@ -21,10 +21,13 @@ import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { pickImage } from "../../utils/imagePicker";
 import uploadToCloudinary from "../../utils/uploadedImages";
 import SuccessPopup from "../myComponent/successPopup";
+import { useTranslation } from "react-i18next";
 
 const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
 
 const BankDetails = () => {
+  const { t } = useTranslation();
+
   const { token, logout } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -193,10 +196,10 @@ const BankDetails = () => {
         >
           <View className="px-4 py-3 border-b border-gray-200">
             <Text className="text-2xl font-semibold text-gray-800">
-              Update Bank Details
+              {t("Update Bank Details")}
             </Text>
             <Text className="text-sm text-gray-500 mt-1">
-              Please provide your bank account information
+              {t("Please provide your bank account information")}
             </Text>
           </View>
           <ScrollView
@@ -220,7 +223,7 @@ const BankDetails = () => {
                       nativeID={key}
                       className="text-base font-medium text-gray-700 mb-1"
                     >
-                      {label}
+                      {t(label)}
                     </Label>
                     <Input
                       className="bg-gray-50 rounded-lg"
@@ -244,7 +247,7 @@ const BankDetails = () => {
                           color="#EF4444"
                         />
                         <Text className="text-red-500 text-sm ml-1">
-                          {errors[key]}
+                          {t(errors[key])}
                         </Text>
                       </View>
                     )}
@@ -255,7 +258,7 @@ const BankDetails = () => {
               {/* Cancelled Cheque Image Upload */}
               <View className="mb-3">
                 <Label className="text-base font-medium text-gray-700 mb-1">
-                  Cancelled Cheque Image
+                  {t("Cancelled Cheque Image")}
                 </Label>
                 <TouchableOpacity
                   onPress={handleImagePick}
@@ -279,7 +282,7 @@ const BankDetails = () => {
                         color="#6B7280"
                       />
                       <Text className="text-gray-600 mt-2">
-                        Upload Cancelled Cheque Image
+                        {t("Upload Cancelled Cheque Image")}
                       </Text>
                     </View>
                   )}
@@ -292,7 +295,7 @@ const BankDetails = () => {
                       color="#EF4444"
                     />
                     <Text className="text-red-500 text-sm ml-1">
-                      {errors.cancelledChequeImage}
+                      {t(errors.cancelledChequeImage)}
                     </Text>
                   </View>
                 )}
@@ -308,12 +311,12 @@ const BankDetails = () => {
                     } border-2 border-blue-500`}
                   />
                   <Text className="ml-2 text-base text-gray-700 flex-1">
-                    I verify that all updated bank details are correct
+                    {t("I verify that all updated bank details are correct")}
                   </Text>
                 </View>
                 {checkboxError && (
                   <Text className="text-red-500 text-sm mt-2">
-                    {checkboxError}
+                    {t(checkboxError)}
                   </Text>
                 )}
               </View>
@@ -326,7 +329,7 @@ const BankDetails = () => {
                 } justify-center my-3`}
               >
                 <Text className="text-white font-semibold text-lg text-center">
-                  {isLoading ? "Updating..." : "Update Details"}
+                  {isLoading ? t("Updating...") : t("Update Details")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -335,9 +338,9 @@ const BankDetails = () => {
       </TouchableWithoutFeedback>
       <SuccessPopup
         visible={showSuccessPopup}
-        title="Update Successful!"
-        message="Your bank details have been updated successfully"
-        duration={2000}
+        title={t("Update Successful!")}
+        message={t("Your bank details have been updated successfully")}
+        duration={1200}
         onClose={() => {
           setShowSuccessPopup(false);
           router.replace("./getBankDetails");

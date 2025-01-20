@@ -6,13 +6,15 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import messages from "./texts";
 import InputField from "./inputField";
+import SuccessPopup from "../myComponent/successPopup";
 
 const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
 
 const Register = () => {
   const { t } = useTranslation();
-  const msg = messages(t); // Get translated messages
+  const msg = messages(t);
   const router = useRouter();
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -27,7 +29,6 @@ const Register = () => {
     mobileError: "",
     passwordError: "",
     registerError: "",
-    successMessage: "",
   });
 
   const isEnglishInput = (text) =>
@@ -96,13 +97,7 @@ const Register = () => {
         });
 
         if (response.status === 201) {
-          setFormErrors((prevErrors) => ({
-            ...prevErrors,
-            successMessage: msg.successMessages.registrationSuccess,
-          }));
-          setTimeout(() => {
-            router.replace("/login");
-          }, 1000);
+          setShowSuccessPopup(true);
         }
       } catch (error) {
         if (
@@ -112,11 +107,8 @@ const Register = () => {
             ...prevErrors,
             registerError: msg.errorMessages.userAlreadyExists,
           }));
-        }
-        // Handle other validation errors from the backend
-        else if (error.response?.data?.errors) {
+        } else if (error.response?.data?.errors) {
           const errorData = error.response.data.errors;
-
           setFormErrors((prevErrors) => ({
             ...prevErrors,
             nameError: errorData.nameError || "",
@@ -125,16 +117,12 @@ const Register = () => {
             passwordError: errorData.passwordError || "",
             registerError: errorData.photoError || "",
           }));
-        }
-        // Handle internal server error
-        else if (error.response?.status === 500) {
+        } else if (error.response?.status === 500) {
           setFormErrors((prevErrors) => ({
             ...prevErrors,
             registerError: msg.inputValidationErrors.internalServerError,
           }));
-        }
-        // Handle unexpected errors
-        else {
+        } else {
           setFormErrors((prevErrors) => ({
             ...prevErrors,
             registerError: msg.inputValidationErrors.unexpectedError,
@@ -144,8 +132,20 @@ const Register = () => {
     }
   };
 
+  const handlePopupClose = () => {
+    setShowSuccessPopup(false);
+    router.replace("/login");
+  };
+
   return (
     <View className="flex-1 items-center justify-center bg-white p-4 w-full">
+      <SuccessPopup
+        visible={showSuccessPopup}
+        message={msg.successMessages.registrationSuccess}
+        onClose={handlePopupClose}
+        duration={1500}
+      />
+
       <View>
         <Image
           source={require("../../assets/images/ONDC-only-logo.png")}
@@ -192,12 +192,6 @@ const Register = () => {
 
       {formErrors.registerError && (
         <Text className="text-red-500">{formErrors.registerError}</Text>
-      )}
-
-      {formErrors.successMessage && (
-        <Text className="text-green-600 text-lg">
-          {formErrors.successMessage}
-        </Text>
       )}
 
       <View className="mb-4 w-full px-4">

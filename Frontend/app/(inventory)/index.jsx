@@ -15,10 +15,12 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "expo-router";
 import { handleDelete } from "./handleDelete";
 import { SkeletonLoader } from "./ProductSkeleton";
+import { useTranslation } from "react-i18next";
 
 const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
 
 const Index = () => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +28,6 @@ const Index = () => {
   const { token } = useAuth();
   const router = useRouter();
 
-  // Fetch products
   const fetchProducts = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/product/inventory`, {
@@ -72,20 +73,8 @@ const Index = () => {
     router.push(`/(catalog)/productEdit?id=${productId}`);
   };
 
-  const handleDeleteProduct = (productId) => {
-    Alert.alert(
-      "Delete Product",
-      "Are you sure you want to delete this product?",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
-          onPress: () => handleDelete(productId, token, fetchProducts),
-          style: "destructive",
-        },
-      ]
-    );
-  };
+  const handleDeleteProduct = (productId) =>
+    handleDelete(productId, token, fetchProducts);
 
   const StockBadge = ({ stock }) => (
     <View
@@ -93,10 +82,8 @@ const Index = () => {
         stock > 0 ? "bg-green-100" : "bg-red-100"
       }`}
     >
-      <Text
-        className={`text-sm ${stock > 0 ? "text-green-800" : "text-red-800"}`}
-      >
-        {stock > 0 ? `${stock} in stock` : "Out of stock"}
+      <Text className={`text ${stock > 0 ? "text-green-800" : "text-red-800"}`}>
+        {stock > 0 ? `${stock} ${t("in stock")}` : t("Out of stock")}
       </Text>
     </View>
   );
@@ -140,7 +127,7 @@ const Index = () => {
             onPress={() => handleUpdate(item.id)}
           >
             <MaterialIcons name="edit" size={16} color="#1D4ED8" />
-            <Text className="text-blue-700 ml-1 font-medium">Edit</Text>
+            <Text className="text-blue-700 ml-1 font-medium">{t("Edit")}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -148,7 +135,7 @@ const Index = () => {
             onPress={() => handleDeleteProduct(item.id)}
           >
             <MaterialIcons name="delete-outline" size={16} color="#DC2626" />
-            <Text className="text-red-700 ml-1 font-medium">Delete</Text>
+            <Text className="text-red-700 ml-1 font-medium">{t("Delete")}</Text>
           </TouchableOpacity>
         </View>
       </View>

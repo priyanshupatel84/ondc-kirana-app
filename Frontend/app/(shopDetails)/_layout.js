@@ -1,6 +1,5 @@
 import React from "react";
 import { Stack } from "expo-router";
-import Header from "../myComponent/header";
 
 const ShopLayout = () => {
   return (
@@ -13,6 +12,12 @@ const ShopLayout = () => {
       />
       <Stack.Screen
         name="configureStore"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="updateShop"
         options={{
           headerShown: false,
         }}

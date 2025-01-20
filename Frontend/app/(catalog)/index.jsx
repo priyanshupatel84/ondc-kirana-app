@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 const CategoryBox = ({
   iconName,
@@ -10,6 +11,7 @@ const CategoryBox = ({
   iconColor,
   onPress,
   isGrocery,
+  t,
 }) => {
   return (
     <TouchableOpacity
@@ -17,21 +19,21 @@ const CategoryBox = ({
       className={`${backgroundColor} border border-blue-500`}
       onPress={onPress}
     >
-      <View className={`flex-row ${isGrocery ? "p-6" : "p-4"} items-center`}>
+      <View className={`flex-row ${isGrocery ? "p-5" : "p-4"} items-center`}>
         <View className={`${iconColor} rounded-full p-3`}>
           <MaterialIcons
             name={iconName}
-            size={isGrocery ? 38 : 30}
+            size={isGrocery ? 30 : 30}
             color="white"
           />
         </View>
         <View className="px-4">
           <Text
             className={`font-medium text-gray-800 ${
-              isGrocery ? "text-2xl" : "text-lg"
+              isGrocery ? "text-xl" : "text-xl"
             }`}
           >
-            {label}
+            {t(label)}
           </Text>
         </View>
         <MaterialIcons
@@ -46,6 +48,7 @@ const CategoryBox = ({
 };
 
 const Index = () => {
+  const { t } = useTranslation();
   const router = useRouter();
 
   const categories = [
@@ -113,9 +116,9 @@ const Index = () => {
       <View className="pb-2 px-4">
         <View className="border-b border-gray-200 py-2">
           <Text className="text-xl font-semibold text-gray-800">
-            Select category
+            {t("Select category")}
           </Text>
-          <Text className="text-gray-500">Select Product Category</Text>
+          <Text className="text-gray-500">{t("Select Product Category")}</Text>
         </View>
 
         <View className="py-3 px-2">
@@ -128,6 +131,7 @@ const Index = () => {
               backgroundColor={category.backgroundColor}
               onPress={() => handleCategoryPress(category)}
               isGrocery={category.isGrocery}
+              t={t}
             />
           ))}
         </View>
