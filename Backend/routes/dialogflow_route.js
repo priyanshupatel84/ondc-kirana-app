@@ -17,9 +17,10 @@ defaultWelcome: For welcoming the user when they ask general or basic questions 
 getBankDetails: For questions related to banking details, such as account balance, transaction history, or bank services.
 getShopsDetails: For queries about shop-related details, including shop locations, working hours, or contact information.
 getKYCDetails: For questions concerning KYC (Know Your Customer) processes, such as document submission or verification status.
-getOrderDetails: For inquiries about order status, tracking, or purchase details.
+getUserDetails: For questions about user-related information, profile details, or user preferences.
 getProductDetails: For questions about product specifications, availability, or pricing.
 resetPassword: For queries where the user explicitly mentions resetting or recovering their password.
+getFunctionalities: For questions about the bot's functionalities, app features, how to update shop details, or how to edit bank account details, manage products, or manage orders.
 Respond only with the most relevant tag from the above list. If the query does not clearly match any tag, default to "defaultWelcome".
     `;
 
@@ -28,7 +29,7 @@ Respond only with the most relevant tag from the above list. If the query does n
     console.log("Determined tag:", tag);
 
     let response;
-    
+
     switch (tag) {
       case "defaultWelcome":
         await CONTROLLER.dbController.defaultWelcomeMessage(req, res);
@@ -42,14 +43,19 @@ Respond only with the most relevant tag from the above list. If the query does n
       case "getKYCDetails":
         await CONTROLLER.dbController.handleKYC(req, res);
         break;
-      case "getOrderDetails":
-        await CONTROLLER.dbController.handleOrder(req, res);
-        break;
+      case "getUserDetails":
+        await CONTROLLER.dbController.handleUser(req, res);
+      // case "getOrderDetails":
+      //   await CONTROLLER.dbController.handleOrder(req, res);
+      //   break;
       case "getProductDetails":
         await CONTROLLER.dbController.handleProduct(req, res);
         break;
       case "resetPassword":
         await CONTROLLER.dbController.resetPassword(req, res);
+        break;
+      case "getFunctionalities":
+        await CONTROLLER.dbController.handleFunctionalities(req, res);
         break;
       default:
         const defaultResponses = [

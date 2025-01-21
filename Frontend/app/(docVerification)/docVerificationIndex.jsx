@@ -407,7 +407,6 @@ const Index = () => {
 
       setLoadingStatus(t("Finalizing submission..."));
       setLoadingProgress(100);
-      router.push("./verifiedData/bankDetails");
     } catch (error) {
       setError(t("Failed to upload images. Please try again."));
       console.error("Error during upload:", error);
@@ -415,6 +414,7 @@ const Index = () => {
       setLoading(false);
       setLoadingStatus("");
       setLoadingProgress(0);
+      router.push("./verifiedData/bankDetails");
     }
   };
 
