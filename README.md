@@ -75,3 +75,6 @@
 
 4. Create a `key.json` file in the backend directory and add your Google Translation API credentials.
 
+## Presentation Deck, Video Demonstration and APK File (Google Drive Link)
+[Click Here](https://drive.google.com/drive/folders/1sTWvypS9DgQsAeffXuO7PUecVJ6He2zZ?usp=sharing)
+
