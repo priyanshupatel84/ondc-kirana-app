@@ -54,7 +54,6 @@ const LanguageSelection = () => {
     { label: "ગુજરાતી", value: "gu" },
     { label: "हिन्दी", value: "hi" },
     { label: "ಕನ್ನಡ", value: "kn" },
-    { label: "മലയാളം", value: "ml" },
     { label: "मराठी", value: "mr" },
     { label: "ਪੰਜਾਬੀ", value: "pa" },
     { label: "தமிழ்", value: "ta" },

@@ -11,10 +11,10 @@ import {
 } from "react-native";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
+import { MessageCircle, X } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "i18next";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useAuth } from "../context/AuthContext";
 
 // LoadingDots component for animation
 const LoadingDots = () => {
@@ -74,7 +74,6 @@ const LoadingDots = () => {
 };
 
 const ChatBot = () => {
-  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
@@ -135,9 +134,15 @@ const ChatBot = () => {
     setIsLoading(true);
 
     try {
+      const userId = await AsyncStorage.getItem("userId");
       const lang = i18n.language;
+
+      if (!userId) {
+        throw new Error("UserId not found in storage");
+      }
+
       const response = await axios.post(
-        `${process.env.EXPO_PUBLIC_MY_API_URL}/api/chatbot/${user._id}/${lang}`,
+        `${process.env.EXPO_PUBLIC_MY_API_URL}/api/chatbot/${userId}/${lang}`,
         { query: inputText },
         {
           validateStatus: function (status) {

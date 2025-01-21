@@ -17,9 +17,6 @@ const resources = {
   kn: {
     translation: require("./kn/translation.json"), // Kannada
   },
-  ml: {
-    translation: require("./ml/translation.json"), // Malayalam
-  },
   mr: {
     translation: require("./mr/translation.json"), // Marathi
   },
@@ -32,7 +29,6 @@ const resources = {
   te: {
     translation: require("./te/translation.json"), // Telugu
   },
-  // Add more languages as needed
 };
 
 i18n

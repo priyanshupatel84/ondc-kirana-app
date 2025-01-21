@@ -13,6 +13,7 @@ import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const API_URL = process.env.EXPO_PUBLIC_MY_API_URL;
 
@@ -41,10 +42,44 @@ const Login = () => {
     setFormErrors({ ...formErrors, [`${field}Error`]: "", loginError: "" });
   };
 
+  //   setLoadingState(true);
+  //   try {
+  //     const response = await axios.post(`${API_URL}/api/users/login`, formData);
+
+  //     if (response.status === 200) {
+  //       await login(response.data.user, response.data.token);
+  //     }
+  //   } catch (error) {
+  //     if (error.response?.data?.errors) {
+  //       setFormErrors(error.response.data.errors);
+  //     } else {
+  //       setFormErrors({
+  //         loginError: t("An unexpected error occurred. Please try again."),
+  //       });
+  //     }
+  //   } finally {
+  //     setLoadingState(false);
+  //   }
+  // };
   const onSubmit = async () => {
     setLoadingState(true);
     try {
-      const response = await axios.post(`${API_URL}/api/users/login`, formData);
+      console.log("Sending data:", formData);
+
+      const response = await axios({
+        method: "post",
+        url: `${process.env.EXPO_PUBLIC_MY_API_URL}/api/users/login`,
+        data: formData,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        validateStatus: function (status) {
+          return status >= 200 && status < 500;
+        },
+      });
+
+      console.log("Response:", response.data);
 
       if (response.status === 200) {
         await login(response.data.user, response.data.token);
