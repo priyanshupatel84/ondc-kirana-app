@@ -1,6 +1,5 @@
 const { Translate } = require("@google-cloud/translate").v2;
 
-// Remove keyFilename configuration and use environment variables
 const translate = new Translate();
 
 const translateText = async (text, targetLanguage) => {
