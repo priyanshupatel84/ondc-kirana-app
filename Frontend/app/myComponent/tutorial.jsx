@@ -3,8 +3,10 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { WebView } from "react-native-webview";
 import { useRouter } from "expo-router";
 import { MaterialIcons as Icon } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const Header = ({ title = "Tutorial" }) => {
+  const { t } = useTranslation();
   const router = useRouter();
 
   return (
@@ -23,7 +25,7 @@ const Header = ({ title = "Tutorial" }) => {
           color="white"
           className="mr-2"
         />
-        <Text className="font-bold text-2xl text-white">{title}</Text>
+        <Text className="font-bold text-2xl text-white">{t(title)}</Text>
       </View>
 
       <View className="w-10" />

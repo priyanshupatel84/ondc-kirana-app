@@ -64,8 +64,6 @@ const Login = () => {
   const onSubmit = async () => {
     setLoadingState(true);
     try {
-      console.log("Sending data:", formData);
-
       const response = await axios({
         method: "post",
         url: `${process.env.EXPO_PUBLIC_MY_API_URL}/api/users/login`,
