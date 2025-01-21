@@ -1,2 +1,8 @@
+# Environment variables
 .env
+
+# Node modules
 node_modules/
+
+# Google Cloud credentials
+key.json
